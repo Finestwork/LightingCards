@@ -72,9 +72,13 @@ export default {
     password: '',
     confirmPassword: ''
   }),
-  emits: ['mounted'],
+  emits: ['mounted', 'unmounted'],
   mounted() {
-    // Since this is an async component, parent needs to know if its mounted already
+    // Since this is an async component, parent needs to know if component is mounted
+    this.$emit('mounted');
+  },
+  unmounted() {
+    // Since this is an async component, parent needs to know if component is unmounted
     this.$emit('mounted');
   }
 };
