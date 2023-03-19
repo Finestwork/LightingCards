@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="138.073" height="162.996" viewBox="0 0 138.073 162.996">
-  <g id="Group_74" data-name="Group 74" transform="translate(-179.897 -305)">
-    <rect id="Rectangle_16" data-name="Rectangle 16" width="97.632" height="97.632" rx="6" transform="translate(248.933 329.923) rotate(45)" fill="#fedfca"/>
-    <rect id="Rectangle_14" data-name="Rectangle 14" width="97.632" height="97.632" rx="6" transform="translate(228.713 315) rotate(30)" fill="#fcb98d"/>
-    <rect id="Rectangle_4" data-name="Rectangle 4" width="97.632" height="97.632" rx="6" transform="translate(179.897 305)" fill="#fa8334"/>
-    <path id="Path_12" data-name="Path 12" d="M49.429,11.338c.738-2.621-1.806-4.171-4.129-2.516l-32.432,23.1c-2.52,1.795-2.123,5.371.6,5.371H22v-.066H38.648L25.086,42.016l-5.979,21.24c-.738,2.621,1.806,4.171,4.129,2.516l32.432-23.1c2.52-1.8,2.123-5.371-.6-5.371H42.122Z" transform="translate(195.239 316.785)" fill="#fff" fill-rule="evenodd"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="35.455" height="38.64" viewBox="0 0 35.455 38.64">
+  <g id="Group_8" data-name="Group 8" transform="translate(-131.669 -292)">
+    <rect id="Rectangle_16" data-name="Rectangle 16" width="23.878" height="23.878" rx="6" transform="translate(150.24 296.872) rotate(45)" fill="#fedfca"/>
+    <rect id="Rectangle_14" data-name="Rectangle 14" width="23.878" height="23.878" rx="6" transform="translate(143.608 292) rotate(30)" fill="#fcb98d"/>
+    <rect id="Rectangle_4" data-name="Rectangle 4" width="23.878" height="23.878" rx="6" transform="translate(133.356 292)" fill="#fa8334"/>
+    <path id="Path_12" data-name="Path 12" d="M20.538,8.921c.18-.641-.442-1.02-1.01-.615L11.6,13.956c-.616.439-.519,1.314.146,1.314H13.83v-.016H17.9l-3.317,1.17-1.462,5.195c-.18.641.442,1.02,1.01.615l7.932-5.65c.616-.439.519-1.314-.146-1.314H18.75Z" transform="translate(128.659 288.734)" fill="#fff" fill-rule="evenodd"/>
   </g>
 </svg>

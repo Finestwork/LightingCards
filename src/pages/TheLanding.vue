@@ -6,12 +6,12 @@
       <nav :class="$style.landing__nav">
         <BasePlayfulLink
             :class="$style['nav__signup-link']"
-            :to="{ name: 'CardCreationTest' }"
+            :to="{ name: 'AuthGuard' }"
         >
           <template #text>Signup</template>
         </BasePlayfulLink>
 
-        <BasePlayfulLink :class="$style['nav__login-link']" :to="{ name: 'CardCreationTest' }">
+        <BasePlayfulLink :class="$style['nav__login-link']" :to="{ name: 'AuthGuard' }">
           <template #text>Login</template>
         </BasePlayfulLink>
       </nav>

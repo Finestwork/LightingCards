@@ -10,6 +10,16 @@ const ROUTES = [
     path: '/test/create-card',
     name: 'CardCreationTest',
     component: () => import('@/pages/TheCardCreationTest.vue')
+  },
+  {
+    path: '/login',
+    name: 'AuthGuard',
+    component: ()=>import('@/pages/TheAuthGuard.vue')
+  },
+  {
+    path: '/signup',
+    name: 'AuthGuard',
+    component: ()=>import('@/pages/TheAuthGuard.vue')
   }
 ];
 const router = createRouter({
