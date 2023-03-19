@@ -2,6 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 const ROUTES = [
   {
+    path: '/',
+    name: 'Landing',
+    component: () => import('@/pages/TheLanding.vue')
+  },
+  {
     path: '/test/create-card',
     name: 'CardCreationTest',
     component: () => import('@/pages/TheCardCreationTest.vue')

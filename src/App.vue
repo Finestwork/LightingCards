@@ -1,6 +1,6 @@
 <template>
   <main>
-    <TheLanding />
+    <router-view/>
   </main>
 </template>
 
