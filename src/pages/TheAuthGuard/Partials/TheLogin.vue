@@ -22,6 +22,13 @@
     <BasePlayfulButton type="button" :class="$style['login__submit']">
       <template #text>Submit</template>
     </BasePlayfulButton>
+
+    <p :class="$style['login__no-account']">
+      Not registered yet?
+      <router-link :class="$style['link']" :to="{ name: 'AuthGuardSignup' }"
+        >Register here</router-link
+      >
+    </p>
   </div>
 </template>
 
@@ -44,7 +51,16 @@ export default {
 </script>
 
 <style lang="scss" module>
+@use 'sass:map';
+@use '../../../assets/scss/1-settings/css-properties/font-size/major-second';
+@use '../../../assets/scss/1-settings/css-properties/colors/main';
+@use '../../../assets/scss/1-settings/css-properties/colors/text';
+@use '../../../assets/scss/1-settings/css-properties/box-shadow/transition' as
+  box-shadow-transition;
 @use '../../../assets/scss/2-tools/mixins/css-properties/margin';
+@use '../../../assets/scss/2-tools/mixins/css-properties/font-size';
+@use '../../../assets/scss/2-tools/mixins/css-properties/box-shadow/primary' as
+  box-shadow-primary;
 
 // prettier-ignore
 .login {
@@ -52,19 +68,47 @@ export default {
   margin-right: auto;
   margin-left: auto;
 
-  &__email{
+  &__email {
     @include margin.bottom((
-      xsm: 25
+        xsm: 25
     ));
   }
-  &__submit{
+
+  &__submit {
     width: 100%;
     max-width: 250px;
     margin-left: auto;
     margin-right: auto;
     @include margin.top((
-      xsm: 25
+        xsm: 25
     ));
+  }
+
+  &__no-account{
+    font-weight: 600;
+    color: map.get(text.$main, 900);
+    @include font-size.responsive((
+      xsm: map.get(major-second.$scale, 2)
+    ));
+    @include margin.top((
+      xsm: 45
+    ));
+
+    .link{
+      text-decoration: underline;
+      transition: box-shadow-transition.$transition-linear;
+      color: map.get(main.$primary, 600);
+      outline: none;
+
+      &:focus{
+        @include box-shadow-primary.lightness(light, sm);
+      }
+
+      &:focus,
+      &:hover{
+        color: darken(map.get(main.$primary, 600), 5%);
+      }
+    }
   }
 }
 </style>
