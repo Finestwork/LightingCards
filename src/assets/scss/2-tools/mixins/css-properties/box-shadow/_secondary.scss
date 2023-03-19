@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use '../../../../1-settings/css-properties/colors/main';
+@use '../../../../1-settings/css-properties/box-shadow/size';
+
+@mixin lightness($lightness, $size){
+    $lightnessMap: (
+        light: (
+            xsm: unquote(map.get(size.$list, xsm)) lighten(map.get(main.$secondary, 300), 5%),
+            sm: unquote(map.get(size.$list, sm)) lighten(map.get(main.$secondary, 300), 5%),
+            md: (unquote(map.get(size.$list, md))) lighten(map.get(main.$secondary, 300), 5%),
+            lg: unquote(map.get(size.$list, lg)) lighten(map.get(main.$secondary, 300), 5%),
+            xl: unquote(map.get(size.$list, xl)) lighten(map.get(main.$secondary, 300), 5%),
+            xxl: unquote(map.get(size.$list, xxl)) lighten(map.get(main.$secondary, 300), 5%)
+        ),
+        lighter: (
+            xsm: unquote(map.get(size.$list, xsm)) lighten(map.get(main.$secondary, 300), 10%),
+            sm: unquote(map.get(size.$list, sm)) lighten(map.get(main.$secondary, 300), 10%),
+            md: unquote(map.get(size.$list, md)) lighten(map.get(main.$secondary, 300), 10%),
+            lg: unquote(map.get(size.$list, lg)) lighten(map.get(main.$secondary, 300), 10%),
+            xl: unquote(map.get(size.$list, xl)) lighten(map.get(main.$secondary, 300), 10%),
+            xxl: unquote(map.get(size.$list, xxl)) lighten(map.get(main.$secondary, 300), 10%)
+        ),
+        lightest: (
+            xsm: unquote(map.get(size.$list, xsm)) lighten(map.get(main.$secondary, 300), 20%),
+            sm: unquote(map.get(size.$list, sm)) lighten(map.get(main.$secondary, 300), 20%),
+            md: unquote(unquote(map.get(size.$list, md))) lighten(map.get(main.$secondary, 300), 20%),
+            lg: unquote(map.get(size.$list, lg)) lighten(map.get(main.$secondary, 300), 20%),
+            xl: unquote(map.get(size.$list, xl)) lighten(map.get(main.$secondary, 300), 20%),
+            xxl: unquote(map.get(size.$list, xxl)) lighten(map.get(main.$secondary, 300), 20%)
+        ),
+    );
+    box-shadow: map.get(map.get($lightnessMap,$lightness), $size);
+}

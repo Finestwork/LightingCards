@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use '../../../../1-settings/css-properties/colors/safety';
+@use '../../../../1-settings/css-properties/box-shadow/size';
+
+@mixin lightness($lightness, $size){
+  $lightnessMap: (
+    light: (
+      xsm: unquote(map.get(size.$list, xsm)) rgba(map.get(safety.$warning, 500), 0.7),
+      sm: unquote(map.get(size.$list, sm)) rgba(map.get(safety.$warning, 500), 0.7),
+      md: (unquote(map.get(size.$list, md))) rgba(map.get(safety.$warning, 500), 0.7),
+      lg: unquote(map.get(size.$list, lg)) rgba(map.get(safety.$warning, 500), 0.7),
+      xl: unquote(map.get(size.$list, xl)) rgba(map.get(safety.$warning, 500), 0.7),
+      xxl: unquote(map.get(size.$list, xxl)) rgba(map.get(safety.$warning, 500), 0.7)
+    ),
+    lighter: (
+      xsm: unquote(map.get(size.$list, xsm)) rgba(map.get(safety.$warning, 500), 0.5),
+      sm: unquote(map.get(size.$list, sm)) rgba(map.get(safety.$warning, 500), 0.5),
+      md: unquote(map.get(size.$list, md)) rgba(map.get(safety.$warning, 500), 0.5),
+      lg: unquote(map.get(size.$list, lg)) rgba(map.get(safety.$warning, 500), 0.5),
+      xl: unquote(map.get(size.$list, xl)) rgba(map.get(safety.$warning, 500), 0.5),
+      xxl: unquote(map.get(size.$list, xxl)) rgba(map.get(safety.$warning, 500), 0.5)
+    ),
+    lightest: (
+      xsm: unquote(map.get(size.$list, xsm)) rgba(map.get(safety.$warning, 500), 0.3),
+      sm: unquote(map.get(size.$list, sm)) rgba(map.get(safety.$warning, 500), 0.3),
+      md: unquote(unquote(map.get(size.$list, md))) rgba(map.get(safety.$warning, 500), 0.3),
+      lg: unquote(map.get(size.$list, lg)) rgba(map.get(safety.$warning, 500), 0.3),
+      xl: unquote(map.get(size.$list, xl)) rgba(map.get(safety.$warning, 500), 0.3),
+      xxl: unquote(map.get(size.$list, xxl)) rgba(map.get(safety.$warning, 500), 0.3)
+    ),
+  );
+  box-shadow: map.get(map.get($lightnessMap,$lightness), $size);
+}

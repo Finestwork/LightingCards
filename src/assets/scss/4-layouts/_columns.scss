@@ -1,0 +1,40 @@
+@use 'sass:map';
+@use 'sass:math';
+@use '../1-settings/containers/bootstrap-based';
+@use '../2-tools/functions/convertions/pixels';
+@use '../2-tools/mixins/media-query/breakpoint';
+
+$gutter-width: 12;
+$columns: 12;
+$total-gutter-width: ($gutter-width * 2) * $columns;
+$width-per-column: math.div((map.get(bootstrap-based.$list, sm) - $total-gutter-width), $columns);
+
+@mixin generate-columns($cls, $breakpoints){
+    @include breakpoint.checker($breakpoints){
+        @for $i from 1 through 12 {
+            $estimated-width: math.div(($width-per-column + ($gutter-width * 2)) * $i, map.get(bootstrap-based.$list, sm)) * 100%;
+            .#{$cls}-#{$i}{
+                flex-basis: $estimated-width;
+                max-width: $estimated-width;
+				@if($i != 12){
+					padding-left: pixels.toRem($gutter-width);
+					padding-right: pixels.toRem($gutter-width);
+				}
+            }
+
+        }
+    }
+
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+
+    @include generate-columns('col-xsm', 'xsm');
+    @include generate-columns('col-sm', 'sm');
+    @include generate-columns('col-md', 'md');
+    @include generate-columns('col-lg', 'lg');
+    @include generate-columns('col-xl', 'xl');
+    @include generate-columns('col-xxl', 'xxl');
+}

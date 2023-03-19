@@ -1,0 +1,36 @@
+@use 'sass:map';
+@use '../media-query/breakpoint';
+
+@mixin set($map){
+    @each $breakpoint, $val in $map{
+        @include breakpoint.checker($breakpoint){
+            /* Height */
+            $height: map.get($val, 'height');
+            $minHeight: map.get($val, 'minHeight');
+            $maxHeight: map.get($val, 'maxHeight');
+            @if($height){
+                height: $height;
+            }
+            @if($minHeight){
+                min-height: $minHeight;
+            }
+            @if($maxHeight){
+                max-height: $maxHeight;
+            }
+
+            /* Width */
+            $width: map.get($val, 'width');
+            $minWidth: map.get($val, 'minWidth');
+            $maxWidth: map.get($val, 'maxWidth');
+            @if($width){
+                width: $width;
+            }
+            @if($minWidth){
+                min-width: $minWidth;
+            }
+            @if($maxWidth){
+                max-width: $maxWidth;
+            }
+        }
+    }
+}

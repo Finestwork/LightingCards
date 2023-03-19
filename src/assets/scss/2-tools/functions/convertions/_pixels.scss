@@ -1,0 +1,22 @@
+@use 'sass:math';
+@use '../../../1-settings/css-properties/font-size/major-second';
+
+/* Context is already set because the font size of html or root element is 62.5% or 10px */
+@function toRem($target) {
+  @if (type-of($target) == 'number') {
+    @return math.div($target, major-second.$root) * 1rem;
+  }
+  @return $target;
+}
+
+@function toEmWithBase($target) {
+  @return math.div($target, major-second.$base) * 1em;
+}
+
+@function toEm($target, $context) {
+  @return math.div($target, $context) * 1em;
+}
+
+@function toPercentage($target, $context) {
+  @return math.div($target, $context) * 100%;
+}

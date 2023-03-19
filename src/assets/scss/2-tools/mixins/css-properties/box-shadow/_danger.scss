@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use '../../../../1-settings/css-properties/colors/safety';
+@use '../../../../1-settings/css-properties/box-shadow/size';
+
+@mixin lightness($lightness, $size){
+    $lightnessMap: (
+        light: (
+            xsm: unquote(map.get(size.$list, xsm)) lighten(map.get(safety.$danger, 400), 8%),
+            sm: unquote(map.get(size.$list, sm)) lighten(map.get(safety.$danger, 400), 8%),
+            md: (unquote(map.get(size.$list, md))) lighten(map.get(safety.$danger, 400), 8%),
+            lg: unquote(map.get(size.$list, lg)) lighten(map.get(safety.$danger, 400), 8%),
+            xl: unquote(map.get(size.$list, xl)) lighten(map.get(safety.$danger, 400), 8%),
+            xxl: unquote(map.get(size.$list, xxl)) lighten(map.get(safety.$danger, 400), 8%)
+        ),
+        lighter: (
+            xsm: unquote(map.get(size.$list, xsm)) lighten(map.get(safety.$danger, 400), 15%),
+            sm: unquote(map.get(size.$list, sm)) lighten(map.get(safety.$danger, 400), 15%),
+            md: unquote(map.get(size.$list, md)) lighten(map.get(safety.$danger, 400), 15%),
+            lg: unquote(map.get(size.$list, lg)) lighten(map.get(safety.$danger, 400), 15%),
+            xl: unquote(map.get(size.$list, xl)) lighten(map.get(safety.$danger, 400), 15%),
+            xxl: unquote(map.get(size.$list, xxl)) lighten(map.get(safety.$danger, 400), 15%)
+        ),
+        lightest: (
+            xsm: unquote(map.get(size.$list, xsm)) lighten(map.get(safety.$danger, 400), 20%),
+            sm: unquote(map.get(size.$list, sm)) lighten(map.get(safety.$danger, 400), 20%),
+            md: unquote(unquote(map.get(size.$list, md))) lighten(map.get(safety.$danger, 400), 20%),
+            lg: unquote(map.get(size.$list, lg)) lighten(map.get(safety.$danger, 400), 20%),
+            xl: unquote(map.get(size.$list, xl)) lighten(map.get(safety.$danger, 400), 20%),
+            xxl: unquote(map.get(size.$list, xxl)) lighten(map.get(safety.$danger, 400), 20%)
+        ),
+    );
+    box-shadow: map.get(map.get($lightnessMap,$lightness), $size);
+}

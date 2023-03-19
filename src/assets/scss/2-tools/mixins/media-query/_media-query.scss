@@ -1,0 +1,38 @@
+@use 'sass:map';
+@use '../../functions/convertions/pixels';
+@use '../../../1-settings/media-query/breakpoints';
+@use '../../../1-settings/css-properties/font-size/major-second';
+
+@mixin xsm{
+    @content;
+}
+
+@mixin sm{
+    @media only screen and (min-width: pixels.toEm(map.get(breakpoints.$list, sm), major-second.$base)){
+        @content;
+    }
+}
+
+@mixin md{
+    @media only screen and (min-width: pixels.toEm(map.get(breakpoints.$list, md), major-second.$base)){
+        @content;
+    }
+}
+
+@mixin lg{
+    @media only screen and (min-width: pixels.toEm(map.get(breakpoints.$list, lg), major-second.$base)){
+        @content;
+    }
+}
+
+@mixin xl{
+    @media only screen and (min-width: pixels.toEm(map.get(breakpoints.$list, xl), major-second.$base)){
+        @content;
+    }
+}
+
+@mixin xxl{
+    @media only screen and (min-width: pixels.toEm(map.get(breakpoints.$list, xxl), major-second.$base)){
+        @content;
+    }
+}

@@ -1,0 +1,27 @@
+@use '../../../2-tools/mixins/media-query/breakpoint';
+
+
+@mixin top($map){
+    @include base('top', $map);
+}
+@mixin right($map){
+    @include base('right', $map);
+}
+@mixin bottom($map){
+    @include base('bottom', $map);
+}
+@mixin left($map){
+    @include base('left', $map);
+}
+@mixin type($map){
+    @include base('position', $map);
+}
+
+
+@mixin base($position, $map){
+    @each $breakpoint, $value in $map{
+        @include breakpoint.checker($breakpoint){
+            #{$position}: $value;
+        }
+    }
+}

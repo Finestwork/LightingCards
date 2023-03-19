@@ -1,0 +1,34 @@
+@use 'media-query';
+@use 'custom-media-query';
+
+@mixin checker($breakpoint){
+    @if(type-of($breakpoint) == 'number'){
+        @include custom-media-query.custom($breakpoint){
+            @content;
+        }
+    }@else{
+        @if($breakpoint == 'xsm'){
+            @content;
+        }@else if($breakpoint == 'sm'){
+            @include media-query.sm{
+                @content;
+            }
+        }@else if($breakpoint == 'md'){
+            @include media-query.md{
+                @content;
+            }
+        }@else if($breakpoint == 'lg'){
+            @include media-query.lg{
+                @content;
+            }
+        }@else if($breakpoint == 'xl'){
+            @include media-query.xl{
+                @content;
+            }
+        }@else if($breakpoint == 'xxl'){
+            @include media-query.xxl{
+                @content;
+            }
+        }
+    }
+}

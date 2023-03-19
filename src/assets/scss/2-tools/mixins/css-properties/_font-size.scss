@@ -1,0 +1,11 @@
+@use 'sass:map';
+@use '../../functions/convertions/pixels';
+@use '../media-query/breakpoint';
+
+@mixin responsive($map){
+    @each $key, $val in $map{
+        @include breakpoint.checker($key){
+            font-size: pixels.toRem($val);
+        }
+    }
+}

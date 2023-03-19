@@ -1,0 +1,56 @@
+@use 'sass:list';
+@use '../../../2-tools/mixins/media-query/breakpoint';
+@use '../../../2-tools/functions/convertions/pixels';
+
+/*
+ * Mixin(s) below should be imported
+ */
+
+@mixin top($map){
+    @include base('top', $map);
+}
+@mixin right($map){
+    @include base('right', $map);
+}
+@mixin bottom($map){
+    @include base('bottom', $map);
+}
+@mixin left($map){
+    @include base('left', $map);
+}
+@mixin vertical($map){
+    @include base('top', $map);
+    @include base('bottom', $map);
+}
+@mixin horizontal($map){
+    @include base('left', $map);
+    @include base('right', $map);
+}
+@mixin all-sides($map){
+    @each $breakpoint, $value in $map{
+        @include breakpoint.checker($breakpoint){
+            @if(list.length($value) == 1){
+                padding: pixels.toRem(list.nth($value, 1));
+            }@else if(list.length($value) == 2){
+                padding: pixels.toRem(list.nth($value, 1)) pixels.toRem(list.nth($value, 2));
+            }@else if(list.length($value) == 3){
+                padding: pixels.toRem(list.nth($value, 1)) pixels.toRem(list.nth($value, 2)) pixels.toRem(list.nth($value, 3));
+            }@else if(list.length($value) == 4){
+                padding: pixels.toRem(list.nth($value, 1)) pixels.toRem(list.nth($value, 2)) pixels.toRem(list.nth($value, 3)) pixels.toRem(list.nth($value, 4));
+            }
+        }
+    }
+}
+
+
+/*
+ * Mixin(s) below should not be imported
+ */
+
+@mixin base($padding-side, $map){
+    @each $breakpoint, $padding-value in $map{
+        @include breakpoint.checker($breakpoint){
+            padding-#{$padding-side}: pixels.toRem($padding-value);
+        }
+    }
+}

@@ -1,0 +1,11 @@
+@use '../../../2-tools/mixins/media-query/breakpoint';
+
+@mixin init($map){
+    @each $breakpoint, $css-properties in $map{
+        @include breakpoint.checker($breakpoint){
+            @each $prop, $val in $css-properties{
+                #{$prop}: $val;
+            }
+        }
+    }
+}

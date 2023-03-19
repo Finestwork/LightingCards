@@ -1,0 +1,9 @@
+@use '../../../2-tools/mixins/media-query/breakpoint';
+
+@mixin set($displayMap){
+	@each $breakpoint, $value in $displayMap{
+		@include breakpoint.checker($breakpoint){
+			display: #{$value};
+		}
+	}
+}

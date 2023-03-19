@@ -1,0 +1,16 @@
+@use 'sass:map';
+@use '../../functions/convertions/pixels';
+@use '../../../1-settings/css-properties/font-size/major-second';
+
+
+@mixin custom($breakpoint){
+    @media only screen and (min-width: pixels.toEm($breakpoint, major-second.$base)){
+        @content;
+    }
+}
+
+@mixin custom-max-width($breakpoint){
+    @media only screen and (max-width: pixels.toEm($breakpoint, major-second.$base)){
+        @content;
+    }
+}
