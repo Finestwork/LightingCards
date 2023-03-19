@@ -2,7 +2,9 @@
   <div :class="$style.auth" ref="root">
     <BasePatternBackground />
     <div :class="$style['auth__form-wrapper']">
-      <BaseGradientLogo />
+      <router-link to="/" :class="$style['auth__logo-link']">
+        <BaseGradientLogo />
+      </router-link>
       <div :class="$style['auth__form']">
         <Transition
           @before-leave="beforeLeave"
@@ -237,6 +239,10 @@ export default {
     height: 100%;
     background-color: white;
     opacity: 0.8;
+  }
+
+  &__logo-link{
+    text-decoration: none;
   }
 
   &__form-wrapper {
