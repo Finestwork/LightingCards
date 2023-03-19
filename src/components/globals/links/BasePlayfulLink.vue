@@ -49,7 +49,7 @@ export default {
   cursor: pointer;
   border-radius: 7px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   color: white;
   font-size: pixels.toRem(map.get(major-second.$scale, 3));
   transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;

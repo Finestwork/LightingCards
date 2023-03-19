@@ -1,29 +1,31 @@
 <template>
   <section :class="$style.landing">
-    <span :class="$style.landing__bg"></span>
-
+    <BasePatternBackground />
     <div :class="$style['container--sm']">
       <nav :class="$style.landing__nav">
         <BasePlayfulLink
-            :class="$style['nav__signup-link']"
-            :to="{ name: 'AuthGuard' }"
+          :class="$style['nav__signup-link']"
+          :to="{ name: 'AuthGuardSignup' }"
         >
           <template #text>Signup</template>
         </BasePlayfulLink>
 
-        <BasePlayfulLink :class="$style['nav__login-link']" :to="{ name: 'AuthGuard' }">
+        <BasePlayfulLink
+          :class="$style['nav__login-link']"
+          :to="{ name: 'AuthGuardLogin' }"
+        >
           <template #text>Login</template>
         </BasePlayfulLink>
       </nav>
       <div :class="$style['landing__main-content-outer']">
         <div :class="$style['landing__main-content-inner']">
           <span :class="$style['main-content__logo']">
-          <span :class="$style['logo__bg']"></span>
-          <img
+            <span :class="$style['logo__bg']"></span>
+            <img
               src="/assets/images/logos/logo-large.svg"
               alt="LightningCard's Logo"
-          />
-        </span>
+            />
+          </span>
           <div :class="$style['main-content__tagline']">
             <h2 :class="$style['tagline__title']">
               Flashcard Learning Made Easy
@@ -32,8 +34,8 @@
               Master Any Topic with Our User-Friendly Flashcard App
             </h3>
             <BasePlayfulLink
-                :class="$style['tagline__get-started-link']"
-                :to="{ name: 'CardCreationTest' }"
+              :class="$style['tagline__get-started-link']"
+              :to="{ name: 'CardCreationTest' }"
             >
               <template #text>Try it now</template>
             </BasePlayfulLink>
@@ -47,10 +49,12 @@
 </template>
 
 <script>
+import BasePatternBackground from '@/components/globals/backgrounds/BasePatternBackground.vue';
 import BasePlayfulLink from '../components/globals/links/BasePlayfulLink.vue';
 
 export default {
   components: {
+    BasePatternBackground,
     BasePlayfulLink
   },
   methods: {
@@ -82,17 +86,6 @@ export default {
 
   .container--sm {
     width: 90%;
-  }
-
-  &__bg {
-    display: block;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background: url('/assets/images/bg/grid.svg') no-repeat;
-    background-size: cover;
-    z-index: -2;
-    opacity: 0.04;
   }
 
   &__main-content {
@@ -185,7 +178,6 @@ export default {
             }
 
             &__get-started-link {
-              font-weight: 700;
               text-transform: capitalize;
               @include margin.top((
                   xsm: 15,
@@ -237,7 +229,6 @@ export default {
 
     .nav__signup-link,
     .nav__login-link{
-      font-weight: 700;
       @include font-size.responsive((
         xsm: map.get(major-second.$scale, 2),
         lg: map.get(major-second.$scale, 3),

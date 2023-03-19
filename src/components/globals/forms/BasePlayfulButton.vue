@@ -15,7 +15,10 @@
 
     <!-- Loader -->
     <span :class="$style['btn__loader-content']" v-if="isLoading">
-      <span :class="$style['loader__animation-wrapper']" ref="lottieWrapper"></span>
+      <span
+        :class="$style['loader__animation-wrapper']"
+        ref="lottieWrapper"
+      ></span>
       <span :class="$style['loader__text']">{{ loaderText }}</span>
     </span>
   </button>
@@ -164,7 +167,7 @@ export default {
           }
         }
         &__text {
-          font-weight: 600;
+          font-weight: 700;
           color: white;
           font-size: pixels.toRem(map.get(major-second.$scale, 3));
         }

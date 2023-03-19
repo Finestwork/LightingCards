@@ -13,13 +13,13 @@ const ROUTES = [
   },
   {
     path: '/login',
-    name: 'AuthGuard',
-    component: ()=>import('@/pages/TheAuthGuard.vue')
+    name: 'AuthGuardLogin',
+    component: () => import('@/pages/TheAuthGuard/TheAuthGuard.vue')
   },
   {
     path: '/signup',
-    name: 'AuthGuard',
-    component: ()=>import('@/pages/TheAuthGuard.vue')
+    name: 'AuthGuardSignup',
+    component: () => import('@/pages/TheAuthGuard/TheAuthGuard.vue')
   }
 ];
 const router = createRouter({
