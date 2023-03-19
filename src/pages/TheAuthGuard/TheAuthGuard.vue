@@ -5,7 +5,12 @@
       <BaseGradientLogo />
 
       <div :class="$style['auth__form']">
-        <Transition @beforeEnter="beforeEnter" @enter="onEnter">
+        <Transition
+          @beforeEnter="beforeEnter"
+          @enter="onEnter"
+          @before-leave="beforeLeave"
+          @leave="onLeave"
+        >
           <TheLogin @mounted="componentMounted" v-if="shouldShowLogin" />
           <TheSignup @mounted="componentMounted" v-else-if="shouldShowSignup" />
         </Transition>
@@ -63,7 +68,7 @@ export default {
       }
       Object.assign(el.style, {
         position: 'absolute',
-        left: '150%',
+        left: '100%',
         opacity: 0
       });
     },
@@ -75,21 +80,38 @@ export default {
         anime({
           targets: PARENT,
           height: `${el.offsetHeight}px`,
+          delay: 250,
           complete: () => {
             anime({
               targets: el,
               left: `${TO_LEFT}px`,
               opacity: 1,
-              easing: 'easeOutQuint',
+              easing: 'easeOutCubic',
               duration: 350,
               complete: () => {
                 done();
-                PARENT.style = null;
-                el.style = null;
               }
             });
           }
         });
+      });
+    },
+    onLeave(el, done) {
+      anime({
+        targets: el,
+        left: '-100%',
+        opacity: 0,
+        duration: 350,
+        easing: 'easeOutCubic',
+        complete: () => {
+          done();
+        }
+      });
+    },
+    beforeLeave(el) {
+      Object.assign(el.style, {
+        position: 'absolute',
+        left: `${el.offsetLeft}px`
       });
     }
   },
