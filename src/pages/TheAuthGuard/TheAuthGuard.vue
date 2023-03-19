@@ -5,7 +5,7 @@
       <BaseGradientLogo />
 
       <div :class="$style['auth__form']">
-        <Transition>
+        <Transition @beforeEnter="beforeEnter" @enter="onEnter">
           <TheLogin @mounted="componentMounted" v-if="shouldShowLogin" />
           <TheSignup @mounted="componentMounted" v-else-if="shouldShowSignup" />
         </Transition>
@@ -17,10 +17,11 @@
 <script>
 import BasePatternBackground from '@/components/globals/backgrounds/BasePatternBackground.vue';
 import BaseGradientLogo from '@/components/globals/logos/BaseGradientLogo.vue';
-import { defineAsyncComponent } from 'vue';
 
 // NPM
+import { defineAsyncComponent } from 'vue';
 import NProgress from 'nprogress';
+import anime from 'animejs/lib/anime.es.js';
 
 export default {
   components: {
@@ -30,7 +31,8 @@ export default {
     TheSignup: defineAsyncComponent(() => import('./Partials/TheSignup.vue'))
   },
   data: () => ({
-    shouldRootBeHidden: true
+    shouldRootBeHidden: true,
+    animateOnFirstLoad: false
   }),
   mounted() {
     NProgress.configure({ showSpinner: false });
@@ -47,6 +49,48 @@ export default {
         display: null
       });
       NProgress.done();
+    },
+
+    /*
+     * ================
+     * Transitions
+     * ================
+     */
+    beforeEnter(el) {
+      if (!this.animateOnFirstLoad) {
+        this.animateOnFirstLoad = true;
+        return;
+      }
+      Object.assign(el.style, {
+        position: 'absolute',
+        left: '150%',
+        opacity: 0
+      });
+    },
+    onEnter(el, done) {
+      this.$nextTick(() => {
+        const PARENT = el.parentElement;
+        const TO_LEFT = (PARENT.offsetWidth - el.offsetWidth) / 2;
+
+        anime({
+          targets: PARENT,
+          height: `${el.offsetHeight}px`,
+          complete: () => {
+            anime({
+              targets: el,
+              left: `${TO_LEFT}px`,
+              opacity: 1,
+              easing: 'easeOutQuint',
+              duration: 350,
+              complete: () => {
+                done();
+                PARENT.style = null;
+                el.style = null;
+              }
+            });
+          }
+        });
+      });
     }
   },
   computed: {
@@ -83,6 +127,7 @@ export default {
     background-color: white;
     width: 90%;
     max-width: 650px;
+    overflow: hidden;
     border-radius: 15px;
     border: 2px solid map.get(text.$main, 50);
     @include padding.all-sides((
@@ -91,6 +136,7 @@ export default {
   }
 
   &__form {
+    position: relative;
     @include margin.top((
       xsm: 25
     ));

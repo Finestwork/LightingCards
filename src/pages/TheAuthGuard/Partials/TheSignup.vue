@@ -94,6 +94,10 @@ export default {
 
 // prettier-ignore
 .signup {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+
   &__username,
   &__email,
   &__password {
