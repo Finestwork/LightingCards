@@ -1,49 +1,76 @@
 <template>
-  <div :class="$style['login']">
+  <form :class="$style['signup']">
     <BaseTextInput
-      :class="$style['login__email']"
+      :class="$style['signup__username']"
+      type="text"
+      placeholder="Place your username here"
+      id="signupUsernameTxt"
+      label="Username:"
+      :validation-rules="{ required: true, min: 4 }"
+      v-model="username"
+    />
+
+    <BaseTextInput
+      :class="$style['signup__email']"
       type="email"
       placeholder="Place your email here"
-      id="loginEmailTxt"
+      id="signupEmailTxt"
       label="Email:"
-      :validation-rules="{ isEmail: true }"
-      v-model="emailTxt"
-    />
-    <BaseTextInput
-      :class="$style['login__password']"
-      type="password"
-      placeholder="Place your password here"
-      id="loginPasswordTxt"
-      label="Password:"
-      :validation-rules="{ min: 6, max: 8 }"
-      v-model="passwordTxt"
+      :validation-rules="{ required: true, min: 4 }"
+      v-model="email"
     />
 
-    <BasePlayfulButton type="button" :class="$style['login__submit']">
-      <template #text>Submit</template>
+    <BaseTextInput
+      :class="$style['signup__password']"
+      type="text"
+      placeholder="Place your password here"
+      id="signupPasswordTxt"
+      label="Password:"
+      :validation-rules="{ required: true, min: 6 }"
+      v-model="password"
+    />
+
+    <BaseTextInput
+      :class="$style['signup__confirm-password']"
+      type="text"
+      placeholder="Confirm your password here"
+      id="signupConfirmPasswordTxt"
+      label="Confirm Password:"
+      :validation-rules="{
+        required: true,
+        min: 6,
+        sameWith: { element: '#signupPasswordTxt', fieldName: 'password' }
+      }"
+      v-model="confirmPassword"
+    />
+
+    <BasePlayfulButton type="submit" :class="$style['signup__register']">
+      <template #text>Register</template>
     </BasePlayfulButton>
 
-    <p :class="$style['login__no-account']">
-      Not registered yet?
-      <router-link :class="$style['link']" :to="{ name: 'AuthGuardSignup' }"
-        >Register here</router-link
+    <p :class="$style['signup__has-account']">
+      Already have an account?
+      <router-link :class="$style['link']" :to="{ name: 'AuthGuardLogin' }"
+        >Login here</router-link
       >
     </p>
-  </div>
+  </form>
 </template>
 
 <script>
-import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
+import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 
 export default {
   components: {
-    BaseTextInput,
-    BasePlayfulButton
+    BasePlayfulButton,
+    BaseTextInput
   },
   data: () => ({
-    emailTxt: '',
-    passwordTxt: ''
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
   }),
   emits: ['mounted'],
   mounted() {
@@ -56,8 +83,8 @@ export default {
 <style lang="scss" module>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/font-size/major-second';
-@use '../../../assets/scss/1-settings/css-properties/colors/main';
 @use '../../../assets/scss/1-settings/css-properties/colors/text';
+@use '../../../assets/scss/1-settings/css-properties/colors/main';
 @use '../../../assets/scss/1-settings/css-properties/box-shadow/transition' as
   box-shadow-transition;
 @use '../../../assets/scss/2-tools/mixins/css-properties/margin';
@@ -66,35 +93,33 @@ export default {
   box-shadow-primary;
 
 // prettier-ignore
-.login {
-  width: 90%;
-  margin-right: auto;
-  margin-left: auto;
-
-  &__email {
+.signup {
+  &__username,
+  &__email,
+  &__password {
     @include margin.bottom((
         xsm: 25
     ));
   }
 
-  &__submit {
+  &__register {
     width: 100%;
     max-width: 250px;
     margin-left: auto;
     margin-right: auto;
     @include margin.top((
-        xsm: 25
+        xsm: 30
     ));
   }
 
-  &__no-account{
+  &__has-account{
     font-weight: 600;
     color: map.get(text.$main, 900);
     @include font-size.responsive((
-      xsm: map.get(major-second.$scale, 2)
+        xsm: map.get(major-second.$scale, 2)
     ));
     @include margin.top((
-      xsm: 45
+        xsm: 45
     ));
 
     .link{
