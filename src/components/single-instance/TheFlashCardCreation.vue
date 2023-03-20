@@ -11,27 +11,25 @@
       <template #text>Create Card</template>
     </BasePlayfulButton>
 
-    <div :class="$style['card__settings']">
-      <div :class="$style['settings__left-wrapper']">
-        <BaseTextInput
-          :class="$style['settings__title']"
-          id="titleTxt"
-          label="Title:"
-          placeholder="Place flash card's title here"
-          type="text"
-          :validation-rules="{ required: true }"
-          v-model="titleTxt"
-        />
-        <BaseTextArea
-          :class="$style['settings__description']"
-          id="descriptionTxt"
-          label="Description:"
-          placeholder="What's your flashcard all about?"
-          :counter="255"
-          strict-mode
-          v-model="descriptionTxt"
-        />
-      </div>
+    <div :class="$style['card__forms']">
+      <BaseTextInput
+        :class="$style['settings__title']"
+        id="titleTxt"
+        label="Title:"
+        placeholder="Place flash card's title here"
+        type="text"
+        :validation-rules="{ required: true }"
+        v-model="titleTxt"
+      />
+      <BaseTextArea
+        :class="$style['settings__description']"
+        id="descriptionTxt"
+        label="Description:"
+        placeholder="What's your flashcard all about?"
+        :counter="255"
+        strict-mode
+        v-model="descriptionTxt"
+      />
     </div>
   </div>
 </template>
@@ -51,7 +49,8 @@ export default {
   },
   data: () => ({
     titleTxt: '',
-    descriptionTxt: ''
+    descriptionTxt: '',
+    isPublic: true
   }),
   methods: {
     createCard(e) {
@@ -63,18 +62,16 @@ export default {
 
 <style lang="scss" module>
 @use '../../assets/scss/2-tools/mixins/css-properties/margin';
+@use '../../assets/scss/2-tools/mixins/css-properties/padding';
 
 // prettier-ignore
 .card {
   &__create-btn {
     margin-left: auto;
   }
-  &__settings {
-    display: flex;
+  &__forms {
+    max-width: 450px;
     .settings {
-      &__left-wrapper {
-        width: 40%;
-      }
       &__title{
         @include margin.bottom((
           xsm: 35

@@ -12,7 +12,7 @@
 
       <!-- Alert -->
       <p :class="$style['test__alert']">
-        This will not be saved,
+        Your work will not be saved,
         <router-link :class="$style['link']" :to="{ name: 'AuthGuardSignup' }"
           >create an account</router-link
         >
