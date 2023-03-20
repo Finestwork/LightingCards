@@ -100,6 +100,7 @@ export default {
   border: none;
   cursor: pointer;
   border-radius: 7px;
+  font-family: inherit;
   transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
   padding: pixels.toRem(15);
   box-shadow: inset 0 -6px 0 rgba(map.get(main.$primary, 900), 0.16);
@@ -119,7 +120,6 @@ export default {
   &:disabled {
     cursor: not-allowed;
     background-color: lighten(map.get(main.$primary, 500), 10%);
-    background-color: lighten(map.get(main.$primary, 500), 10%);
   }
 
   .btn {
@@ -128,7 +128,7 @@ export default {
       align-items: center;
     }
     &__text {
-      font-weight: 600;
+      font-weight: 700;
       color: white;
       font-size: pixels.toRem(map.get(major-second.$scale, 3));
     }
@@ -136,7 +136,7 @@ export default {
     &__trailing-icon {
       width: 13px;
       height: 13px;
-      :deep(svg) {
+      :global(svg) {
         display: block;
         width: 100%;
         height: 100%;

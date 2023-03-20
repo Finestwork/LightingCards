@@ -33,7 +33,7 @@
   &__text {
     font-weight: 800;
     color: transparent;
-    background: linear-gradient(to right, map.get(main.$primary, 900), map.get(main.$primary, 600));
+    background: linear-gradient(to right, map.get(main.$primary, 700), map.get(main.$primary, 500));
     background-clip: text;
     font-size: pixels.toRem(map.get(major-second.$scale, 5));
   }

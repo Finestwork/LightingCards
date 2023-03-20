@@ -312,7 +312,7 @@ $default-padding: 10;
     color: map.get(text.$main, 900);
     font-size: pixels.toRem(map.get(major-second.$scale, 3));
     padding: pixels.toRem(14) pixels.toRem($default-padding);
-    background-color: map.get(text.$main, 100);
+    background-color: map.get(text.$main, 50);
 
     &:focus,
     &:hover {
