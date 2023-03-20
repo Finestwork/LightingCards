@@ -31,6 +31,15 @@
         v-model="descriptionTxt"
       />
     </div>
+
+    <div :class="$style['card__items']">
+      <BaseCardItem
+        v-for="n in 10"
+        :key="n"
+        :class="$style['card__create-item-wrapper']"
+        :order="n"
+      />
+    </div>
   </div>
 </template>
 
@@ -38,6 +47,7 @@
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
 import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 import BaseTextArea from '@/components/globals/forms/BaseTextArea.vue';
+import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import PlusIcon from '@/components/icons/PlusIcon.vue';
 
 export default {
@@ -45,6 +55,7 @@ export default {
     BasePlayfulButton,
     BaseTextInput,
     BaseTextArea,
+    BaseCardItem,
     PlusIcon
   },
   data: () => ({
@@ -78,8 +89,23 @@ export default {
         ));
       }
       &__description{
-        height: 150px;
+        textarea{
+          height: 150px;
+        }
       }
+    }
+  }
+  &__items{
+    @include margin.top((
+      xsm: 50
+    ));
+  }
+  &__create-item-wrapper{
+    @include margin.bottom((
+      xsm: 35
+    ));
+    &:last-of-type{
+      margin-bottom: 0;
     }
   }
 }

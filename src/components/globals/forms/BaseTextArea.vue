@@ -37,7 +37,7 @@ export default {
     },
     label: {
       type: String,
-      required: true
+      default: ''
     },
     clearForm: {
       type: Boolean
@@ -56,14 +56,15 @@ export default {
       inputValue: this.modelValue // Implement this after you take a bath
     };
   },
-  emits: ['update:modelValue', 'onKeyup', 'onKeydown', 'onBlur'],
+  emits: ['update:modelValue', 'onKeyup', 'onKeydown', 'onBlur', 'onInput'],
   methods: {
     clearField() {
       this.$refs.input.value = '';
       this.$emit('update:modelValue', this.inputValue);
     },
-    onInput() {
+    onInput(e) {
       this.$emit('update:modelValue', this.inputValue);
+      this.$emit('onInput', e);
     },
     onKeyup() {
       this.$emit('onKeyup', this.inputValue);
@@ -145,7 +146,6 @@ $default-padding: 10;
 .text-area {
   textarea {
     width: 100%;
-    height: 100%;
     border: none;
     outline: none;
     font-weight: 700;
