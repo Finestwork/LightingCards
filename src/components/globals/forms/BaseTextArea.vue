@@ -5,12 +5,12 @@
       ref="input"
       :placeholder="placeholder"
       :id="id"
-      :value="modelValue"
       @input="onInput"
       @keyup="onKeyup"
       @keydown="onKeydown"
       @blur="onBlur"
       autocomplete="off"
+      v-model="inputValue"
     ></textarea>
     <span :class="$style['text-area__ctr']" v-if="hasCounter">
       {{ getTextLength }} / {{ counter }}
@@ -51,33 +51,55 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      inputValue: this.modelValue // Implement this after you take a bath
+    };
+  },
   emits: ['update:modelValue', 'onKeyup', 'onKeydown', 'onBlur'],
   methods: {
     clearField() {
       this.$refs.input.value = '';
-      this.$emit('update:modelValue', this.$refs.input.value);
+      this.$emit('update:modelValue', this.inputValue);
     },
     onInput() {
-      this.$emit('update:modelValue', this.$refs.input.value);
+      this.$emit('update:modelValue', this.inputValue);
     },
     onKeyup() {
-      this.$emit('onKeyup', this.modelValue);
+      this.$emit('onKeyup', this.inputValue);
     },
     onKeydown(e) {
-      if (
+      const SINGLE_KEY = [
+        'ArrowLeft',
+        'ArrowUp',
+        'ArrowRight',
+        'ArrowDown',
+        'Backspace'
+      ];
+      const CTR_KEYS = ['a', 'c'];
+      // Ctr+A, Ctr+C, backspace, Command+A
+      const ALLOWED_KEYS =
+        SINGLE_KEY.includes(e.key) ||
+        (CTR_KEYS.includes(e.key) && (e.ctrlKey || e.metaKey));
+      const IN_STRICT_MODE =
         this.strictMode &&
         this.hasCounter &&
-        this.counter <= this.modelValue.length &&
-        e.key.toLowerCase() !== 'backspace'
-      ) {
-        e.preventDefault(); // prevent browser default behavior
+        this.counter <= this.$refs.input.value.length &&
+        !ALLOWED_KEYS;
+
+      if (IN_STRICT_MODE) {
+        const LENGTH = this.inputValue.length;
+        if (LENGTH > this.counter) {
+          this.inputValue = this.inputValue.substring(0, this.counter);
+        }
+        e.preventDefault(); // prevent browser's default behavior
         return; // prevent code from the bottom to be executed
       }
 
-      this.$emit('onKeydown', this.modelValue);
+      this.$emit('onKeydown', this.inputValue);
     },
     onBlur() {
-      this.$emit('onBlur', this.modelValue);
+      this.$emit('onBlur', this.inputValue);
     }
   },
   computed: {
@@ -85,7 +107,7 @@ export default {
       return TypeHelper.isNumber(this.counter);
     },
     getTextLength() {
-      return this.modelValue.length;
+      return this.inputValue.length;
     }
   },
   watch: {

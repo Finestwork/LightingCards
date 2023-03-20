@@ -26,7 +26,7 @@
         id="descriptionTxt"
         label="Description:"
         placeholder="What's your flashcard all about?"
-        :counter="255"
+        :counter="5"
         strict-mode
         v-model="descriptionTxt"
       />
