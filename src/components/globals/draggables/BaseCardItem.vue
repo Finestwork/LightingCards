@@ -16,6 +16,7 @@
           ref="termTextInput"
           placeholder="Place the term here"
           :id="`termTextInput${order}`"
+          v-model="cardObj.term"
         />
         <span :class="card['form__lbl']">Term</span>
       </div>
@@ -24,6 +25,7 @@
           ref="definitionTextInput"
           placeholder="Place the definition here"
           :id="`definitionTextInput${order}`"
+          v-model="cardObj.description"
         />
         <span :class="card['form__lbl']">Definition</span>
       </div>
@@ -48,20 +50,19 @@ export default {
   },
   props: {
     modelValue: {
-      type: Array,
-      default: () => []
+      type: Object,
+      required: true
     },
     order: {
       type: [String, Number],
       required: true
     }
   },
-
   data() {
     return {
       sort: null,
       list: this.modelValue,
-      moduleName: 'card'
+      cardObj: this.modelValue
     };
   }
 };

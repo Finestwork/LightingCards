@@ -12,14 +12,19 @@
     </BasePlayfulButton>
 
     <div :class="$style['card__items']">
-      <SlickList axis="y" :useDragHandle="true" v-model:list="flashCardItems">
+      <SlickList
+        axis="y"
+        :useDragHandle="true"
+        @sort-end="onSortEnd"
+        v-model:list="flashCardItems"
+      >
         <SlickItem
           v-for="(list, ind) in flashCardItems"
           :key="list.id"
           :index="ind"
           :class="$style['item']"
         >
-          <BaseCardItem :order="ind + 1" />
+          <BaseCardItem :order="ind + 1" v-model="flashCardItems[ind]" />
         </SlickItem>
       </SlickList>
     </div>
@@ -30,6 +35,7 @@
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import PlusIcon from '@/components/icons/PlusIcon.vue';
+import { useFlashCardStore } from '@/stores/flashcard';
 
 // NPM
 import { SlickItem, SlickList } from 'vue-slicksort';
@@ -47,16 +53,18 @@ export default {
     descriptionTxt: '',
     isPublic: true,
     flashCardItems: [
-      { id: 'default1', term: '', description: '' },
-      { id: 'default2', term: '', description: '' },
-      { id: 'default3', term: '', description: '' },
-      { id: 'default4', term: '', description: '' },
-      { id: 'default5', term: '', description: '' }
-    ]
+      { id: 'card1', term: '', description: '' },
+      { id: 'card2', term: '', description: '' },
+      { id: 'card3', term: '', description: '' },
+      { id: 'card4', term: '', description: '' },
+      { id: 'card5', term: '', description: '' }
+    ],
+    useFlashCardStore: useFlashCardStore()
   }),
   methods: {
     createCard(e) {
       e.currentTarget.blur();
+      // Validate fields minimum is 5
     }
   }
 };
