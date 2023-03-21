@@ -1,11 +1,11 @@
 export default class FlashcardHelper {
   static #VALID_LENGTH = 3;
   static areAllItemsValid(items) {
-    items.filter(
+    const BLANK_ITEMS = items.filter(
       (item) => item.term.trim() === '' || item.description.trim() === ''
     );
 
-    return items.length === 0;
+    return BLANK_ITEMS.length === 0;
   }
 
   static isArrayLengthValid(items) {
