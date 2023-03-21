@@ -81,14 +81,15 @@ export default {
   }
 
   &__label {
-    font-weight: 800;
+    font-weight: 900;
     text-transform: uppercase;
     color: map.get(text.$main, 300);
+    font-size: pixels.toRem(map.get(major-second.$scale, 2));
   }
 
   &__counter {
-    font-weight: 700;
-    font-size: map.get(major-second.$scale, 3);
+    font-weight: 900;
+    font-size: pixels.toRem(map.get(major-second.$scale, 2));
     color: map.get(text.$main, 500);
   }
 

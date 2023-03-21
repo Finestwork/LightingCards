@@ -84,7 +84,7 @@ export default {
   &__btn-controls {
     display: flex;
     justify-content: center;
-    margin-top: pixels.toRem(15);
+    margin-top: pixels.toRem(25);
 
     .btn__next-btn,
     .btn__reveal-btn,

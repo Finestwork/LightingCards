@@ -1,18 +1,18 @@
 <template>
   <div class="test">
-    <div :class="`${$style['container--sm']} ${$style['test__container']}`">
+    <div class="container--sm test__container">
       <!-- Alert -->
-      <TheRequiredLoginAlert :class="$style['test__alert']" />
+      <TheRequiredLoginAlert class="test__alert" />
 
       <!-- Logo -->
-      <div :class="$style['test__logo-wrapper']">
-        <router-link to="/" :class="$style['test__logo-link']">
+      <div class="test__logo-wrapper">
+        <router-link to="/" class="test__logo-link">
           <BaseGradientLogo />
         </router-link>
-        <span :class="$style['test__guest-lbl']">Hello, guest!</span>
+        <span class="test__guest-lbl">Hello, guest!</span>
       </div>
 
-      <TheFlashCardCreation :class="$style['test__card-creation-wrapper']" />
+      <TheFlashCardCreation class="test__card-creation-wrapper" />
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../assets/scss/1-settings/css-properties/colors/text';
 @use '../assets/scss/1-settings/css-properties/colors/safety';
