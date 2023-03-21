@@ -12,12 +12,13 @@
     </BasePlayfulButton>
 
     <div :class="$style['card__items']">
-      <SlickList
-        axis="y"
-        :useDragHandle="true"
-        @sort-end="onSortEnd"
-        v-model:list="flashCardItems"
+      <BaseSingleLineAlert
+        :class="$style['card__error-alert']"
+        v-if="shouldDisplayErrorAlert"
       >
+        <template #text>{{ errorAlertText }}</template>
+      </BaseSingleLineAlert>
+      <SlickList axis="y" :useDragHandle="true" v-model:list="flashCardItems">
         <SlickItem
           v-for="(list, ind) in flashCardItems"
           :key="list.id"
@@ -35,7 +36,11 @@
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import PlusIcon from '@/components/icons/PlusIcon.vue';
+import BaseSingleLineAlert from '@/components/globals/alerts/BaseSingleLine.vue';
+
+// Helpers
 import { useFlashCardStore } from '@/stores/flashcard';
+import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 
 // NPM
 import { SlickItem, SlickList } from 'vue-slicksort';
@@ -46,25 +51,41 @@ export default {
     BaseCardItem,
     PlusIcon,
     SlickList,
-    SlickItem
+    SlickItem,
+    BaseSingleLineAlert
   },
   data: () => ({
-    titleTxt: '',
-    descriptionTxt: '',
     isPublic: true,
+    errorAlertText: '',
     flashCardItems: [
       { id: 'card1', term: '', description: '' },
       { id: 'card2', term: '', description: '' },
-      { id: 'card3', term: '', description: '' },
-      { id: 'card4', term: '', description: '' },
-      { id: 'card5', term: '', description: '' }
+      { id: 'card3', term: '', description: '' }
     ],
     useFlashCardStore: useFlashCardStore()
   }),
   methods: {
     createCard(e) {
       e.currentTarget.blur();
-      // Validate fields minimum is 5
+      this.errorAlertText = '';
+
+      if (!FlashcardHelper.isArrayLengthValid(this.flashCardItems)) {
+        this.errorAlertText = '• Flash cards should not be less than 3.';
+        return;
+      }
+
+      if (!FlashcardHelper.areAllItemsValid(this.flashCardItems)) {
+        this.errorAlertText =
+          '• There are items that are left blank, please check it.';
+        return;
+      }
+
+      this.useFlashCardStore.changeItems(this.flashCardItems);
+    }
+  },
+  computed: {
+    shouldDisplayErrorAlert() {
+      return this.errorAlertText.trim() !== '';
     }
   }
 };
@@ -81,6 +102,9 @@ export default {
   }
   &__items{
     @include margin.top((
+      xsm: 35
+    ));
+    @include padding.bottom((
       xsm: 50
     ));
     .item{
@@ -93,6 +117,13 @@ export default {
 
     }
   }
-
+  &__error-alert{
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    @include margin.bottom((
+      xsm: 50
+    ));
+  }
 }
 </style>
