@@ -102,7 +102,7 @@ export default {
   }
   &__items{
     @include margin.top((
-      xsm: 35
+      xsm: 35 
     ));
     @include padding.bottom((
       xsm: 50
