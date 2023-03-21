@@ -33,12 +33,7 @@
     </div>
 
     <div :class="$style['card__items']">
-      <BaseCardItem
-        v-for="n in 10"
-        :key="n"
-        :class="$style['card__create-item-wrapper']"
-        :order="n"
-      />
+      <BaseCardItem v-model="list" :parentClass="$style" />
     </div>
   </div>
 </template>
@@ -61,7 +56,8 @@ export default {
   data: () => ({
     titleTxt: '',
     descriptionTxt: '',
-    isPublic: true
+    isPublic: true,
+    list: [{}, {}, {}, {}, {}]
   }),
   methods: {
     createCard(e) {
@@ -100,13 +96,14 @@ export default {
       xsm: 50
     ));
   }
-  &__create-item-wrapper{
+  .card{
     @include margin.bottom((
-      xsm: 35
+        xsm: 35
     ));
     &:last-of-type{
       margin-bottom: 0;
     }
+
   }
 }
 </style>
