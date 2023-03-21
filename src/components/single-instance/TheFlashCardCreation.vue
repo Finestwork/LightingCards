@@ -33,7 +33,16 @@
     </div>
 
     <div :class="$style['card__items']">
-      <BaseCardItem v-model="list" :parentClass="$style" />
+      <SlickList axis="y" :useDragHandle="true" v-model:list="flashCardItems">
+        <SlickItem
+          v-for="(list, ind) in flashCardItems"
+          :key="list.id"
+          :index="ind"
+          :class="$style['item']"
+        >
+          <BaseCardItem :order="ind + 1" />
+        </SlickItem>
+      </SlickList>
     </div>
   </div>
 </template>
@@ -45,19 +54,30 @@ import BaseTextArea from '@/components/globals/forms/BaseTextArea.vue';
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import PlusIcon from '@/components/icons/PlusIcon.vue';
 
+// NPM
+import { SlickItem, SlickList } from 'vue-slicksort';
+
 export default {
   components: {
     BasePlayfulButton,
     BaseTextInput,
     BaseTextArea,
     BaseCardItem,
-    PlusIcon
+    PlusIcon,
+    SlickList,
+    SlickItem
   },
   data: () => ({
     titleTxt: '',
     descriptionTxt: '',
     isPublic: true,
-    list: [{}, {}, {}, {}, {}]
+    flashCardItems: [
+      { id: 'default1', term: '', description: '' },
+      { id: 'default2', term: '', description: '' },
+      { id: 'default3', term: '', description: '' },
+      { id: 'default4', term: '', description: '' },
+      { id: 'default5', term: '', description: '' }
+    ]
   }),
   methods: {
     createCard(e) {
@@ -95,15 +115,16 @@ export default {
     @include margin.top((
       xsm: 50
     ));
-  }
-  .card{
-    @include margin.bottom((
-        xsm: 35
-    ));
-    &:last-of-type{
-      margin-bottom: 0;
-    }
+    .item{
+      @include margin.bottom((
+          xsm: 35
+      ));
+      &:last-of-type{
+        margin-bottom: 0;
+      }
 
+    }
   }
+
 }
 </style>

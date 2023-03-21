@@ -15,10 +15,10 @@
     "pinia": "^2.0.32",
     "sass": "^1.59.3",
     "sass-loader": "^13.2.1",
-    "sortablejs": "^1.15.0",
     "validator": "^13.9.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
+    "vue-slicksort": "^2.0.5",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

@@ -1,36 +1,31 @@
 <template>
-  <div ref="root">
-    <div
-      :class="[card.card, parentClass.card]"
-      v-for="(list, ind) in list"
-      :key="list"
-    >
-      <span :class="card['card__order-lbl']">{{ ind + 1 }}</span>
-      <div :class="card['card__controls']">
-        <button type="button" :class="card['control__drag-btn']">
-          <BentoIcon />
-        </button>
-        <button type="button" :class="card['control__delete-btn']">
-          <TrashCanIcon />
-        </button>
+  <div :class="card.card">
+    <span :class="card['card__order-lbl']">{{ order }}</span>
+    <div :class="card['card__controls']">
+      <DragHandle tag="button" :class="card['control__drag-btn']">
+        <BentoIcon />
+      </DragHandle>
+
+      <button type="button" :class="card['control__delete-btn']">
+        <TrashCanIcon />
+      </button>
+    </div>
+    <div :class="card['card__form-wrapper']">
+      <div :class="card['form']">
+        <BaseTextArea
+          ref="termTextInput"
+          placeholder="Place the term here"
+          :id="`termTextInput${order}`"
+        />
+        <span :class="card['form__lbl']">Term</span>
       </div>
-      <div :class="card['card__form-wrapper']">
-        <div :class="card['form']">
-          <BaseTextArea
-            ref="termTextInput"
-            placeholder="Place the term here"
-            :id="`termTextInput${ind}`"
-          />
-          <span :class="card['form__lbl']">Term</span>
-        </div>
-        <div :class="card['form']">
-          <BaseTextArea
-            ref="definitionTextInput"
-            placeholder="Place the definition here"
-            :id="`definitionTextInput${ind}`"
-          />
-          <span :class="card['form__lbl']">Definition</span>
-        </div>
+      <div :class="card['form']">
+        <BaseTextArea
+          ref="definitionTextInput"
+          placeholder="Place the definition here"
+          :id="`definitionTextInput${order}`"
+        />
+        <span :class="card['form__lbl']">Definition</span>
       </div>
     </div>
   </div>
@@ -42,42 +37,32 @@ import TrashCanIcon from '@/components/icons/TrashCanIcon.vue';
 import BaseTextArea from '@/components/globals/forms/BaseTextArea.vue';
 
 // NPM
-import Sortable from 'sortablejs';
+import { DragHandle } from 'vue-slicksort';
 
 export default {
   components: {
     BentoIcon,
     TrashCanIcon,
-    BaseTextArea
+    BaseTextArea,
+    DragHandle
   },
   props: {
     modelValue: {
       type: Array,
       default: () => []
     },
-    parentClass: {
-      type: Object,
-      default: () => {}
+    order: {
+      type: [String, Number],
+      required: true
     }
   },
+
   data() {
     return {
       sort: null,
       list: this.modelValue,
       moduleName: 'card'
     };
-  },
-  mounted() {
-    this.sort = new Sortable(this.$refs.root, {
-      animation: 250,
-      handle: `.${this.card['control__drag-btn']}`,
-      ghostClass: this.card['sortable-ghost'],
-      chosenClass: this.card['sortable-chosen'],
-      dragClass: this.card['sortable-drag'],
-      onMove: (e) => {
-        console.log(e);
-      }
-    });
   }
 };
 </script>
@@ -93,6 +78,7 @@ export default {
 
 // prettier-ignore
 .card {
+  background-color: white;
   border-radius: 10px;
   position: relative;
   border: 2px solid map.get(text.$main, 100);
@@ -131,6 +117,12 @@ export default {
         outline: none;
         border-radius: 7px;
         padding: pixels.toRem(10);
+
+        svg{
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
       }
 
       &__delete-btn {
@@ -143,14 +135,8 @@ export default {
           background-color: map.get(safety.$danger, 100);
         }
 
-        svg {
-          display: block;
-          width: 100%;
-          height: 100%;
-
-          path {
-            fill: map.get(safety.$danger, 500);
-          }
+        svg path {
+          fill: map.get(safety.$danger, 500);
         }
       }
 
@@ -202,19 +188,6 @@ export default {
         display: flex;
       }
     }
-  }
-
-  /* Sortable JS */
-  &.sortable-ghost {
-    //box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);
-  }
-
-  &.sortable-chosen {
-
-  }
-
-  &.sortable-drag{
-    opacity: 1;
   }
 }
 </style>
