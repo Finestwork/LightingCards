@@ -81,6 +81,7 @@ export default {
       }
 
       this.useFlashCardStore.changeItems(this.flashCardItems);
+      this.$router.push({ name: 'CardPlayTest' });
     }
   },
   computed: {
