@@ -2,8 +2,17 @@
   <div class="test">
     <TheRequiredLoginAlert class="test__alert" />
 
-    <div class="test__flashcard-wrapper container--sm">
-      <BasePlainFlashCard class="test__flashcard" max-num="3" current-num="1" />
+    <div class="test__container container--sm">
+      <router-link class="test__go-back-link" :to="{ name: 'CardCreationTest' }"
+        >Go back to editing</router-link
+      >
+      <div class="test__flashcard-wrapper">
+        <BasePlainFlashCard
+          class="test__flashcard"
+          max-num="3"
+          current-num="1"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -25,6 +34,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:map';
+@use '../assets/scss/1-settings/css-properties/colors/main';
+@use '../assets/scss/1-settings/css-properties/colors/text';
 @use '../assets/scss/2-tools/mixins/css-properties/margin';
 @use '../assets/scss/2-tools/mixins/css-properties/padding';
 @use '../assets/scss/2-tools/mixins/css-properties/width-and-height';
@@ -37,13 +49,28 @@ export default {
   &__alert {
     border-radius: 0;
   }
+
+  &__container{
+    @include margin.top((
+        xsm: 50
+    ));
+  }
+
+  &__go-back-link{
+    font-weight: 700;
+    outline: none;
+    color: map.get(main.$secondary, 500);
+
+    &:hover,
+    &:focus{
+      color: map.get(main.$primary, 500);
+    }
+  }
+
   &__flashcard-wrapper{
     display: flex;
     align-items: center;
     min-height: calc(100vh - 7.5rem); // 50 margin top + 25 padding-bottom
-    @include margin.top((
-        xsm: 50
-    ));
   }
   &__flashcard{
     max-width: 750px;
