@@ -11,27 +11,6 @@
       <template #text>Create Card</template>
     </BasePlayfulButton>
 
-    <div :class="$style['card__forms']">
-      <BaseTextInput
-        :class="$style['settings__title']"
-        id="titleTxt"
-        label="Title:"
-        placeholder="Place flash card's title here"
-        type="text"
-        :validation-rules="{ required: true }"
-        v-model="titleTxt"
-      />
-      <BaseTextArea
-        :class="$style['settings__description']"
-        id="descriptionTxt"
-        label="Description:"
-        placeholder="What's your flashcard all about?"
-        :counter="5"
-        strict-mode
-        v-model="descriptionTxt"
-      />
-    </div>
-
     <div :class="$style['card__items']">
       <SlickList axis="y" :useDragHandle="true" v-model:list="flashCardItems">
         <SlickItem
@@ -49,8 +28,6 @@
 
 <script>
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
-import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
-import BaseTextArea from '@/components/globals/forms/BaseTextArea.vue';
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import PlusIcon from '@/components/icons/PlusIcon.vue';
 
@@ -60,8 +37,6 @@ import { SlickItem, SlickList } from 'vue-slicksort';
 export default {
   components: {
     BasePlayfulButton,
-    BaseTextInput,
-    BaseTextArea,
     BaseCardItem,
     PlusIcon,
     SlickList,
@@ -95,21 +70,6 @@ export default {
 .card {
   &__create-btn {
     margin-left: auto;
-  }
-  &__forms {
-    max-width: 450px;
-    .settings {
-      &__title{
-        @include margin.bottom((
-          xsm: 35
-        ));
-      }
-      &__description{
-        textarea{
-          height: 150px;
-        }
-      }
-    }
   }
   &__items{
     @include margin.top((
