@@ -143,7 +143,7 @@ export default {
       // Handle firebase authentication
       const handleResult = () => {
         const redirectToHomePage = () => {
-          // Redirect user to homepage
+          this.$router.push({ name: 'Landing' });
           this.isSubmitBtnLoading = false;
         };
         const handleErr = () => {

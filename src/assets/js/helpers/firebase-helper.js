@@ -1,5 +1,6 @@
 import {
   getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile
@@ -36,6 +37,23 @@ export default class FirebaseHelper {
    * Methods
    * =========
    */
+  static isUserLoggedIn() {
+    return getAuth().currentUser !== null;
+  }
+
+  static onAuthStateChanged({ signedInFn, signedOutFn }) {
+    onAuthStateChanged(getAuth(), (user) => {
+      // If user has signed in
+      if (user) {
+        signedInFn(user);
+        return;
+      }
+
+      // If user has signed out
+      signedOutFn(user);
+    });
+  }
+
   static loginUser(email, password) {
     return new Promise((resolve, reject) => {
       signInWithEmailAndPassword(getAuth(), email, password)
