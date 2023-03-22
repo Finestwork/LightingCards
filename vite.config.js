@@ -1,13 +1,14 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   css: {
-    modules: {
-      generateScopedName: '[hash:base64:8]'
+    postcss: {
+      plugins: [autoprefixer]
     }
   },
   plugins: [vue()],
@@ -16,4 +17,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   }
-})
+});
