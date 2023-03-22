@@ -1,6 +1,6 @@
 <template>
-  <div :class="$style['switch']">
-    <div :class="$style['switch__wrapper']">
+  <div class="switch">
+    <div class="switch__wrapper">
       <input
         ref="input"
         :id="id"
@@ -12,12 +12,12 @@
       />
       <button
         type="button"
-        :class="$style['switch__indicator']"
+        class="switch__indicator"
         @click="toggleInput"
       ></button>
       <label :for="id">{{ label }}</label>
     </div>
-    <p :class="$style['switch__helper-text']" v-if="shouldDisplayHelperText">
+    <p class="switch__helper-text" v-if="shouldDisplayHelperText">
       {{ helperText }}
     </p>
   </div>
@@ -80,7 +80,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../../../assets/scss/1-settings/css-properties/colors/main';

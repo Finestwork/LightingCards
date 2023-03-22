@@ -57,13 +57,13 @@ const router = createRouter({
 router.beforeResolve((to, from, next) => {
   // If this isn't an initial page load.
   if (to.name) {
+    NProgress.configure({ showSpinner: false });
     NProgress.start();
   }
 
   next();
 });
 router.afterEach(() => {
-  NProgress.configure({ showSpinner: false });
   NProgress.done();
 });
 export default router;

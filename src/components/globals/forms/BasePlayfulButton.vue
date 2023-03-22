@@ -1,25 +1,22 @@
 <template>
-  <button :class="getRootClass" :type="type" :disabled="isLoading">
+  <button class="playful-btn" :type="type" :disabled="isLoading">
     <!-- Main Content -->
-    <span :class="$style['btn__main-content']" v-if="!isLoading">
-      <span :class="$style['btn__leading-icon']" v-if="canDisplayLeadingIcon">
+    <span class="btn__main-content" v-if="!isLoading">
+      <span class="btn__leading-icon" v-if="canDisplayLeadingIcon">
         <slot name="leadingIcon"></slot>
       </span>
-      <span :class="$style['btn__text']" v-if="canDisplayText">
+      <span class="btn__text" v-if="canDisplayText">
         <slot name="text"></slot>
       </span>
-      <span :class="$style['btn__trailing-icon']" v-if="canDisplayTrailingIcon">
+      <span class="btn__trailing-icon" v-if="canDisplayTrailingIcon">
         <slot name="trailingIcon"></slot>
       </span>
     </span>
 
     <!-- Loader -->
-    <span :class="$style['btn__loader-content']" v-if="isLoading">
-      <span
-        :class="$style['loader__animation-wrapper']"
-        ref="lottieWrapper"
-      ></span>
-      <span :class="$style['loader__text']">{{ loaderText }}</span>
+    <span class="btn__loader-content" v-if="isLoading">
+      <span class="loader__animation-wrapper" ref="lottieWrapper"></span>
+      <span class="loader__text">{{ loaderText }}</span>
     </span>
   </button>
 </template>
@@ -71,9 +68,6 @@ export default {
     }
   },
   computed: {
-    getRootClass() {
-      return `${this.$style['playful-btn']}`;
-    },
     canDisplayLeadingIcon() {
       return !!this.$slots.leadingIcon;
     },
@@ -87,7 +81,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../../../assets/scss/1-settings/css-properties/colors/main';

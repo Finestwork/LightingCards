@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['text-area']">
+  <div class="text-area">
     <label :for="id">{{ label }}</label>
     <textarea
       ref="input"
@@ -12,7 +12,7 @@
       autocomplete="off"
       v-model="inputValue"
     ></textarea>
-    <span :class="$style['text-area__ctr']" v-if="hasCounter">
+    <span class="text-area__ctr" v-if="hasCounter">
       {{ getTextLength }} / {{ counter }}
     </span>
   </div>
@@ -122,7 +122,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/colors/main';
 @use '../../../assets/scss/1-settings/css-properties/colors/text';

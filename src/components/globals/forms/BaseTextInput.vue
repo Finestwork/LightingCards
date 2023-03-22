@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['text-input']">
+  <div class="text-input">
     <label :for="id">{{ label }}</label>
     <div :class="inputWrapperClass">
       <input
@@ -14,20 +14,14 @@
         @blur="onBlur"
         autocomplete="off"
       />
-      <span
-        :class="$style['text-input__leading-icon']"
-        v-if="canShowLeadingIcon"
-      >
+      <span class="text-input__leading-icon" v-if="canShowLeadingIcon">
         <slot name="leadingIcon"></slot>
       </span>
-      <span
-        :class="$style['text-input__trailing-icon']"
-        v-if="canShowTrailingIcon"
-      >
+      <span class="text-input__trailing-icon" v-if="canShowTrailingIcon">
         <slot name="trailingIcon"></slot>
       </span>
       <button
-        :class="$style['text-input__clear-btn']"
+        class="text-input__clear-btn"
         type="button"
         @click="clearField"
         v-if="canShowClearBtn"
@@ -41,7 +35,7 @@
 
 <script>
 import BaseErrorList from '@/components/globals/forms/BaseErrorList.vue';
-import XMarkIcon from '@/components/globals/icons/XMark.vue';
+import XMarkIcon from '@/components/icons/XMark.vue';
 import LanguageHelper from '@/assets/js/lang/en';
 import ArrayHelper from '@/assets/js/helpers/array-helper';
 
@@ -235,12 +229,10 @@ export default {
   },
   computed: {
     inputWrapperClass() {
-      let base = this.$style['text-input__wrapper'];
+      let base = 'text-input__wrapper';
 
-      if (this.canShowLeadingIcon)
-        base += ` ${this.$style['add-leading-icon']}`;
-      if (this.canShowTrailingIcon)
-        base += ` ${this.$style['add-trailing-icon']}`;
+      if (this.canShowLeadingIcon) base += ' add-leading-icon';
+      if (this.canShowTrailingIcon) base += ' add-trailing-icon';
 
       return base;
     },
@@ -279,7 +271,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/colors/main';
 @use '../../../assets/scss/1-settings/css-properties/colors/text';
