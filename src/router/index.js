@@ -69,6 +69,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.authLock) {
     FirebaseHelper.getCurrentUser().then((user) => {
       if (user) next({ name: 'Landing' });
+      else next();
     });
     return;
   }
