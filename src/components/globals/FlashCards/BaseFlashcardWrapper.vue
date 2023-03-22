@@ -43,8 +43,8 @@
 
 <script>
 import BaseFlashCardItem from '@/components/globals/FlashCards/BaseFlashCardItem.vue';
-import ArrowLeftLong from '@/components/globals/icons/ArrowLeftLong.vue';
-import ArrowRightLong from '@/components/globals/icons/ArrowRightLong.vue';
+import ArrowLeftLong from '@/components/icons/ArrowLeftLong.vue';
+import ArrowRightLong from '@/components/icons/ArrowRightLong.vue';
 
 export default {
   props: {
@@ -137,8 +137,8 @@ export default {
     }
   }
   &__back {
-    background: map.get(main.$primary, 500);
-    box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.16);
+    background: map.get(main.$primary, 900);
+    box-shadow: inset 0 -10px 0 rgba(map.get(main.$primary, 400), 0.16);
     :deep(.card__label) {
       color: white;
       border-bottom: 2px dashed white;

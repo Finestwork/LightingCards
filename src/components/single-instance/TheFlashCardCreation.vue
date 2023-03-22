@@ -1,8 +1,8 @@
 <template>
-  <div :class="$style['card']">
+  <div class="card">
     <BasePlayfulButton
       type="button"
-      :class="$style['card__create-btn']"
+      class="card__create-btn"
       @click="createCard"
     >
       <template #leadingIcon>
@@ -11,9 +11,9 @@
       <template #text>Create Card</template>
     </BasePlayfulButton>
 
-    <div :class="$style['card__items']">
+    <div class="card__items">
       <BaseSingleLineAlert
-        :class="$style['card__error-alert']"
+        class="card__error-alert"
         v-if="shouldDisplayErrorAlert"
       >
         <template #text>{{ errorAlertText }}</template>
@@ -23,11 +23,23 @@
           v-for="(list, ind) in flashCardItems"
           :key="list.id"
           :index="ind"
-          :class="$style['item']"
+          class="item"
         >
-          <BaseCardItem :order="ind + 1" v-model="flashCardItems[ind]" />
+          <BaseCardItem
+            :order="ind + 1"
+            :data-index="ind"
+            @on-card-delete="onCardDelete"
+            v-model="flashCardItems[ind]"
+          />
         </SlickItem>
       </SlickList>
+
+      <button type="button" class="card__add-btn" @click="addCard">
+        <span class="btn__leading-icon">
+          <PlusIcon />
+        </span>
+        <span class="btn__text">Add Cards</span>
+      </button>
     </div>
   </div>
 </template>
@@ -57,10 +69,7 @@ export default {
   data: () => ({
     isPublic: true,
     errorAlertText: '',
-    flashCardItems: [
-      { id: 'card1', term: '', definition: '' },
-      { id: 'card2', term: '', definition: '' }
-    ],
+    flashCardItems: useFlashCardStore().testItems,
     useFlashCardStore: useFlashCardStore()
   }),
   methods: {
@@ -81,6 +90,23 @@ export default {
 
       this.useFlashCardStore.changeTestItems(this.flashCardItems);
       this.$router.push({ name: 'CardPlayTest' });
+    },
+    addCard(e) {
+      e.currentTarget.blur(); // For bouncy effect
+
+      const CARD_LENGTH = this.flashCardItems.length;
+      this.flashCardItems.push({
+        id: `card${CARD_LENGTH + 1}`,
+        term: '',
+        definition: ''
+      });
+    },
+    onCardDelete(e) {
+      const BTN = e.currentTarget;
+      const PARENT = BTN.closest('.card');
+      const IND = PARENT.dataset.index;
+
+      this.flashCardItems.splice(parseInt(IND), 1);
     }
   },
   computed: {
@@ -91,9 +117,13 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
+@use 'sass:map';
+@use '../../assets/scss/1-settings/css-properties/colors/main';
+@use '../../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../../assets/scss/2-tools/mixins/css-properties/margin';
 @use '../../assets/scss/2-tools/mixins/css-properties/padding';
+@use '../../assets/scss/2-tools/mixins/css-properties/font-size';
 
 // prettier-ignore
 .card {
@@ -124,6 +154,61 @@ export default {
     @include margin.bottom((
       xsm: 50
     ));
+  }
+  &__add-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 450px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    transition: all .15s ease-in-out;
+    background-color: map.get(main.$primary, 100);
+    box-shadow: inset 0 -6px 0 rgba(map.get(main.$primary, 600),0.16);
+    @include margin.top((
+      xsm: 45
+    ));
+    @include padding.vertical((
+      xsm: 25
+    ));
+    &:focus,
+    &:hover{
+      background-color: darken(map.get(main.$primary, 100),  3%);
+    }
+    &:focus{
+      transform: translateY(4px);
+      box-shadow: inset 0 -2px 0 rgba(map.get(main.$primary, 600),0.16);
+    }
+    .btn{
+      &__leading-icon{
+        width: 15px;
+        height: 15px;
+        @include margin.right((
+          xsm: 15
+        ));
+        :deep(svg){
+          display: block;
+          width: 100%;
+          height: 100%;
+          path{
+            fill: map.get(main.$primary, 600);
+          }
+        }
+      }
+      &__text{
+        font-weight: 800;
+        color: map.get(main.$primary, 600);
+        @include font-size.responsive((
+          xsm: map.get(major-second.$scale, 4)
+        ));
+      }
+    }
   }
 }
 </style>

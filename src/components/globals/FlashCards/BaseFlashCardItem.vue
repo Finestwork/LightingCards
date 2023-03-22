@@ -114,6 +114,7 @@ export default {
     height: 100%;
     max-height: 150px;
     padding: pixels.toRem(3);
+    font-size: pixels.toRem(map.get(major-second.$scale, 6));
     color: map.get(text.$main, 700);
   }
 

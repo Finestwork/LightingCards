@@ -36,9 +36,11 @@ export default {
 @use 'sass:map';
 @use '../assets/scss/1-settings/css-properties/colors/main';
 @use '../assets/scss/1-settings/css-properties/colors/text';
+@use '../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../assets/scss/2-tools/mixins/css-properties/margin';
 @use '../assets/scss/2-tools/mixins/css-properties/padding';
 @use '../assets/scss/2-tools/mixins/css-properties/width-and-height';
+@use '../assets/scss/2-tools/mixins/css-properties/font-size';
 @use '../assets/scss/4-layouts/containers';
 
 // prettier-ignore
@@ -79,18 +81,23 @@ export default {
     @include padding.bottom((
       xsm: 25
     ));
-    :deep{
-      .flashcard__btn-controls{
-        @include margin.top((
-          md: 35
-        ));
-      }
 
-      .flashcard__wrapper{
-        @include width-and-height.set((
-            md: (minHeight: 350px)
-        ))
-      }
+    :deep(.flashcard__btn-controls){
+      @include margin.top((
+          md: 35
+      ));
+    }
+
+    :deep(.flashcard__wrapper){
+      @include width-and-height.set((
+          md: (minHeight: 350px)
+      ))
+    }
+
+    :deep(.card__text){
+      @include font-size.responsive((
+        md: map.get(major-second.$scale, 6)
+      ));
     }
   }
 

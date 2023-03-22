@@ -1,33 +1,33 @@
 <template>
-  <div :class="card.card">
-    <span :class="card['card__order-lbl']">{{ order }}</span>
-    <div :class="card['card__controls']">
-      <DragHandle tag="button" :class="card['control__drag-btn']">
+  <div class="card">
+    <span class="card__order-lbl">{{ order }}</span>
+    <div class="card__controls">
+      <DragHandle tag="button" class="control__drag-btn">
         <BentoIcon />
       </DragHandle>
 
-      <button type="button" :class="card['control__delete-btn']">
+      <button type="button" class="control__delete-btn" @click="onCardDelete">
         <TrashCanIcon />
       </button>
     </div>
-    <div :class="card['card__form-wrapper']">
-      <div :class="card['form']">
+    <div class="card__form-wrapper">
+      <div class="form">
         <BaseTextArea
           ref="termTextInput"
           placeholder="Place the term here"
           :id="`termTextInput${order}`"
           v-model="cardObj.term"
         />
-        <span :class="card['form__lbl']">Term</span>
+        <span class="form__lbl">Term</span>
       </div>
-      <div :class="card['form']">
+      <div class="form">
         <BaseTextArea
           ref="definitionTextInput"
           placeholder="Place the definition here"
           :id="`definitionTextInput${order}`"
           v-model="cardObj.definition"
         />
-        <span :class="card['form__lbl']">Definition</span>
+        <span class="form__lbl">Definition</span>
       </div>
     </div>
   </div>
@@ -64,10 +64,16 @@ export default {
       list: this.modelValue,
       cardObj: this.modelValue
     };
+  },
+  emits: ['onCardDelete'],
+  methods: {
+    onCardDelete(e) {
+      this.$emit('onCardDelete', e);
+    }
   }
 };
 </script>
-<style lang="scss" module="card">
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/colors/text';
 @use '../../../assets/scss/1-settings/css-properties/colors/main';
@@ -136,7 +142,7 @@ export default {
           background-color: map.get(safety.$danger, 100);
         }
 
-        svg path {
+        :deep(svg path) {
           fill: map.get(safety.$danger, 500);
         }
       }
