@@ -1,4 +1,9 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile
+} from 'firebase/auth';
 
 export default class FirebaseHelper {
   static #ERRORS = {
@@ -37,6 +42,22 @@ export default class FirebaseHelper {
         .then((res) => {
           resolve(res);
         })
+        .catch((err) => reject(err));
+    });
+  }
+
+  static registerUser(email, password) {
+    return new Promise((resolve, reject) => {
+      createUserWithEmailAndPassword(getAuth(), email, password)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    });
+  }
+
+  static updateDisplayName({ displayName, photoURL }) {
+    return new Promise((resolve, reject) => {
+      updateProfile(getAuth().currentUser, { displayName, photoURL })
+        .then((res) => resolve(res))
         .catch((err) => reject(err));
     });
   }

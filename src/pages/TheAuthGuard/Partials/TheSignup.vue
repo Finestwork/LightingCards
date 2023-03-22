@@ -76,6 +76,7 @@ import BaseList from '@/components/globals/alerts/BaseList.vue';
 
 // Helpers
 import FormValidationHelper from '@/assets/js/helpers/form-validation-helper';
+import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 
 export default {
   components: {
@@ -138,6 +139,38 @@ export default {
         this.$emit('registerFailed');
         return;
       }
+
+      // Handle firebase authentication
+      const handleResult = () => {
+        const redirectToHomePage = () => {
+          // Redirect user to homepage
+          this.isSubmitBtnLoading = false;
+        };
+        const handleErr = () => {
+          // If user can't update display name, they can do it on profile settings
+          // Still redirect user to homepage
+          this.isSubmitBtnLoading = false;
+        };
+
+        FirebaseHelper.updateDisplayName({ displayName: this.username })
+          .then(redirectToHomePage)
+          .catch(handleErr);
+      };
+      const handleErr = (err) => {
+        if (!err.code) {
+          this.errorList.push(
+            "• Can't create an account, please try again later."
+          );
+          return;
+        }
+
+        const GOOGLE_ERROR = FirebaseHelper.getErrors[err.code];
+        this.errorList.push(`• ${GOOGLE_ERROR}`);
+        this.isSubmitBtnLoading = false;
+      };
+      FirebaseHelper.registerUser(this.email, this.password)
+        .then(handleResult)
+        .catch(handleErr);
     }
   },
   computed: {
