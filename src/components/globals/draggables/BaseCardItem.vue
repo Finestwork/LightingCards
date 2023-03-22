@@ -25,7 +25,7 @@
           ref="definitionTextInput"
           placeholder="Place the definition here"
           :id="`definitionTextInput${order}`"
-          v-model="cardObj.description"
+          v-model="cardObj.definition"
         />
         <span :class="card['form__lbl']">Definition</span>
       </div>

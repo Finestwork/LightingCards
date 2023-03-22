@@ -3,31 +3,28 @@
     <div class="flashcard__wrapper" ref="flashcardWrapper">
       <BaseFlashCardItem
         class="flashcard__front"
-        label="Term"
-        text="Sino ang pumatay kay lapu-lapu?"
-        :current="1"
-        :max="10"
+        label="Definition"
+        :text="getItem.definition"
+        :current="currentInd + 1"
+        :max="items.length"
       />
       <BaseFlashCardItem
         class="flashcard__back"
-        label="Definition"
-        text="Edi tipaklongEdi tipaklongEdi tipaklongEdi tipaklongEdi tipaklongEdi
-          tipaklongEdi tipaklongEdi tipaklongEdi tipaklongEdi tipaklongEdi
-          tipaklongEdi tipaklongEdi tipaklongEdi tipaklongEdi tipaklongEdi
-          tipaklongEdi tipaklongEdi tipaklongEdi tipaklong"
-        :current="1"
-        :max="10"
+        label="Term"
+        :text="getItem.term"
+        :current="currentInd + 1"
+        :max="items.length"
       />
     </div>
 
     <div class="flashcard__btn-controls">
-      <button type="button" class="btn__prev-btn">
+      <button type="button" class="btn__prev-btn" @click="prevItem">
         <ArrowLeftLong />
       </button>
-      <button type="button" @click="toggleAnswer" class="btn__reveal-btn">
+      <button type="button" class="btn__reveal-btn" @click="toggleAnswer">
         Reveal Answer
       </button>
-      <button type="button" class="btn__next-btn">
+      <button type="button" class="btn__next-btn" @click="nextItem">
         <ArrowRightLong />
       </button>
     </div>
@@ -40,6 +37,16 @@ import ArrowLeftLong from '@/components/globals/icons/ArrowLeftLong.vue';
 import ArrowRightLong from '@/components/globals/icons/ArrowRightLong.vue';
 
 export default {
+  props: {
+    items: {
+      type: Array,
+      required: true
+    }
+  },
+  data: () => ({
+    currentInd: 0,
+    shouldShowAnswer: false
+  }),
   components: {
     BaseFlashCardItem,
     ArrowLeftLong,
@@ -48,7 +55,36 @@ export default {
   methods: {
     toggleAnswer(e) {
       e.currentTarget.blur();
-      this.$refs.flashcardWrapper.classList.toggle('flipped');
+      this.shouldShowAnswer = !this.shouldShowAnswer;
+    },
+    nextItem(e) {
+      e.currentTarget.blur();
+      if (this.currentInd < this.items.length - 1) {
+        this.shouldShowAnswer = false;
+        this.currentInd++;
+      }
+    },
+    prevItem(e) {
+      e.currentTarget.blur();
+      if (this.currentInd > 0) {
+        this.shouldShowAnswer = false;
+        this.currentInd--;
+      }
+    }
+  },
+  computed: {
+    getItem() {
+      return this.items[this.currentInd];
+    }
+  },
+  watch: {
+    shouldShowAnswer(shouldShowAnswer) {
+      if (shouldShowAnswer) {
+        this.$refs.flashcardWrapper.classList.add('flipped');
+        return;
+      }
+
+      this.$refs.flashcardWrapper.classList.remove('flipped');
     }
   }
 };

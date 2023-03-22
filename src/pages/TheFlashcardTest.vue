@@ -9,8 +9,7 @@
       <div class="test__flashcard-wrapper">
         <BasePlainFlashCard
           class="test__flashcard"
-          max-num="3"
-          current-num="1"
+          :items="useFlashCardStore.testItems"
         />
       </div>
     </div>

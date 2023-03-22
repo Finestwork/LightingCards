@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useFlashCardStore } from '@/stores/flashcard';
 
 const ROUTES = [
   {
@@ -19,12 +20,32 @@ const ROUTES = [
   {
     path: '/test/create-card',
     name: 'CardCreationTest',
-    component: () => import('@/pages/TheCardCreationTest.vue')
+    component: () => import('@/pages/TheCardCreationTest.vue'),
+    beforeEnter(to, from, next) {
+      /*
+       * TODO:
+       *  If user is logged in do not access this page
+       */
+      next();
+    }
   },
   {
     path: '/test/play',
     name: 'CardPlayTest',
-    component: () => import('@/pages/TheFlashcardTest.vue')
+    component: () => import('@/pages/TheFlashcardTest.vue'),
+    beforeEnter(to, from, next) {
+      /*
+       * TODO:
+       *  If user is logged in do not access this page
+       */
+      const STORE = useFlashCardStore();
+
+      if (!STORE.hasTestItems) {
+        next({ name: 'CardCreationTest' });
+        return;
+      }
+      next();
+    }
   }
 ];
 const router = createRouter({

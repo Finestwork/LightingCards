@@ -58,9 +58,8 @@ export default {
     isPublic: true,
     errorAlertText: '',
     flashCardItems: [
-      { id: 'card1', term: '', description: '' },
-      { id: 'card2', term: '', description: '' },
-      { id: 'card3', term: '', description: '' }
+      { id: 'card1', term: '', definition: '' },
+      { id: 'card2', term: '', definition: '' }
     ],
     useFlashCardStore: useFlashCardStore()
   }),
@@ -70,7 +69,7 @@ export default {
       this.errorAlertText = '';
 
       if (!FlashcardHelper.isArrayLengthValid(this.flashCardItems)) {
-        this.errorAlertText = '• Flash cards should not be less than 3.';
+        this.errorAlertText = '• Flash cards should not be less than 2.';
         return;
       }
 
@@ -80,7 +79,7 @@ export default {
         return;
       }
 
-      this.useFlashCardStore.changeItems(this.flashCardItems);
+      this.useFlashCardStore.changeTestItems(this.flashCardItems);
       this.$router.push({ name: 'CardPlayTest' });
     }
   },
