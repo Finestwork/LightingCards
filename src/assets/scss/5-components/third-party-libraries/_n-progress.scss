@@ -1,6 +1,5 @@
 @use 'sass:map';
 @use '../../1-settings/css-properties/colors/main';
-@import '../node_modules/nprogress/nprogress.css';
 
 #nprogress .bar{
   background: map.get(main.$primary, 600);

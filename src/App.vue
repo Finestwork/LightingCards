@@ -4,6 +4,9 @@
   </main>
 </template>
 
+<script>
+import 'nprogress/nprogress.css';
+</script>
 <style lang="scss">
 @use 'src/assets/scss/3-elements/wildcard.scss';
 @use 'src/assets/scss/3-elements/html.scss';

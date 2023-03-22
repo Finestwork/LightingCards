@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useFlashCardStore } from '@/stores/flashcard';
 import NProgress from 'nprogress';
-
 const ROUTES = [
   {
     path: '/',
