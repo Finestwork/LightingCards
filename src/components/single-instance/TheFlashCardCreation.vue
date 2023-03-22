@@ -3,6 +3,7 @@
     <BasePlayfulButton
       type="button"
       class="card__create-btn"
+      :is-loading="isCreateCardLoading"
       @click="createCard"
     >
       <template #leadingIcon>
@@ -69,20 +70,25 @@ export default {
   data: () => ({
     isPublic: true,
     errorAlertText: '',
+    isCreateCardLoading: false,
     flashCardItems: useFlashCardStore().testItems,
     useFlashCardStore: useFlashCardStore()
   }),
   methods: {
     createCard(e) {
-      e.currentTarget.blur();
+      this.isCreateCardLoading = true;
       this.errorAlertText = '';
 
       if (!FlashcardHelper.isArrayLengthValid(this.flashCardItems)) {
+        this.isCreateCardLoading = false;
+        e.currentTarget.blur();
         this.errorAlertText = '• Flash cards should not be less than 2.';
         return;
       }
 
       if (!FlashcardHelper.areAllItemsValid(this.flashCardItems)) {
+        this.isCreateCardLoading = false;
+        e.currentTarget.blur();
         this.errorAlertText =
           '• There are items that are left blank, please check it.';
         return;
