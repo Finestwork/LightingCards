@@ -21,8 +21,8 @@
       <button
         type="button"
         class="btn__prev-btn"
+        :disabled="shouldDisplayPrevBtn"
         @click="prevItem"
-        v-if="shouldDisplayPrevBtn"
       >
         <ArrowLeftLong />
       </button>
@@ -32,8 +32,8 @@
       <button
         type="button"
         class="btn__next-btn"
+        :disabled="shouldDisplayNextBtn"
         @click="nextItem"
-        v-if="shouldDisplayNextBtn"
       >
         <ArrowRightLong />
       </button>
@@ -87,10 +87,10 @@ export default {
       return this.items[this.currentInd];
     },
     shouldDisplayPrevBtn() {
-      return this.currentInd !== 0;
+      return this.currentInd === 0;
     },
     shouldDisplayNextBtn() {
-      return this.currentInd !== this.items.length - 1;
+      return this.currentInd === this.items.length - 1;
     }
   },
   watch: {
@@ -205,6 +205,15 @@ export default {
       &:focus {
         transform: translateY(3px);
         box-shadow: inset 0 -2px 0 rgba(map.get(main.$primary, 600), 0.2);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        box-shadow: inset 0 -5px 0 rgba(map.get(main.$primary, 200), 0.2);
+        background-color: lighten(map.get(main.$primary, 100), 3%);
+        :deep(svg path) {
+          fill: map.get(main.$primary, 300);
+        }
       }
 
       :deep(svg) {
