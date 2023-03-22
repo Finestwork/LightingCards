@@ -28,20 +28,22 @@
 
     <BaseTextInput
       class="signup__password"
-      type="text"
+      type="password"
       placeholder="Place your password here"
       id="signupPasswordTxt"
       label="Password:"
+      toggle-password
       :validation-rules="{ required: true, min: 6 }"
       v-model="password"
     />
 
     <BaseTextInput
       class="signup__confirm-password"
-      type="text"
+      type="password"
       placeholder="Confirm your password here"
       id="signupConfirmPasswordTxt"
       label="Confirm Password:"
+      toggle-password
       :validation-rules="{
         required: true,
         min: 6

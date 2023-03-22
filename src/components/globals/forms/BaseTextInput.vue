@@ -5,7 +5,7 @@
       <input
         ref="input"
         :placeholder="placeholder"
-        :type="type"
+        :type="this.shouldTogglePassword ? 'text' : type"
         :id="id"
         :value="modelValue"
         @input="onInput"
@@ -28,6 +28,15 @@
       >
         <XMarkIcon />
       </button>
+      <button
+        class="text-input__toggle-btn"
+        type="button"
+        @click="shouldTogglePassword = !shouldTogglePassword"
+        v-if="togglePassword"
+      >
+        <Eye v-if="shouldTogglePassword" />
+        <EyeSlash v-if="!shouldTogglePassword" />
+      </button>
     </div>
     <BaseErrorList :errors="errors" />
   </div>
@@ -36,6 +45,10 @@
 <script>
 import BaseErrorList from '@/components/globals/forms/BaseErrorList.vue';
 import XMarkIcon from '@/components/icons/XMark.vue';
+import Eye from '@/components/icons/EyeIcon.vue';
+import EyeSlash from '@/components/icons/EyeSlash.vue';
+
+// Helpers
 import LanguageHelper from '@/assets/js/lang/en';
 import ArrayHelper from '@/assets/js/helpers/array-helper';
 
@@ -44,7 +57,7 @@ import isEmpty from 'validator/es/lib/isEmpty';
 import isEmail from 'validator/es/lib/isEmail';
 
 export default {
-  components: { BaseErrorList, XMarkIcon },
+  components: { BaseErrorList, XMarkIcon, Eye, EyeSlash },
   props: {
     modelValue: {
       type: String,
@@ -66,15 +79,24 @@ export default {
       type: String,
       default: ''
     },
-    clearable: {
-      type: Boolean,
-      default: false
-    },
     clearErrors: {
       type: Boolean
     },
     clearForm: {
-      type: Boolean
+      type: Boolean,
+      required: false
+    },
+
+    // Show clear button
+    clearable: {
+      type: Boolean,
+      default: false
+    },
+
+    // Show toggle button password/text
+    togglePassword: {
+      type: Boolean,
+      default: false
     },
 
     // Programmatically run the validation functions
@@ -101,7 +123,8 @@ export default {
     return {
       errors: [],
       validationFns: [],
-      sameWithElement: null
+      sameWithElement: null,
+      shouldTogglePassword: false
     };
   },
   emits: ['update:modelValue', 'onKeyup', 'onKeydown', 'onBlur'],
@@ -254,7 +277,7 @@ export default {
       return false;
     },
     canShowClearBtn() {
-      return this.modelValue !== '' && this.clearable;
+      return this.modelValue !== '' && !this.togglePassword && this.clearable;
     }
   },
   watch: {
@@ -348,6 +371,7 @@ $default-padding: 10;
     margin-bottom: pixels.toRem(5);
   }
 
+  &__toggle-btn,
   &__clear-btn {
     position: absolute;
     top: 50%;
