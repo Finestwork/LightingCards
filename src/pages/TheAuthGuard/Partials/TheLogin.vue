@@ -19,7 +19,12 @@
       v-model="passwordTxt"
     />
 
-    <BasePlayfulButton type="button" :class="$style['login__submit']">
+    <BasePlayfulButton
+      type="button"
+      :class="$style['login__submit']"
+      :is-loading="isSubmitBtnLoading"
+      @click="loginUser"
+    >
       <template #text>Submit</template>
     </BasePlayfulButton>
 
@@ -36,23 +41,59 @@
 import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
 
+// Helpers
+import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
+
+// NPM
+import isEmail from 'validator/es/lib/isEmail';
+
 export default {
   components: {
     BaseTextInput,
     BasePlayfulButton
   },
   data: () => ({
+    errorAlertTxt: '',
     emailTxt: '',
-    passwordTxt: ''
+    passwordTxt: '',
+    isSubmitBtnLoading: false
   }),
-  emits: ['mounted', 'unmounted'],
+  emits: ['mounted'],
   mounted() {
     // Since this is an async component, parent needs to know if component is mounted
     this.$emit('mounted');
   },
-  unmounted() {
-    // Since this is an async component, parent needs to know if component is unmounted
-    this.$emit('mounted');
+  methods: {
+    loginUser(e) {
+      this.isSubmitBtnLoading = true;
+      this.errorAlertTxt = '';
+      const validationFn = (text) => {
+        this.errorAlertTxt = text;
+        this.isSubmitBtnLoading = false;
+        e.currentTarget.blur();
+      };
+
+      if (!isEmail(this.emailTxt)) {
+        validationFn('Email is not valid.');
+        return;
+      }
+      if (this.passwordTxt.trim() < 6) {
+        validationFn('Password should be greater than 5.');
+        return;
+      }
+
+      const handleResult = (res) => {
+        console.log(res);
+      };
+      const handleError = (err) => {
+        if (!err.code) return;
+
+        const GOOGLE_ERROR = FirebaseHelper.getErrors[err.code];
+      };
+      FirebaseHelper.loginUser(this.emailTxt, this.passwordTxt)
+        .then(handleResult)
+        .catch(handleError);
+    }
   }
 };
 </script>

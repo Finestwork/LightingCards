@@ -14,13 +14,11 @@
         >
           <TheLogin
             ref="login"
-            @unmounted="onLoginUnmounted"
             @mounted="onLoginMounted"
             v-if="shouldShowLogin"
           />
           <TheSignup
             ref="signup"
-            @unmounted="onSignupUnmounted"
             @mounted="onSignupMounted"
             v-else-if="shouldShowSignup"
           />
@@ -73,13 +71,6 @@ export default {
     },
     onSignupMounted() {
       this.onPageFirstLoad();
-    },
-
-    onLoginUnmounted() {
-      //
-    },
-    onSignupUnmounted() {
-      //
     },
 
     /*
