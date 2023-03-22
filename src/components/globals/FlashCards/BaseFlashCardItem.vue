@@ -69,7 +69,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: white;
-  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.06);
   padding: pixels.toRem(15);
   position: absolute;
   top: 0;
@@ -101,19 +100,17 @@ export default {
 
   &__scrollbar {
     width: 100%;
-    :deep {
-      .os-scrollbar-track {
-        background-color: map.get(text.$main, 100);
-      }
-      .os-scrollbar-handle {
-        background-color: map.get(text.$main, 300);
-      }
+    :deep(.os-scrollbar-track) {
+      background-color: map.get(text.$main, 100);
+    }
+    :deep(.os-scrollbar-handle) {
+      background-color: map.get(text.$main, 300);
     }
   }
 
   &__text {
     text-align: center;
-    font-weight: 700;
+    font-weight: 900;
     height: 100%;
     max-height: 150px;
     padding: pixels.toRem(3);

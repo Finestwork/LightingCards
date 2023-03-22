@@ -70,6 +70,9 @@ export default {
     display: flex;
     align-items: center;
     min-height: calc(100vh - 7.5rem); // 50 margin top + 25 padding-bottom
+    @include margin.top((
+      xsm: 25
+    ))
   }
   &__flashcard{
     max-width: 750px;

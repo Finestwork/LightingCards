@@ -129,6 +129,28 @@ export default {
     backface-visibility: hidden;
   }
 
+  &__front {
+    background: map.get(main.$primary, 100);
+    box-shadow: inset 0 -10px 0 rgba(map.get(main.$primary, 400), 0.16);
+    :deep(.card__label) {
+      color: map.get(text.$main, 900);
+    }
+  }
+  &__back {
+    background: map.get(main.$primary, 500);
+    box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.16);
+    :deep(.card__label) {
+      color: white;
+      border-bottom: 2px dashed white;
+    }
+    :deep(.card__counter) {
+      display: none;
+    }
+    :deep(.card__text) {
+      color: white;
+    }
+  }
+
   &__back {
     transform: rotateY(180deg);
   }
@@ -185,13 +207,11 @@ export default {
         box-shadow: inset 0 -2px 0 rgba(map.get(main.$primary, 600), 0.2);
       }
 
-      :deep {
-        svg {
-          display: block;
-          width: 50%;
-          path {
-            fill: map.get(main.$primary, 500);
-          }
+      :deep(svg) {
+        display: block;
+        width: 50%;
+        path {
+          fill: map.get(main.$primary, 500);
         }
       }
     }
