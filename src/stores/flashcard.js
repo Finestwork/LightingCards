@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 
 const useFlashCardStore = defineStore('flashcard', {
   state: () => ({
@@ -15,7 +16,7 @@ const useFlashCardStore = defineStore('flashcard', {
   },
   getters: {
     hasTestItems(state) {
-      return state.testItems.length !== 0;
+      return FlashcardHelper.areAllItemsValid(state.testItems);
     }
   }
 });
