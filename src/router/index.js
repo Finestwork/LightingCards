@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useFlashCardStore } from '@/stores/flashcard';
 import NProgress from 'nprogress';
+
 const ROUTES = [
   {
     path: '/',
@@ -54,14 +55,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // If this isn't an initial page load.
+  // If not the first load, display loader
   if (to.name) {
     NProgress.configure({ showSpinner: false });
     NProgress.start();
   }
-
   next();
 });
+
 router.afterEach(() => {
   NProgress.done();
 });

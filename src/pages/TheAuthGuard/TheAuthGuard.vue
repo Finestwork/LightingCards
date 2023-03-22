@@ -58,11 +58,14 @@ export default {
     formLoaderAnimId: null
   }),
   mounted() {
-    NProgress.configure({ showSpinner: false });
-    NProgress.start();
-    Object.assign(this.$refs.root.style, {
-      display: 'none'
-    });
+    // If one of the components are not yet downloaded, start the loading state
+    if (this.$refs.signup === undefined && this.$refs.login === undefined) {
+      NProgress.configure({ showSpinner: false });
+      NProgress.start();
+      Object.assign(this.$refs.root.style, {
+        display: 'none'
+      });
+    }
   },
   methods: {
     onLoginMounted() {
