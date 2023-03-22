@@ -47,8 +47,12 @@ export default {
   components: {
     BasePatternBackground,
     BaseGradientLogo,
-    TheLogin: defineAsyncComponent(() => import('./Partials/TheLogin.vue')),
-    TheSignup: defineAsyncComponent(() => import('./Partials/TheSignup.vue'))
+    TheLogin: defineAsyncComponent(() =>
+      import('@/components/single-instance/TheLogin.vue')
+    ),
+    TheSignup: defineAsyncComponent(() =>
+      import('@/components/single-instance/TheSignup.vue')
+    )
   },
   data: () => ({
     canRootBeHidden: true,
@@ -187,11 +191,11 @@ export default {
   computed: {
     shouldShowLogin() {
       const ROUTE = this.$route.name;
-      return ROUTE === 'AuthGuardLogin';
+      return ROUTE === 'Login';
     },
     shouldShowSignup() {
       const ROUTE = this.$route.name;
-      return ROUTE === 'AuthGuardSignup';
+      return ROUTE === 'Signup';
     }
   },
   watch: {
@@ -222,9 +226,9 @@ export default {
 
 <style lang="scss" module>
 @use 'sass:map';
-@use '../../assets/scss/1-settings/css-properties/colors/text';
-@use '../../assets/scss/2-tools/mixins/css-properties/padding';
-@use '../../assets/scss/2-tools/mixins/css-properties/margin';
+@use '../assets/scss/1-settings/css-properties/colors/text';
+@use '../assets/scss/2-tools/mixins/css-properties/padding';
+@use '../assets/scss/2-tools/mixins/css-properties/margin';
 
 // prettier-ignore
 .auth {

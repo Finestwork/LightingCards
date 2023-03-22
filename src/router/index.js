@@ -10,18 +10,18 @@ const ROUTES = [
   },
   {
     path: '/login',
-    name: 'AuthGuardLogin',
-    component: () => import('@/pages/TheAuthGuard/TheAuthGuard.vue')
+    name: 'Login',
+    component: () => import('@/pages/TheAuthentication.vue')
   },
   {
     path: '/signup',
-    name: 'AuthGuardSignup',
-    component: () => import('@/pages/TheAuthGuard/TheAuthGuard.vue')
+    name: 'Signup',
+    component: () => import('@/pages/TheAuthentication.vue')
   },
   {
     path: '/test/create-card',
     name: 'CardCreationTest',
-    component: () => import('@/pages/TheCardCreationTest.vue'),
+    component: () => import('@/pages/PageTest/TheCardCreationTest.vue'),
     beforeEnter(to, from, next) {
       /*
        * TODO:
@@ -33,7 +33,7 @@ const ROUTES = [
   {
     path: '/test/play',
     name: 'CardPlayTest',
-    component: () => import('@/pages/TheFlashcardTest.vue'),
+    component: () => import('@/pages/PageTest/TheFlashcardTest.vue'),
     beforeEnter(to, from, next) {
       /*
        * TODO:

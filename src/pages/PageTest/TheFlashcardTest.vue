@@ -34,14 +34,14 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:map';
-@use '../assets/scss/1-settings/css-properties/colors/main';
-@use '../assets/scss/1-settings/css-properties/colors/text';
-@use '../assets/scss/1-settings/css-properties/font-size/major-second';
-@use '../assets/scss/2-tools/mixins/css-properties/margin';
-@use '../assets/scss/2-tools/mixins/css-properties/padding';
-@use '../assets/scss/2-tools/mixins/css-properties/width-and-height';
-@use '../assets/scss/2-tools/mixins/css-properties/font-size';
-@use '../assets/scss/4-layouts/containers';
+@use '../../assets/scss/1-settings/css-properties/colors/main';
+@use '../../assets/scss/1-settings/css-properties/colors/text';
+@use '../../assets/scss/1-settings/css-properties/font-size/major-second';
+@use '../../assets/scss/2-tools/mixins/css-properties/margin';
+@use '../../assets/scss/2-tools/mixins/css-properties/padding';
+@use '../../assets/scss/2-tools/mixins/css-properties/width-and-height';
+@use '../../assets/scss/2-tools/mixins/css-properties/font-size';
+@use '../../assets/scss/4-layouts/containers';
 
 // prettier-ignore
 .test {
