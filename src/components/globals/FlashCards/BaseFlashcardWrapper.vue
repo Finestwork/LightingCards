@@ -18,13 +18,23 @@
     </div>
 
     <div class="flashcard__btn-controls">
-      <button type="button" class="btn__prev-btn" @click="prevItem">
+      <button
+        type="button"
+        class="btn__prev-btn"
+        @click="prevItem"
+        v-if="shouldDisplayPrevBtn"
+      >
         <ArrowLeftLong />
       </button>
       <button type="button" class="btn__reveal-btn" @click="toggleAnswer">
         Reveal Answer
       </button>
-      <button type="button" class="btn__next-btn" @click="nextItem">
+      <button
+        type="button"
+        class="btn__next-btn"
+        @click="nextItem"
+        v-if="shouldDisplayNextBtn"
+      >
         <ArrowRightLong />
       </button>
     </div>
@@ -75,6 +85,12 @@ export default {
   computed: {
     getItem() {
       return this.items[this.currentInd];
+    },
+    shouldDisplayPrevBtn() {
+      return this.currentInd !== 0;
+    },
+    shouldDisplayNextBtn() {
+      return this.currentInd !== this.items.length - 1;
     }
   },
   watch: {
