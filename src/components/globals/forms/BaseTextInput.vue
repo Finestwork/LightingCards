@@ -265,6 +265,8 @@ export default {
 
       if (this.canShowLeadingIcon) base += ' add-leading-icon';
       if (this.canShowTrailingIcon) base += ' add-trailing-icon';
+      if (this.togglePassword) base += ' add-toggle-password';
+      if (this.clearable) base += ' add-clearable';
 
       return base;
     },
@@ -356,9 +358,11 @@ $default-padding: 10;
       }
     }
 
+    &.add-clearable,
+    &.add-toggle-password,
     &.add-trailing-icon {
       @include text-input-fields.list {
-        padding-right: pixels.toRem($icon-size + $icon-offset + 5);
+        padding-right: pixels.toRem($icon-size + $icon-offset + 15);
       }
     }
   }
