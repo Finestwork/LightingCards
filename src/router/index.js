@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useFlashCardStore } from '@/stores/flashcard';
+import NProgress from 'nprogress';
 
 const ROUTES = [
   {
@@ -53,4 +54,16 @@ const router = createRouter({
   routes: ROUTES
 });
 
+router.beforeResolve((to, from, next) => {
+  // If this isn't an initial page load.
+  if (to.name) {
+    NProgress.start();
+  }
+
+  next();
+});
+router.afterEach(() => {
+  NProgress.configure({ showSpinner: false });
+  NProgress.done();
+});
 export default router;
