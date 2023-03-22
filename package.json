@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "animejs": "^3.2.1",
+    "firebase": "^9.18.0",
     "nprogress": "^0.2.0",
     "overlayscrollbars-vue": "^0.5.1",
     "pinia": "^2.0.32",
