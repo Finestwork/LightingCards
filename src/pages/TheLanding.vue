@@ -1,11 +1,14 @@
 <template>
-  <TheUserHome v-if="shouldDisplayUserHome" />
-  <TheLanding v-if="shouldDisplayLanding" />
+  <TheUserHome @on-mounted="onComponentMounted" v-if="shouldDisplayUserHome" />
+  <TheLanding @on-mounted="onComponentMounted" v-if="shouldDisplayLanding" />
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
+
+// NPM
+import { defineAsyncComponent } from 'vue';
+import NProgress from 'nprogress';
 
 export default {
   components: {
@@ -21,6 +24,8 @@ export default {
     currentState: 'loading'
   }),
   mounted() {
+    NProgress.configure({ showSpinner: false });
+    NProgress.start();
     const callbackFn = {
       signedInFn: () => {
         this.currentState = 'user';
@@ -30,6 +35,11 @@ export default {
       }
     };
     FirebaseHelper.onAuthStateChanged(callbackFn);
+  },
+  methods: {
+    onComponentMounted() {
+      NProgress.done();
+    }
   },
   computed: {
     shouldDisplayUserHome() {

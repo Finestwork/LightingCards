@@ -47,6 +47,10 @@ export default {
   components: {
     BasePatternBackground,
     BasePlayfulLink
+  },
+  emits: ['onMounted'],
+  mounted() {
+    this.$emit('onMounted');
   }
 };
 </script>
