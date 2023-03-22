@@ -20,6 +20,7 @@
           <TheSignup
             ref="signup"
             @mounted="onSignupMounted"
+            @register-failed="onFailedRegister"
             v-else-if="shouldShowSignup"
           />
         </Transition>
@@ -71,6 +72,18 @@ export default {
     },
     onSignupMounted() {
       this.onPageFirstLoad();
+    },
+    // Alerts will be display so height needs to be recalculated
+    onFailedRegister() {
+      const PARENT = this.$refs.signup.$el.parentElement;
+      setTimeout(() => {
+        const SCROLL_HEIGHT =
+          this.$refs.signup.$el.getBoundingClientRect().height;
+
+        Object.assign(PARENT.style, {
+          height: `${SCROLL_HEIGHT}px`
+        });
+      }, 150);
     },
 
     /*

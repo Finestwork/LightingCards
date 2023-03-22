@@ -25,7 +25,7 @@ export default {
 
 .error-list {
   list-style: none;
-  font-weight: 500;
+  font-weight: 600;
   margin-top: pixels.toRem(8);
   font-size: pixels.toRem(map.get(major-second.$scale, 2));
   color: map.get(safety.$danger, 500);

@@ -1,7 +1,13 @@
 <template>
-  <form :class="$style['signup']">
+  <form class="signup" @submit.prevent="registerUser">
+    <BaseList
+      class="signup__error-alert"
+      :items="errorList"
+      v-if="shouldDisplayErrorAlert"
+    />
+
     <BaseTextInput
-      :class="$style['signup__username']"
+      class="signup__username"
       type="text"
       placeholder="Place your username here"
       id="signupUsernameTxt"
@@ -11,17 +17,17 @@
     />
 
     <BaseTextInput
-      :class="$style['signup__email']"
+      class="signup__email"
       type="email"
       placeholder="Place your email here"
       id="signupEmailTxt"
       label="Email:"
-      :validation-rules="{ required: true, min: 4 }"
+      :validation-rules="{ required: true, isEmail: true }"
       v-model="email"
     />
 
     <BaseTextInput
-      :class="$style['signup__password']"
+      class="signup__password"
       type="text"
       placeholder="Place your password here"
       id="signupPasswordTxt"
@@ -31,28 +37,32 @@
     />
 
     <BaseTextInput
-      :class="$style['signup__confirm-password']"
+      class="signup__confirm-password"
       type="text"
       placeholder="Confirm your password here"
       id="signupConfirmPasswordTxt"
       label="Confirm Password:"
       :validation-rules="{
         required: true,
-        min: 6,
-        sameWith: { element: '#signupPasswordTxt', fieldName: 'password' }
+        min: 6
       }"
       v-model="confirmPassword"
     />
 
-    <BasePlayfulButton type="submit" :class="$style['signup__register']">
+    <BasePlayfulButton
+      ref="submitBtn"
+      type="submit"
+      class="signup__register"
+      :is-loading="isSubmitBtnLoading"
+    >
       <template #text>Register</template>
     </BasePlayfulButton>
 
-    <p :class="$style['signup__has-account']">
+    <p class="signup__has-account">
       Already have an account?
-      <router-link :class="$style['link']" :to="{ name: 'AuthGuardLogin' }"
-        >Login here</router-link
-      >
+      <router-link class="link" :to="{ name: 'AuthGuardLogin' }"
+        >Login here
+      </router-link>
     </p>
   </form>
 </template>
@@ -60,31 +70,83 @@
 <script>
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
 import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
+import BaseList from '@/components/globals/alerts/BaseList.vue';
+
+// Helpers
+import FormValidationHelper from '@/assets/js/helpers/form-validation-helper';
 
 export default {
   components: {
     BasePlayfulButton,
-    BaseTextInput
+    BaseTextInput,
+    BaseList
   },
   data: () => ({
     username: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    errorList: [],
+    isSubmitBtnLoading: false
   }),
-  emits: ['mounted', 'unmounted'],
+  emits: ['mounted', 'registerFailed'],
   mounted() {
     // Since this is an async component, parent needs to know if component is mounted
     this.$emit('mounted');
   },
-  unmounted() {
-    // Since this is an async component, parent needs to know if component is unmounted
-    this.$emit('mounted');
+  methods: {
+    registerUser() {
+      this.isSubmitBtnLoading = true;
+      this.errorList = [];
+
+      // Username must not be empty
+      if (FormValidationHelper.isEmpty(this.username)) {
+        this.errorList.push('• Username is empty.');
+      }
+
+      // Email must not be empty and valid
+      if (FormValidationHelper.isEmpty(this.email)) {
+        this.errorList.push('• Email is empty.');
+      } else {
+        if (!FormValidationHelper.isEmail(this.email)) {
+          this.errorList.push('• Invalid email.');
+        }
+      }
+
+      // Password should be the same with confirm password and greater than 5
+      if (FormValidationHelper.isEmpty(this.password)) {
+        this.errorList.push('• Password field is empty.');
+      }
+
+      if (FormValidationHelper.isEmpty(this.password)) {
+        this.errorList.push('• Confirm password field is empty.');
+      }
+
+      if (
+        !FormValidationHelper.isEmpty(this.password) &&
+        !FormValidationHelper.isEmpty(this.confirmPassword) &&
+        !FormValidationHelper.sameWith(this.password, this.confirmPassword)
+      ) {
+        this.errorList.push('• Password fields are not the same.');
+      }
+
+      if (this.shouldDisplayErrorAlert) {
+        this.$refs.submitBtn.$el.blur();
+        this.isSubmitBtnLoading = false;
+        this.$emit('registerFailed');
+        return;
+      }
+    }
+  },
+  computed: {
+    shouldDisplayErrorAlert() {
+      return this.errorList.length !== 0;
+    }
   }
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../../../assets/scss/1-settings/css-properties/colors/text';
@@ -101,6 +163,12 @@ export default {
   width: 90%;
   margin-right: auto;
   margin-left: auto;
+
+  &__error-alert {
+    @include margin.bottom((
+        xsm: 20
+    ));
+  }
 
   &__username,
   &__email,
@@ -120,7 +188,7 @@ export default {
     ));
   }
 
-  &__has-account{
+  &__has-account {
     font-weight: 600;
     color: map.get(text.$main, 900);
     @include font-size.responsive((
@@ -130,18 +198,18 @@ export default {
         xsm: 45
     ));
 
-    .link{
+    .link {
       text-decoration: underline;
       transition: box-shadow-transition.$transition-linear;
       color: map.get(main.$primary, 600);
       outline: none;
 
-      &:focus{
+      &:focus {
         @include box-shadow-primary.lightness(light, sm);
       }
 
       &:focus,
-      &:hover{
+      &:hover {
         color: darken(map.get(main.$primary, 600), 5%);
       }
     }

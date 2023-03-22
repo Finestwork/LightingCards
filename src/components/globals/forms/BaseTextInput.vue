@@ -194,7 +194,10 @@ export default {
     },
 
     max() {
-      if (isEmpty(this.modelValue)) return;
+      if (isEmpty(this.modelValue)) {
+        this.addOrRemoveError('max', null);
+        return;
+      }
       const MAX = this.validationRules.max;
       const ERROR_MSG =
         this.modelValue.length > MAX ? LanguageHelper.getErrors.max(MAX) : null;
@@ -202,7 +205,10 @@ export default {
     },
 
     min() {
-      if (isEmpty(this.modelValue)) return;
+      if (isEmpty(this.modelValue)) {
+        this.addOrRemoveError('min', null);
+        return;
+      }
       const MIN = this.validationRules.min;
       const ERROR_MSG =
         this.modelValue.length < MIN ? LanguageHelper.getErrors.min(MIN) : null;
@@ -210,7 +216,10 @@ export default {
     },
 
     email() {
-      if (isEmpty(this.modelValue)) return;
+      if (isEmpty(this.modelValue)) {
+        this.addOrRemoveError('email', null);
+        return;
+      }
       const ERROR_MSG = !isEmail(this.modelValue)
         ? LanguageHelper.getErrors.email
         : null;
