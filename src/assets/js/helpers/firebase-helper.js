@@ -37,12 +37,23 @@ export default class FirebaseHelper {
    * Methods
    * =========
    */
-  static isUserLoggedIn() {
-    return getAuth().currentUser !== null;
+  static getCurrentUser() {
+    return new Promise((resolve, reject) => {
+      const subscribe = onAuthStateChanged(
+        getAuth(),
+        (user) => {
+          subscribe();
+          resolve(user);
+        },
+        reject
+      );
+    });
   }
 
   static onAuthStateChanged({ signedInFn, signedOutFn }) {
-    onAuthStateChanged(getAuth(), (user) => {
+    const subscribe = onAuthStateChanged(getAuth(), (user) => {
+      subscribe();
+
       // If user has signed in
       if (user) {
         signedInFn(user);

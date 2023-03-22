@@ -1,11 +1,11 @@
 <template>
   <p :class="alert['alert']">
     Your work will not be saved,
-    <router-link :class="alert['link']" :to="{ name: 'AuthGuardSignup' }"
+    <router-link :class="alert['link']" :to="{ name: 'Signup' }"
       >create an account</router-link
     >
     or
-    <router-link :class="alert['link']" :to="{ name: 'AuthGuardLogin' }"
+    <router-link :class="alert['link']" :to="{ name: 'Login' }"
       >login here</router-link
     >.
   </p>

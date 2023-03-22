@@ -1,5 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router';
 import { useFlashCardStore } from '@/stores/flashcard';
+import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
+
+// NPM
+import { createRouter, createWebHistory } from 'vue-router';
 import NProgress from 'nprogress';
 
 const ROUTES = [
@@ -11,23 +14,25 @@ const ROUTES = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/pages/TheAuthentication.vue')
+    component: () => import('@/pages/TheAuthentication.vue'),
+    meta: {
+      authLock: true
+    }
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import('@/pages/TheAuthentication.vue')
+    component: () => import('@/pages/TheAuthentication.vue'),
+    meta: {
+      authLock: true
+    }
   },
   {
     path: '/test/create-card',
     name: 'CardCreationTest',
     component: () => import('@/pages/PageTest/TheCardCreationTest.vue'),
-    beforeEnter(to, from, next) {
-      /*
-       * TODO:
-       *  If user is logged in do not access this page
-       */
-      next();
+    meta: {
+      authLock: true
     }
   },
   {
@@ -35,10 +40,6 @@ const ROUTES = [
     name: 'CardPlayTest',
     component: () => import('@/pages/PageTest/TheFlashcardTest.vue'),
     beforeEnter(to, from, next) {
-      /*
-       * TODO:
-       *  If user is logged in do not access this page
-       */
       const STORE = useFlashCardStore();
 
       if (!STORE.hasTestItems) {
@@ -46,6 +47,9 @@ const ROUTES = [
         return;
       }
       next();
+    },
+    meta: {
+      authLock: true
     }
   }
 ];
@@ -60,6 +64,15 @@ router.beforeEach((to, from, next) => {
     NProgress.configure({ showSpinner: false });
     NProgress.start();
   }
+
+  // If user is already authenticated, do not visit the site
+  if (to.meta.authLock) {
+    FirebaseHelper.getCurrentUser().then((user) => {
+      if (user) next({ name: 'Landing' });
+    });
+    return;
+  }
+
   next();
 });
 
