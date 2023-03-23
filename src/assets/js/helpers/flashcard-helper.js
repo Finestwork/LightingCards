@@ -1,4 +1,8 @@
+import { getAuth } from 'firebase/auth';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
+
 import objectHash from 'object-hash';
+
 export default class FlashcardHelper {
   static #VALID_LENGTH = 2;
 
@@ -32,5 +36,18 @@ export default class FlashcardHelper {
 
   static isArrayLengthValid(items) {
     return items.length >= FlashcardHelper.#VALID_LENGTH;
+  }
+
+  // Stores in the database
+  static createSet(set) {
+    return new Promise((resolve, reject) => {
+      const COLLECTION = collection(getFirestore(), 'sets');
+      const DATA = {
+        userId: getAuth().currentUser.uid,
+        set: set
+      };
+
+      addDoc(COLLECTION, DATA).then(resolve).catch(reject);
+    });
   }
 }

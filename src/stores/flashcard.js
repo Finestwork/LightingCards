@@ -10,6 +10,10 @@ const useFlashCardStore = defineStore('flashcard', {
     // Overwrite all existing items in state.testItems
     changeTestItems(items) {
       this.testItems = items;
+    },
+    // Clear all array items in testItems
+    clearTestItems() {
+      this.testItems = [];
     }
   },
   getters: {
