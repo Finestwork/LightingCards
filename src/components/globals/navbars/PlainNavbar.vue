@@ -15,28 +15,45 @@
           <button type="button" class="dropdown__btn">Logout</button>
         </template>
       </VDropdown>
-      <button type="button" class="nav__hamburger-btn">
+      <button type="button" class="nav__hamburger-btn" @click="toggleSidebar">
         <span class="hamburger-btn__line-1"></span>
         <span class="hamburger-btn__line-2"></span>
         <span class="hamburger-btn__line-3"></span>
       </button>
     </div>
   </nav>
+
+  <Teleport to="body">
+    <BaseSidebar v-model:shown="isSidebarShown">
+      <button type="button">Profile Settings</button>
+      <button type="button">Logout</button>
+    </BaseSidebar>
+  </Teleport>
 </template>
 
 <script>
 import BaseGradientLogo from '@/components/globals/logos/BaseGradientLogo.vue';
 import AngleDown from '@/components/icons/AngleDown.vue';
+import BaseSidebar from '@/components/globals/layouts/BaseSidebar.vue';
+
+// Helpers
 import AvatarHelper from '@/assets/js/helpers/avatar-helper';
 
 export default {
   components: {
     BaseGradientLogo,
-    AngleDown
+    AngleDown,
+    BaseSidebar
   },
   data: () => ({
-    testSrc: AvatarHelper.getDefaultAvatars['default-1']
-  })
+    testSrc: AvatarHelper.getDefaultAvatars['default-1'],
+    isSidebarShown: false
+  }),
+  methods: {
+    toggleSidebar() {
+      this.isSidebarShown = !this.isSidebarShown;
+    }
+  }
 };
 </script>
 
