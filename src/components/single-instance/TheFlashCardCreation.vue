@@ -1,16 +1,10 @@
 <template>
   <div class="card">
-    <BasePlayfulButton
-      type="button"
+    <ButtonCreateCard
       class="card__create-btn"
-      :is-loading="isCreateCardLoading"
-      @click="createCard"
-    >
-      <template #leadingIcon>
-        <PlusIcon />
-      </template>
-      <template #text>Create Card</template>
-    </BasePlayfulButton>
+      :is-create-card-loading="isCreateCardLoading"
+      @on-click="createCard"
+    />
 
     <div class="card__items">
       <BaseSingleLineAlert
@@ -36,22 +30,16 @@
         </SlickItem>
       </SlickList>
 
-      <!-- Create Button -->
-      <button type="button" class="card__add-btn" @click="addCard">
-        <span class="btn__leading-icon">
-          <PlusIcon />
-        </span>
-        <span class="btn__text">Add Cards</span>
-      </button>
+      <ButtonAddFlashcard class="card__add-flashcard-btn" @on-click="addCard" />
     </div>
   </div>
 </template>
 
 <script>
-import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
-import PlusIcon from '@/components/icons/PlusIcon.vue';
 import BaseSingleLineAlert from '@/components/globals/alerts/BaseSingleLine.vue';
+import ButtonCreateCard from '@/components/multi-instnace/buttons/ButtonCreateSet.vue';
+import ButtonAddFlashcard from '@/components/multi-instnace/buttons/ButtonAddFlashcard.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
@@ -61,9 +49,9 @@ import { SlickItem, SlickList } from 'vue-slicksort';
 
 export default {
   components: {
-    BasePlayfulButton,
+    ButtonCreateCard,
+    ButtonAddFlashcard,
     BaseCardItem,
-    PlusIcon,
     SlickList,
     SlickItem,
     BaseSingleLineAlert
@@ -178,60 +166,17 @@ export default {
       xsm: 50
     ));
   }
-  &__add-btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    cursor: pointer;
+  &__add-flashcard-btn{
     width: 100%;
-    max-width: 450px;
-    margin-right: auto;
+    max-width: 250px;
     margin-left: auto;
-    font-family: inherit;
-    border: none;
-    outline: none;
-    transition: all .15s ease-in-out;
-    background-color: map.get(main.$primary, 100);
-    box-shadow: inset 0 -6px 0 rgba(map.get(main.$primary, 600),0.16);
-    @include margin.top((
-      xsm: 45
-    ));
+    margin-right: auto;
     @include padding.vertical((
-      xsm: 25
+      xsm: 20
     ));
-    &:focus,
-    &:hover{
-      background-color: darken(map.get(main.$primary, 100),  3%);
-    }
-    &:focus{
-      transform: translateY(4px);
-      box-shadow: inset 0 -2px 0 rgba(map.get(main.$primary, 600),0.16);
-    }
-    .btn{
-      &__leading-icon{
-        width: 15px;
-        height: 15px;
-        @include margin.right((
-          xsm: 15
-        ));
-        :deep(svg){
-          display: block;
-          width: 100%;
-          height: 100%;
-          path{
-            fill: map.get(main.$primary, 600);
-          }
-        }
-      }
-      &__text{
-        font-weight: 800;
-        color: map.get(main.$primary, 600);
-        @include font-size.responsive((
-          xsm: map.get(major-second.$scale, 4)
-        ));
-      }
-    }
+    @include margin.top((
+      xsm: 35
+    ));
   }
 }
 </style>
