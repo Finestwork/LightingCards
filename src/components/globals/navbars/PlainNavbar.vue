@@ -11,10 +11,17 @@
 
         <template #popper>
           <div class="dropdown__btn-wrapper">
-            <button type="button" class="dropdown__btn">
+            <button type="button" class="dropdown__btn" v-close-popper>
               Profile Settings
             </button>
-            <button type="button" class="dropdown__btn">Logout</button>
+            <button
+              type="button"
+              class="dropdown__btn"
+              @click="logoutUser"
+              v-close-popper
+            >
+              Logout
+            </button>
           </div>
         </template>
       </VDropdown>
@@ -32,6 +39,7 @@
       username="Kapitan"
       v-model:shown="isSidebarShown"
     />
+    <PageBlocker v-if="shouldShowPageBlocker" />
   </Teleport>
 </template>
 
@@ -40,24 +48,35 @@ import BaseGradientLogo from '@/components/globals/logos/BaseGradientLogo.vue';
 import AngleDown from '@/components/icons/AngleDown.vue';
 import TheUserSidebar from '@/components/single-instance/TheUserSidebar.vue';
 import BaseOutlined from '@/components/globals/user-profile-pictures/BaseOutlined.vue';
+import PageBlocker from '@/components/globals/page-loaders/PageBlocker.vue';
 
 // Helpers
 import AvatarHelper from '@/assets/js/helpers/avatar-helper';
+import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 
 export default {
   components: {
     BaseGradientLogo,
     AngleDown,
     TheUserSidebar,
-    BaseOutlined
+    BaseOutlined,
+    PageBlocker
   },
   data: () => ({
     testSrc: AvatarHelper.getDefaultAvatars['default-1'],
-    isSidebarShown: false
+    isSidebarShown: false,
+    shouldShowPageBlocker: false
   }),
   methods: {
     toggleSidebar() {
       this.isSidebarShown = !this.isSidebarShown;
+    },
+    logoutUser() {
+      this.shouldShowPageBlocker = true;
+      FirebaseHelper.signout().catch((err) => {
+        console.dir(err);
+        this.shouldShowPageBlocker = false;
+      });
     }
   }
 };

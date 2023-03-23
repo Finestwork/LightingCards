@@ -1,5 +1,6 @@
 import {
   getAuth,
+  signOut,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -88,6 +89,12 @@ export default class FirebaseHelper {
       updateProfile(getAuth().currentUser, { displayName, photoURL })
         .then((res) => resolve(res))
         .catch((err) => reject(err));
+    });
+  }
+
+  static signout() {
+    return new Promise((resolve, reject) => {
+      signOut(getAuth()).then(resolve).catch(reject);
     });
   }
 }
