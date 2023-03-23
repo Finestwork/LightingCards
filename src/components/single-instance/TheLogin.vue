@@ -47,6 +47,8 @@ import BaseSingleLine from '@/components/globals/alerts/BaseSingleLine.vue';
 
 // Helpers
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
+import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
+import { useFlashCardStore } from '@/stores/flashcard';
 
 // NPM
 import isEmail from 'validator/es/lib/isEmail';
@@ -88,6 +90,16 @@ export default {
       }
 
       const handleResult = () => {
+        if (!useFlashCardStore().hasTestItems) {
+          this.$router.push({ name: 'Landing' });
+          return;
+        }
+
+        // Also save previously created work, if it failed, no need to prompt it to user
+        FlashcardHelper.createSet(useFlashCardStore().testItems).then(() => {
+          this.$router.push({ name: 'Landing' });
+          useFlashCardStore().clearTestItems();
+        });
         this.$router.push({ name: 'Landing' });
       };
       const handleError = (err) => {
