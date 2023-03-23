@@ -15,6 +15,11 @@
           <button type="button" class="dropdown__btn">Logout</button>
         </template>
       </VDropdown>
+      <button type="button" class="nav__hamburger-btn">
+        <span class="hamburger-btn__line-1"></span>
+        <span class="hamburger-btn__line-2"></span>
+        <span class="hamburger-btn__line-3"></span>
+      </button>
     </div>
   </nav>
 </template>
@@ -44,9 +49,12 @@ export default {
 @use '../../../assets/scss/2-tools/mixins/css-properties/display';
 @use '../../../assets/scss/4-layouts/containers';
 
+// prettier-ignore
 .nav {
-  padding-top: pixels.toRem(15);
-  padding-bottom: pixels.toRem(15);
+  display: flex;
+  align-items: center;
+  padding-top: pixels.toRem(25);
+  padding-bottom: pixels.toRem(18);
   border-bottom: 2px solid map.get(text.$main, 100);
 
   &__container {
@@ -54,7 +62,6 @@ export default {
     display: flex;
     justify-content: space-between;
   }
-
   &__dropdown-btn {
     align-items: center;
     border: none;
@@ -64,12 +71,10 @@ export default {
     border-radius: 7px;
     outline: none;
     padding: pixels.toRem(10);
-    @include display.set(
-      (
-        xsm: none,
-        400: flex
-      )
-    );
+    @include display.set((
+      xsm: none,
+      400: flex
+    ));
     &:focus,
     &:hover {
       background-color: map.get(main.$primary, 100);
@@ -118,6 +123,42 @@ export default {
           }
         }
       }
+    }
+  }
+  &__hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 40px;
+    height: 36px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    background-color: white;
+    padding: pixels.toRem(7);
+    @include display.set((
+      xsm: flex,
+        400: none
+    ));
+    &:focus,
+    &:hover {
+      background-color: map.get(main.$primary, 100);
+      .hamburger-btn__line-1,
+      .hamburger-btn__line-2,
+      .hamburger-btn__line-3 {
+        background-color: map.get(main.$primary, 600);
+      }
+    }
+
+    .hamburger-btn__line-1,
+    .hamburger-btn__line-2,
+    .hamburger-btn__line-3 {
+      display: flex;
+      width: 100%;
+      height: 4px;
+      border-radius: 99rem;
+      background-color: map.get(text.$main, 500);
     }
   }
 }
