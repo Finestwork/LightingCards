@@ -29,7 +29,6 @@
           />
         </SlickItem>
       </SlickList>
-
       <ButtonAddFlashcard class="card__add-flashcard-btn" @on-click="addCard" />
     </div>
   </div>
@@ -121,8 +120,11 @@ export default {
     }
   },
   watch: {
-    flashCardItems(flashCardItems) {
-      this.$emit('update:items', flashCardItems);
+    flashCardItems: {
+      handler(flashCardItems) {
+        this.$emit('update:items', flashCardItems);
+      },
+      immediate: true
     }
   }
 };

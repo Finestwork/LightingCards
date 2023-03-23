@@ -14,7 +14,10 @@ const useFlashCardStore = defineStore('flashcard', {
   },
   getters: {
     hasTestItems(state) {
-      return FlashcardHelper.areAllItemsValid(state.testItems);
+      return (
+        state.testItems.length !== 0 &&
+        FlashcardHelper.areAllItemsValid(state.testItems)
+      );
     }
   }
 });

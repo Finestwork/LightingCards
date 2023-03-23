@@ -162,7 +162,7 @@ export default {
         &:focus {
           background-color: map.get(main.$primary, 50);
 
-          svg path {
+          :deep(svg path)  {
             fill: map.get(main.$primary, 600);
           }
         }

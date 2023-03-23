@@ -34,9 +34,15 @@ export default {
     TheFlashCardCreation,
     TheRequiredLoginAlert
   },
-  data: () => ({
-    flashCardItems: FlashcardHelper.createDefaultCards(2)
-  }),
+  data() {
+    const FLASHCARD_ITEMS = useFlashCardStore().hasTestItems
+      ? useFlashCardStore().testItems
+      : FlashcardHelper.createDefaultCards(2);
+
+    return {
+      flashCardItems: FLASHCARD_ITEMS
+    };
+  },
   methods: {
     createCard() {
       useFlashCardStore().changeTestItems(this.flashCardItems);
