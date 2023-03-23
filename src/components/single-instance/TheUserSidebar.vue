@@ -6,7 +6,9 @@
 
       <div class="user__btn-wrapper">
         <button class="user__action-btn" type="button">Profile Settings</button>
-        <button class="user__action-btn" type="button">Logout</button>
+        <button class="user__action-btn" type="button" @click="logoutUser">
+          Logout
+        </button>
       </div>
     </BaseScrollbar>
   </BaseSidebar>
@@ -16,6 +18,7 @@
 import BaseSidebar from '@/components/globals/layouts/BaseSidebar.vue';
 import BaseOutlined from '@/components/globals/user-profile-pictures/BaseOutlined.vue';
 import BaseScrollbar from '@/components/globals/layouts/BaseScrollbar.vue';
+import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 
 export default {
   components: {
@@ -41,6 +44,11 @@ export default {
     return {
       isShown: this.shown
     };
+  },
+  methods: {
+    logoutUser() {
+      FirebaseHelper.signout();
+    }
   },
   watch: {
     shown(isShown) {
