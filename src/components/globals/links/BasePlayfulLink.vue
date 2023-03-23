@@ -79,7 +79,7 @@ export default {
     &__trailing-icon {
       width: 13px;
       height: 13px;
-      :deep(svg) {
+      svg {
         display: block;
         width: 100%;
         height: 100%;
@@ -89,10 +89,10 @@ export default {
       }
     }
     &__leading-icon {
-      margin-right: pixels.toRem(7);
+      margin-right: pixels.toRem(4);
     }
     &__trailing-icon {
-      margin-left: pixels.toRem(7);
+      margin-left: pixels.toRem(4);
     }
   }
 }
