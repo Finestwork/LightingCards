@@ -51,6 +51,14 @@ const ROUTES = [
     meta: {
       authLock: true
     }
+  },
+  {
+    path: '/create-card',
+    name: 'CardCreationProcess',
+    component: () => import('@/pages/TheCardCreationProcess.vue'),
+    meta: {
+      auth: true
+    }
   }
 ];
 const router = createRouter({
@@ -67,10 +75,24 @@ router.beforeEach((to, from, next) => {
 
   // If user is already authenticated, do not visit the site
   if (to.meta.authLock) {
-    FirebaseHelper.getCurrentUser().then((user) => {
-      if (user) next({ name: 'Landing' });
-      else next();
-    });
+    FirebaseHelper.getCurrentUser()
+      .then((user) => {
+        if (user) next({ name: 'Landing' });
+        else next();
+      })
+      .catch(() => next({ name: 'Landing' }));
+    return;
+  }
+
+  // User needs to be signed in visit a particular site
+  if (to.meta.auth) {
+    FirebaseHelper.getCurrentUser()
+      .then((user) => {
+        if (user) next();
+        else next({ name: 'Landing' });
+      })
+      .catch(() => next({ name: 'Landing' }));
+
     return;
   }
 

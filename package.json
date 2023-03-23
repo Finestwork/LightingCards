@@ -14,6 +14,7 @@
     "firebase": "^9.18.0",
     "floating-vue": "^2.0.0-beta.20",
     "nprogress": "^0.2.0",
+    "object-hash": "^3.0.0",
     "overlayscrollbars-vue": "^0.5.1",
     "pinia": "^2.0.32",
     "sass": "^1.59.3",

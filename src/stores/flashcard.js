@@ -3,10 +3,8 @@ import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 
 const useFlashCardStore = defineStore('flashcard', {
   state: () => ({
-    testItems: [
-      { id: 'card1', term: '', definition: '' },
-      { id: 'card2', term: '', definition: '' }
-    ]
+    // An array of objects: {id: String, term: String, definition: String}
+    testItems: []
   }),
   actions: {
     // Overwrite all existing items in state.testItems

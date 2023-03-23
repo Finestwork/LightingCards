@@ -54,7 +54,6 @@ import PlusIcon from '@/components/icons/PlusIcon.vue';
 import BaseSingleLineAlert from '@/components/globals/alerts/BaseSingleLine.vue';
 
 // Helpers
-import { useFlashCardStore } from '@/stores/flashcard';
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 
 // NPM
@@ -69,13 +68,21 @@ export default {
     SlickItem,
     BaseSingleLineAlert
   },
-  data: () => ({
-    isPublic: true,
-    errorAlertText: '',
-    isCreateCardLoading: false,
-    flashCardItems: useFlashCardStore().testItems,
-    useFlashCardStore: useFlashCardStore()
-  }),
+  props: {
+    items: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isPublic: true,
+      errorAlertText: '',
+      isCreateCardLoading: false,
+      flashCardItems: this.items
+    };
+  },
+  emits: ['update:items', 'createCard'],
   methods: {
     createCard(e) {
       this.isCreateCardLoading = true;
@@ -96,18 +103,16 @@ export default {
         return;
       }
 
-      this.useFlashCardStore.changeTestItems(this.flashCardItems);
-      this.$router.push({ name: 'CardPlayTest' });
+      this.$emit('createCard');
     },
     addCard(e) {
       e.currentTarget.blur(); // For bouncy effect
 
-      const CARD_LENGTH = this.flashCardItems.length;
-      this.flashCardItems.push({
-        id: `card${CARD_LENGTH + 1}`,
-        term: '',
-        definition: ''
-      });
+      // For reactive state .push() will not trigger watchers
+      this.flashCardItems = [
+        ...this.flashCardItems,
+        FlashcardHelper.createCard()
+      ];
     },
     onCardDelete(e) {
       const BTN = e.currentTarget;
@@ -115,6 +120,8 @@ export default {
       const IND = PARENT.dataset.index;
 
       this.flashCardItems.splice(parseInt(IND), 1);
+
+      this.$emit('update:items', this.flashCardItems);
     }
   },
   computed: {
@@ -123,6 +130,11 @@ export default {
     },
     shouldHideDeleteBtn() {
       return this.flashCardItems.length === 2;
+    }
+  },
+  watch: {
+    flashCardItems(flashCardItems) {
+      this.$emit('update:items', flashCardItems);
     }
   }
 };

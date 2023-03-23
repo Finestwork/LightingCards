@@ -12,7 +12,11 @@
         <span class="test__guest-lbl">Hello, guest!</span>
       </div>
 
-      <TheFlashCardCreation class="test__card-creation-wrapper" />
+      <TheFlashCardCreation
+        class="test__card-creation-wrapper"
+        @create-card="createCard"
+        v-model:items="flashCardItems"
+      />
     </div>
   </div>
 </template>
@@ -21,12 +25,23 @@
 import BaseGradientLogo from '@/components/globals/logos/BaseGradientLogo.vue';
 import TheFlashCardCreation from '@/components/single-instance/TheFlashCardCreation.vue';
 import TheRequiredLoginAlert from '@/components/single-instance/TheRequiredLoginAlert.vue';
+import { useFlashCardStore } from '@/stores/flashcard';
+import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 
 export default {
   components: {
     BaseGradientLogo,
     TheFlashCardCreation,
     TheRequiredLoginAlert
+  },
+  data: () => ({
+    flashCardItems: FlashcardHelper.createDefaultCards(2)
+  }),
+  methods: {
+    createCard() {
+      useFlashCardStore().changeTestItems(this.flashCardItems);
+      this.$router.push({ name: 'CardPlayTest' });
+    }
   }
 };
 </script>

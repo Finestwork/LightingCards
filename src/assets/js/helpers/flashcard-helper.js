@@ -1,10 +1,32 @@
+import objectHash from 'object-hash';
 export default class FlashcardHelper {
   static #VALID_LENGTH = 2;
+
+  static createDefaultCards(numOfCards) {
+    let CARDS = [];
+    for (let i = 0; i < numOfCards; i++) {
+      CARDS.push({
+        id: objectHash(Date.now() + i),
+        term: '',
+        definition: ''
+      });
+    }
+
+    return CARDS;
+  }
+
+  static createCard() {
+    return {
+      id: objectHash(Date.now()),
+      term: '',
+      definition: ''
+    };
+  }
+
   static areAllItemsValid(items) {
     const BLANK_ITEMS = items.filter(
       (item) => item.term.trim() === '' || item.definition.trim() === ''
     );
-
     return BLANK_ITEMS.length === 0;
   }
 

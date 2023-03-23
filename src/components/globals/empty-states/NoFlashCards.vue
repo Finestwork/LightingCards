@@ -12,7 +12,10 @@
       created some flashcards, you can study them, organize them, and track your
       progress.
     </p>
-    <BasePlayfulLink class="empty-state__create-link" :to="{ name: 'Landing' }">
+    <BasePlayfulLink
+      class="empty-state__create-link"
+      :to="{ name: 'CardCreationProcess' }"
+    >
       <template #leadingIcon>
         <PlusIcon />
       </template>
