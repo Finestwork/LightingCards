@@ -1,14 +1,12 @@
 <template>
-  <p :class="[alert.alert, alert[colorState]]">
-    <span :class="alert['alert__leading-icon']" v-if="shouldDisplayLeadingIcon"
+  <p :class="getRootClass">
+    <span class="alert__leading-icon" v-if="shouldDisplayLeadingIcon"
       ><slot name="leadingIcon"></slot
     ></span>
-    <span :class="alert['alert__text']" v-if="shouldDisplayText"
+    <span class="alert__text" v-if="shouldDisplayText"
       ><slot name="text"></slot
     ></span>
-    <span
-      :class="alert['alert__trailing-icon']"
-      v-if="shouldDisplayTrailingIcon"
+    <span class="alert__trailing-icon" v-if="shouldDisplayTrailingIcon"
       ><slot name="trailingIcon"></slot
     ></span>
   </p>
@@ -23,6 +21,9 @@ export default {
     }
   },
   computed: {
+    getRootClass() {
+      return `alert ${this.colorState}`;
+    },
     shouldDisplayText() {
       return !!this.$slots.text;
     },
@@ -36,7 +37,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module="alert">
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../../../assets/scss/1-settings/css-properties/colors/safety';

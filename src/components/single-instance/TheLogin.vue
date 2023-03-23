@@ -1,7 +1,10 @@
 <template>
-  <div :class="$style['login']">
+  <form class="login" @submit.prevent="loginUser">
+    <BaseSingleLine class="login__error-alert" v-if="shouldDisplayErrorAlert">
+      <template #text>{{ errorAlertTxt }}</template>
+    </BaseSingleLine>
     <BaseTextInput
-      :class="$style['login__email']"
+      class="login__email"
       type="email"
       placeholder="Place your email here"
       id="loginEmailTxt"
@@ -10,7 +13,7 @@
       v-model="emailTxt"
     />
     <BaseTextInput
-      :class="$style['login__password']"
+      class="login__password"
       type="password"
       placeholder="Place your password here"
       id="loginPasswordTxt"
@@ -20,26 +23,27 @@
     />
 
     <BasePlayfulButton
-      type="button"
-      :class="$style['login__submit']"
+      ref="submitBtn"
+      type="submit"
+      class="login__submit"
       :is-loading="isSubmitBtnLoading"
-      @click="loginUser"
     >
       <template #text>Submit</template>
     </BasePlayfulButton>
 
-    <p :class="$style['login__no-account']">
+    <p class="login__no-account">
       Not registered yet?
-      <router-link :class="$style['link']" :to="{ name: 'Signup' }"
-        >Register here</router-link
-      >
+      <router-link class="link" :to="{ name: 'Signup' }"
+        >Register here
+      </router-link>
     </p>
-  </div>
+  </form>
 </template>
 
 <script>
 import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
+import BaseSingleLine from '@/components/globals/alerts/BaseSingleLine.vue';
 
 // Helpers
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
@@ -50,7 +54,8 @@ import isEmail from 'validator/es/lib/isEmail';
 export default {
   components: {
     BaseTextInput,
-    BasePlayfulButton
+    BasePlayfulButton,
+    BaseSingleLine
   },
   data: () => ({
     errorAlertTxt: '',
@@ -64,13 +69,13 @@ export default {
     this.$emit('mounted');
   },
   methods: {
-    loginUser(e) {
+    loginUser() {
       this.isSubmitBtnLoading = true;
       this.errorAlertTxt = '';
       const validationFn = (text) => {
         this.errorAlertTxt = text;
         this.isSubmitBtnLoading = false;
-        e.currentTarget.blur();
+        this.$refs.submitBtn.$el.blur();
       };
 
       if (!isEmail(this.emailTxt)) {
@@ -82,23 +87,28 @@ export default {
         return;
       }
 
-      const handleResult = (res) => {
-        console.log(res);
+      const handleResult = () => {
+        this.$router.push({ name: 'Landing' });
       };
       const handleError = (err) => {
         if (!err.code) return;
-
-        const GOOGLE_ERROR = FirebaseHelper.getErrors[err.code];
+        this.isSubmitBtnLoading = false;
+        this.errorAlertTxt = FirebaseHelper.getErrors[err.code];
       };
       FirebaseHelper.loginUser(this.emailTxt, this.passwordTxt)
         .then(handleResult)
         .catch(handleError);
     }
+  },
+  computed: {
+    shouldDisplayErrorAlert() {
+      return this.errorAlertTxt.trim() !== '';
+    }
   }
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../../assets/scss/1-settings/css-properties/colors/main';
@@ -116,6 +126,12 @@ export default {
   margin-right: auto;
   margin-left: auto;
 
+  &__error-alert{
+    @include margin.bottom((
+      xsm: 25
+    ));
+  }
+
   &__email {
     @include margin.bottom((
         xsm: 25
@@ -132,28 +148,28 @@ export default {
     ));
   }
 
-  &__no-account{
+  &__no-account {
     font-weight: 600;
     color: map.get(text.$main, 900);
     @include font-size.responsive((
-      xsm: map.get(major-second.$scale, 2)
+        xsm: map.get(major-second.$scale, 2)
     ));
     @include margin.top((
-      xsm: 45
+        xsm: 45
     ));
 
-    .link{
+    .link {
       text-decoration: underline;
       transition: box-shadow-transition.$transition-linear;
       color: map.get(main.$primary, 600);
       outline: none;
 
-      &:focus{
+      &:focus {
         @include box-shadow-primary.lightness(light, sm);
       }
 
       &:focus,
-      &:hover{
+      &:hover {
         color: darken(map.get(main.$primary, 600), 5%);
       }
     }
