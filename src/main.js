@@ -4,6 +4,9 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 
+import FloatingVue from 'floating-vue';
+import 'floating-vue/dist/style.css';
+
 // Your web app's Firebase configuration
 import FirebaseConfig from '../firebase.config.json';
 
@@ -13,4 +16,4 @@ import { initializeApp } from 'firebase/app';
 // Initialize Firebase
 initializeApp(FirebaseConfig);
 
-createApp(App).use(createPinia()).use(router).mount('body');
+createApp(App).use(createPinia()).use(router).use(FloatingVue).mount('body');
