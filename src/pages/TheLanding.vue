@@ -26,12 +26,13 @@ export default {
   }),
   mounted() {
     NProgress.configure({ showSpinner: false });
-    NProgress.start();
     const callbackFn = {
       signedInFn: () => {
+        NProgress.start();
         this.currentState = 'user';
       },
       signedOutFn: () => {
+        NProgress.start();
         this.currentState = 'landing';
       }
     };
