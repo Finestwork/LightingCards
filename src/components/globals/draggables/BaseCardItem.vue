@@ -5,8 +5,12 @@
       <DragHandle tag="button" class="control__drag-btn">
         <BentoIcon />
       </DragHandle>
-
-      <button type="button" class="control__delete-btn" @click="onCardDelete">
+      <button
+        type="button"
+        class="control__delete-btn"
+        @click="onCardDelete"
+        v-if="!hideDeleteBtn"
+      >
         <TrashCanIcon />
       </button>
     </div>
@@ -56,6 +60,10 @@ export default {
     order: {
       type: [String, Number],
       required: true
+    },
+    hideDeleteBtn: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

@@ -29,12 +29,14 @@
           <BaseCardItem
             :order="ind + 1"
             :data-index="ind"
+            :hide-delete-btn="shouldHideDeleteBtn"
             @on-card-delete="onCardDelete"
             v-model="flashCardItems[ind]"
           />
         </SlickItem>
       </SlickList>
 
+      <!-- Create Button -->
       <button type="button" class="card__add-btn" @click="addCard">
         <span class="btn__leading-icon">
           <PlusIcon />
@@ -118,6 +120,9 @@ export default {
   computed: {
     shouldDisplayErrorAlert() {
       return this.errorAlertText.trim() !== '';
+    },
+    shouldHideDeleteBtn() {
+      return this.flashCardItems.length === 2;
     }
   }
 };
