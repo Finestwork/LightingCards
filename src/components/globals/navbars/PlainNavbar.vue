@@ -162,7 +162,7 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     width: 40px;
-    height: 36px;
+    height: 33px;
     border-radius: 7px;
     border: none;
     cursor: pointer;
