@@ -4,15 +4,18 @@
       <BaseGradientLogo class="logo" />
       <VDropdown popper-class="nav-dropdown">
         <button class="nav__dropdown-btn">
-          <span class="dropdown__img">
-            <img :src="testSrc" alt="User's profile" />
-          </span>
+          <BaseOutlined class="dropdown__img" :src="testSrc" />
           <span class="dropdown__username">Kapitan</span>
           <span class="dropdown__icon"><AngleDown /></span>
         </button>
 
         <template #popper>
-          <button type="button" class="dropdown__btn">Logout</button>
+          <div class="dropdown__btn-wrapper">
+            <button type="button" class="dropdown__btn">
+              Profile Settings
+            </button>
+            <button type="button" class="dropdown__btn">Logout</button>
+          </div>
         </template>
       </VDropdown>
       <button type="button" class="nav__hamburger-btn" @click="toggleSidebar">
@@ -24,17 +27,19 @@
   </nav>
 
   <Teleport to="body">
-    <BaseSidebar v-model:shown="isSidebarShown">
-      <button type="button">Profile Settings</button>
-      <button type="button">Logout</button>
-    </BaseSidebar>
+    <TheUserSidebar
+      :img-src="testSrc"
+      username="Kapitan"
+      v-model:shown="isSidebarShown"
+    />
   </Teleport>
 </template>
 
 <script>
 import BaseGradientLogo from '@/components/globals/logos/BaseGradientLogo.vue';
 import AngleDown from '@/components/icons/AngleDown.vue';
-import BaseSidebar from '@/components/globals/layouts/BaseSidebar.vue';
+import TheUserSidebar from '@/components/single-instance/TheUserSidebar.vue';
+import BaseOutlined from '@/components/globals/user-profile-pictures/BaseOutlined.vue';
 
 // Helpers
 import AvatarHelper from '@/assets/js/helpers/avatar-helper';
@@ -43,7 +48,8 @@ export default {
   components: {
     BaseGradientLogo,
     AngleDown,
-    BaseSidebar
+    TheUserSidebar,
+    BaseOutlined
   },
   data: () => ({
     testSrc: AvatarHelper.getDefaultAvatars['default-1'],
@@ -99,27 +105,7 @@ export default {
 
     .dropdown {
       &__img {
-        display: flex;
-        width: 35px;
-        height: 35px;
-        position: relative;
-        background-color: #0e2430;
-        border-radius: 50%;
         margin-right: pixels.toRem(15);
-        &::before {
-          content: '';
-          width: 127%;
-          height: 127%;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          border-radius: 50%;
-          transform: translate(-50%, -50%);
-          border: 2px solid map.get(main.$primary, 500);
-        }
-        > img {
-          width: 100%;
-        }
       }
       &__username {
         font-weight: 800;
@@ -181,21 +167,27 @@ export default {
 }
 
 .nav-dropdown {
-  .dropdown__btn {
-    background-color: white;
-    cursor: pointer;
-    font-weight: 800;
-    outline: none;
-    border: none;
-    font-family: inherit;
-    padding: pixels.toRem(7) pixels.toRem(15);
-    color: map.get(text.$main, 600);
-    font-size: pixels.toRem(map.get(major-second.$scale, 3));
+  .dropdown {
+    &__btn-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+    &__btn {
+      background-color: white;
+      cursor: pointer;
+      font-weight: 800;
+      outline: none;
+      border: none;
+      font-family: inherit;
+      padding: pixels.toRem(7) pixels.toRem(15);
+      color: map.get(text.$main, 400);
+      font-size: pixels.toRem(map.get(major-second.$scale, 3));
 
-    &:focus,
-    &:hover {
-      background-color: map.get(main.$primary, 100);
-      color: map.get(main.$primary, 600);
+      &:focus,
+      &:hover {
+        background-color: map.get(main.$primary, 100);
+        color: map.get(main.$primary, 600);
+      }
     }
   }
 }
