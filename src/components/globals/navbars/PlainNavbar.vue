@@ -73,8 +73,7 @@ export default {
     },
     logoutUser() {
       this.shouldShowPageBlocker = true;
-      FirebaseHelper.signout().catch((err) => {
-        console.dir(err);
+      FirebaseHelper.signout().catch(() => {
         this.shouldShowPageBlocker = false;
       });
     }

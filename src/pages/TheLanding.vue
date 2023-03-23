@@ -21,7 +21,8 @@ export default {
   },
   data: () => ({
     // loading, user, landing
-    currentState: 'loading'
+    currentState: 'loading',
+    authSubscribe: null
   }),
   mounted() {
     NProgress.configure({ showSpinner: false });
@@ -34,7 +35,10 @@ export default {
         this.currentState = 'landing';
       }
     };
-    FirebaseHelper.onAuthStateChanged(callbackFn);
+    this.authSubscribe = FirebaseHelper.onAuthStateChanged(callbackFn);
+  },
+  unmounted() {
+    if (this.authSubscribe !== null) this.authSubscribe();
   },
   methods: {
     onComponentMounted() {
