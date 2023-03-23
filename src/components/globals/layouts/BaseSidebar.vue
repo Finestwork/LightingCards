@@ -26,7 +26,37 @@ export default {
   emits: ['update:shown'],
   methods: {
     closeSidebar() {
-      // If sidebar is not shown
+      this.$emit('update:shown', false);
+    },
+
+    showSidebar() {
+      this.$refs.root.style.display = 'block';
+
+      // if there's an ongoing animation
+      if (this.bgAnimId !== null) this.bgAnimId.pause();
+      if (this.contentAnimId !== null) this.contentAnimId.pause();
+
+      this.bgAnimId = anime({
+        targets: this.$refs.bg,
+        opacity: 0.9,
+        easing: 'linear',
+        duration: 350,
+        complete() {
+          this.bgAnimId = null;
+        }
+      });
+      this.contentAnimId = anime({
+        targets: this.$refs.content,
+        left: 0,
+        easing: 'easeOutCubic',
+        duration: 350,
+        complete: () => {
+          this.contentAnimId = null;
+          this.$emit('update:shown', true);
+        }
+      });
+    },
+    hideSidebar() {
       this.bgAnimId = anime({
         targets: this.$refs.bg,
         opacity: 0,
@@ -36,7 +66,6 @@ export default {
           this.bgAnimId = null;
         }
       });
-
       this.contentAnimId = anime({
         targets: this.$refs.content,
         left: '-100%',
@@ -54,34 +83,8 @@ export default {
     shown: {
       handler(isShown) {
         this.$nextTick(() => {
-          if (isShown) {
-            this.$refs.root.style.display = 'block';
-
-            // if there's an ongoing animation
-            if (this.bgAnimId !== null) this.bgAnimId.pause();
-            if (this.contentAnimId !== null) this.contentAnimId.pause();
-
-            this.bgAnimId = anime({
-              targets: this.$refs.bg,
-              opacity: 0.9,
-              easing: 'linear',
-              duration: 350,
-              complete() {
-                this.bgAnimId = null;
-              }
-            });
-
-            this.contentAnimId = anime({
-              targets: this.$refs.content,
-              left: 0,
-              easing: 'easeOutCubic',
-              duration: 350,
-              complete: () => {
-                this.contentAnimId = null;
-                this.$emit('update:shown', true);
-              }
-            });
-          }
+          if (isShown) this.showSidebar();
+          else this.hideSidebar();
         });
       },
       immediate: true

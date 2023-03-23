@@ -67,7 +67,18 @@ export default {
     isSidebarShown: false,
     shouldShowPageBlocker: false
   }),
+  mounted() {
+    window.addEventListener('resize', this.hideSidebarOnLargerViewport);
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.hideSidebarOnLargerViewport);
+  },
   methods: {
+    hideSidebarOnLargerViewport() {
+      if (window.innerWidth >= 400) {
+        this.isSidebarShown = false;
+      }
+    },
     toggleSidebar() {
       this.isSidebarShown = !this.isSidebarShown;
     },
