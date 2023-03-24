@@ -8,7 +8,7 @@
         id="searchSetTxtInput"
         v-if="shouldDisplaySearchInput"
       />
-      <ButtonCreateSet class="sets__create-set-btn" />
+      <LinkCreateSet class="sets__create-set-link" />
     </div>
 
     <div class="sets__set-wrapper row">
@@ -21,14 +21,14 @@
 
 <script>
 import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
-import ButtonCreateSet from '@/components/multi-instnace/buttons/ButtonCreateSet.vue';
 import BasePlainCardSet from '@/components/globals/flashcard-sets/BasePlainCardSet.vue';
+import LinkCreateSet from '@/components/multi-instnace/links/LinkCreateSet.vue';
 import { useFlashCardStore } from '@/stores/flashcard';
 
 export default {
   components: {
     BaseTextInput,
-    ButtonCreateSet,
+    LinkCreateSet,
     BasePlainCardSet
   },
   data() {
@@ -77,7 +77,7 @@ export default {
         400: 0
     ));
   }
-  &__create-set-btn {
+  &__create-set-link {
     @include margin.left((
       400: auto
     ));
