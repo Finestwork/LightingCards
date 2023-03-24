@@ -6,6 +6,7 @@
         type="text"
         placeholder="Search flashcard's title here"
         id="searchSetTxtInput"
+        v-if="shouldDisplaySearchInput"
       />
       <ButtonCreateSet class="sets__create-set-btn" />
     </div>
@@ -34,6 +35,11 @@ export default {
     return {
       sets: useFlashCardStore().sets
     };
+  },
+  computed: {
+    shouldDisplaySearchInput() {
+      return useFlashCardStore().sets.length > 6;
+    }
   }
 };
 </script>
@@ -72,6 +78,9 @@ export default {
     ));
   }
   &__create-set-btn {
+    @include margin.left((
+      400: auto
+    ));
     @include width-and-height.set((
         400: (width: 100%, maxWidth: 160px)
     ))

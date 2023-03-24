@@ -1,8 +1,5 @@
 <template>
   <PlainNavbar />
-
-  <!-- Add Validation here later -->
-
   <div class="container container--sm">
     <TheSetSkeleton v-if="shouldDisplayLoader" />
     <NoFlashCards class="no-flash-cards" v-if="shouldDisplayEmptyState" />
