@@ -19,7 +19,7 @@
       <BaseTextArea
         class="set-control__description-txt"
         label="Description:"
-        placeholder="Give your future self why you created it this "
+        placeholder="Give your future self why you created it this set"
         id="descriptionTxtInput"
       />
     </div>
@@ -191,14 +191,16 @@ export default {
   }
   &__set-controls{
     margin-top: pixels.toRem(25);
-    margin-bottom: pixels.toRem(35);
+    margin-bottom: pixels.toRem(40);
 
     .set-control{
       &__title-txt{
         margin-bottom: pixels.toRem(15);
       }
-      &__description{
-        min-height: 150px;
+      &__description-txt{
+        :deep(textarea){
+          height: 150px;
+        }
       }
     }
   }
