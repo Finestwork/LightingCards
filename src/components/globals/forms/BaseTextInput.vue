@@ -1,6 +1,6 @@
 <template>
   <div class="text-input">
-    <label :for="id">{{ label }}</label>
+    <label :for="id" v-if="canDisplayLabel">{{ label }}</label>
     <div :class="inputWrapperClass">
       <input
         ref="input"
@@ -38,7 +38,7 @@
         <EyeSlash v-if="!shouldTogglePassword" />
       </button>
     </div>
-    <BaseErrorList :errors="errors" />
+    <BaseErrorList :errors="errors" v-if="canDisplayErrorList" />
   </div>
 </template>
 
@@ -280,6 +280,12 @@ export default {
     },
     canShowClearBtn() {
       return this.modelValue !== '' && !this.togglePassword && this.clearable;
+    },
+    canDisplayLabel() {
+      return this.label.trim() !== '';
+    },
+    canDisplayErrorList() {
+      return this.errors.length !== 0;
     }
   },
   watch: {

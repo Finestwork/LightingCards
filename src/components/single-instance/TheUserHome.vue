@@ -12,6 +12,7 @@
       msg="Unfortunately, our system can't retrieved your saved sets from the database, don't worry, we are fixing it now."
       v-if="shouldDisplayErrorState"
     />
+    <TheFlashcardSets v-if="shouldDisplaySets" />
   </div>
 </template>
 
@@ -20,6 +21,7 @@ import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import NoFlashCards from '@/components/globals/empty-states/NoFlashCards.vue';
 import TheSetSkeleton from '@/components/single-instance/TheSetSkeleton.vue';
 import BaseSleepingDeveloper from '@/components/globals/error-states/BaseSleepingDeveloper.vue';
+import TheFlashcardSets from '@/components/single-instance/TheFlashcardSets.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
@@ -30,7 +32,8 @@ export default {
     PlainNavbar,
     NoFlashCards,
     TheSetSkeleton,
-    BaseSleepingDeveloper
+    BaseSleepingDeveloper,
+    TheFlashcardSets
   },
   data() {
     return {
@@ -85,6 +88,14 @@ export default {
         !this.isEmpty &&
         this.hasError &&
         useFlashCardStore().isSetsEmpty
+      );
+    },
+    shouldDisplaySets() {
+      return (
+        !this.isLoading &&
+        !this.isEmpty &&
+        !this.hasError &&
+        !useFlashCardStore().isSetsEmpty
       );
     }
   }

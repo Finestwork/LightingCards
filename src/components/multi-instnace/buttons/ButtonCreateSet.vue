@@ -23,7 +23,7 @@ export default {
   props: {
     isCreateCardLoading: {
       type: Boolean,
-      required: true
+      default: false
     }
   },
   emits: ['onClick'],
