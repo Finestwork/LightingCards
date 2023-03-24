@@ -104,7 +104,7 @@ export default {
     &__controls {
       display: flex;
       justify-content: flex-end;
-      margin-top: pixels.toRem(15);
+      margin-top: pixels.toRem(25);
       .ghost-btn {
         margin-right: pixels.toRem(7);
         &:last-of-type {
