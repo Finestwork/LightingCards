@@ -6,24 +6,24 @@
     </p>
 
     <div class="flashcard__controls">
-      <BaseFadedButton tooltip="Start reviewing">
+      <FadedLink tooltip="Start reviewing" :to="{ name: 'Landing' }">
         <BrainIcon />
-      </BaseFadedButton>
-      <BaseFadedButton tooltip="Edit set">
+      </FadedLink>
+      <FadedLink tooltip="Edit set" :to="{ name: 'Landing' }">
         <PenIcon />
-      </BaseFadedButton>
+      </FadedLink>
     </div>
   </article>
 </template>
 
 <script>
-import BaseFadedButton from '@/components/globals/button-icons/BaseFadedButton.vue';
-import BrainIcon from '@/components/icons/Brain.vue';
-import PenIcon from '@/components/icons/Pen.vue';
+import FadedLink from '@/components/globals/link-icons/FadedLink.vue';
+import BrainIcon from '@/components/icons/BrainIcon.vue';
+import PenIcon from '@/components/icons/PenIcon.vue';
 
 export default {
   components: {
-    BaseFadedButton,
+    FadedLink,
     BrainIcon,
     PenIcon
   },
