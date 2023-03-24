@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import BaseFlashCardItem from '@/components/globals/FlashCards/BaseFlashCardItem.vue';
+import BaseFlashCardItem from '@/components/globals/flashcards/BaseFlashCardItem.vue';
 import ArrowLeftLong from '@/components/icons/ArrowLeftLong.vue';
 import ArrowRightLong from '@/components/icons/ArrowRightLong.vue';
 

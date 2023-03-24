@@ -4,18 +4,28 @@
     <p class="flashcard__description">
       {{ description }}
     </p>
-    <BaseGhostButton class="flashcard__learn-btn" type="button">
-      <template #text>Learn</template>
-    </BaseGhostButton>
+
+    <div class="flashcard__controls">
+      <BaseFadedButton tooltip="Start reviewing">
+        <BrainIcon />
+      </BaseFadedButton>
+      <BaseFadedButton tooltip="Edit set">
+        <PenIcon />
+      </BaseFadedButton>
+    </div>
   </article>
 </template>
 
 <script>
-import BaseGhostButton from '@/components/globals/forms/BaseGhostButton.vue';
+import BaseFadedButton from '@/components/globals/button-icons/BaseFadedButton.vue';
+import BrainIcon from '@/components/icons/Brain.vue';
+import PenIcon from '@/components/icons/Pen.vue';
 
 export default {
   components: {
-    BaseGhostButton
+    BaseFadedButton,
+    BrainIcon,
+    PenIcon
   },
   props: {
     title: {
@@ -52,7 +62,6 @@ export default {
       top: 19px;
     }
   }
-
   &::after,
   &::before {
     content: '';
@@ -66,26 +75,22 @@ export default {
     box-shadow: inset 0 -1px 5px rgba(0, 0, 0, 0.06);
     border: 2px solid map.get(text.$main, 50);
   }
-
   &::before {
     width: 95%;
     top: 7px;
     z-index: -1;
   }
-
   &::after {
     width: 90%;
     top: 13px;
     z-index: -2;
   }
-
   .flashcard {
     &__title {
       font-weight: 800;
       color: map.get(text.$main, 500);
       font-size: pixels.toRem(map.get(major-second.$scale, 4));
     }
-
     &__description {
       display: -webkit-box;
       -webkit-box-orient: vertical;
@@ -96,9 +101,16 @@ export default {
       color: map.get(text.$main, 400);
       font-size: pixels.toRem(map.get(major-second.$scale, 3));
     }
-
-    &__learn-btn {
+    &__controls {
+      display: flex;
+      justify-content: flex-end;
       margin-top: pixels.toRem(15);
+      .ghost-btn {
+        margin-right: pixels.toRem(7);
+        &:last-of-type {
+          margin-right: 0;
+        }
+      }
     }
   }
 }
