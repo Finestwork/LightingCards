@@ -6,6 +6,25 @@
       @on-click="createCard"
     />
 
+    <!-- Set Controls -->
+    <div class="card__set-controls">
+      <BaseTextInput
+        class="set-control__title-txt"
+        label="Title:"
+        type="text"
+        placeholder="What's the title?"
+        id="titleTxtInput"
+      />
+
+      <BaseTextArea
+        class="set-control__description-txt"
+        label="Description:"
+        placeholder="Give your future self why you created it this "
+        id="descriptionTxtInput"
+      />
+    </div>
+
+    <!-- Flashcards -->
     <div class="card__items">
       <BaseSingleLineAlert
         class="card__error-alert"
@@ -37,8 +56,10 @@
 <script>
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import BaseSingleLineAlert from '@/components/globals/alerts/BaseSingleLine.vue';
+import BaseTextArea from '@/components/globals/forms/BaseTextArea.vue';
 import ButtonCreateCard from '@/components/multi-instnace/buttons/ButtonCreateSet.vue';
 import ButtonAddFlashcard from '@/components/multi-instnace/buttons/ButtonAddFlashcard.vue';
+import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
@@ -53,7 +74,9 @@ export default {
     BaseCardItem,
     SlickList,
     SlickItem,
-    BaseSingleLineAlert
+    BaseSingleLineAlert,
+    BaseTextArea,
+    BaseTextInput
   },
   props: {
     items: {
@@ -134,9 +157,7 @@ export default {
 @use 'sass:map';
 @use '../../assets/scss/1-settings/css-properties/colors/main';
 @use '../../assets/scss/1-settings/css-properties/font-size/major-second';
-@use '../../assets/scss/2-tools/mixins/css-properties/margin';
-@use '../../assets/scss/2-tools/mixins/css-properties/padding';
-@use '../../assets/scss/2-tools/mixins/css-properties/font-size';
+@use '../../assets/scss/2-tools/functions/convertions/pixels';
 
 // prettier-ignore
 .card {
@@ -144,41 +165,42 @@ export default {
     margin-left: auto;
   }
   &__items{
-    @include margin.top((
-      xsm: 35
-    ));
-    @include padding.bottom((
-      xsm: 50
-    ));
+    margin-top: pixels.toRem(35);
+    padding-bottom: pixels.toRem(50);
     .item{
-      @include margin.bottom((
-          xsm: 35
-      ));
+      margin-bottom: pixels.toRem(35);
       &:last-of-type{
         margin-bottom: 0;
       }
-
     }
   }
   &__error-alert{
     max-width: 450px;
     margin-left: auto;
     margin-right: auto;
-    @include margin.bottom((
-      xsm: 50
-    ));
+    margin-bottom: pixels.toRem(50);
   }
   &__add-flashcard-btn{
     width: 100%;
     max-width: 250px;
     margin-left: auto;
     margin-right: auto;
-    @include padding.vertical((
-      xsm: 20
-    ));
-    @include margin.top((
-      xsm: 35
-    ));
+    padding-top: pixels.toRem(20);
+    padding-bottom: pixels.toRem(20);
+    margin-top: pixels.toRem(35);
+  }
+  &__set-controls{
+    margin-top: pixels.toRem(25);
+    margin-bottom: pixels.toRem(35);
+
+    .set-control{
+      &__title-txt{
+        margin-bottom: pixels.toRem(15);
+      }
+      &__description{
+        min-height: 150px;
+      }
+    }
   }
 }
 </style>

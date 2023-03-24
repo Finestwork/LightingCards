@@ -3,24 +3,27 @@
     <PlainNavbar />
 
     <div class="create-card__container container--sm">
-      <div class="create-card__link-wrapper">
-        <router-link :to="{ name: 'Landing' }">Go back</router-link>
-        <BasePlayfulButton type="button">
-          <template #text>Create Card</template>
-        </BasePlayfulButton>
-      </div>
+      <TheFlashCardCreation v-model:items="sets" />
     </div>
   </div>
 </template>
 
 <script>
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
-import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
+import TheFlashCardCreation from '@/components/single-instance/TheFlashCardCreation.vue';
+
+// Helpers
+import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 
 export default {
   components: {
-    BasePlayfulButton,
-    PlainNavbar
+    PlainNavbar,
+    TheFlashCardCreation
+  },
+  data() {
+    return {
+      sets: FlashcardHelper.createDefaultCards(4)
+    };
   }
 };
 </script>

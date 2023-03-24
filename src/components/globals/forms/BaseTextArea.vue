@@ -136,8 +136,6 @@ export default {
   box-shadow-primary;
 @use '../../../assets/scss/2-tools/mixins/css-properties/box-shadow/secondary'
   as box-shadow-secondary;
-@use '../../../assets/scss/2-tools/mixins/css-properties/box-shadow/tertiary' as
-  box-shadow-tertiary;
 
 $icon-offset: 12;
 $icon-size: 12;
