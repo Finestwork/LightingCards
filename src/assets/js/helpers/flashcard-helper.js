@@ -1,5 +1,12 @@
 import { getAuth } from 'firebase/auth';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where
+} from 'firebase/firestore';
 
 import objectHash from 'object-hash';
 
@@ -48,6 +55,16 @@ export default class FlashcardHelper {
       };
 
       addDoc(COLLECTION, DATA).then(resolve).catch(reject);
+    });
+  }
+
+  // Get saved sets from database
+  static getStoredSets() {
+    return new Promise((resolve, reject) => {
+      const COLLECTION = collection(getFirestore(), 'sets');
+      const CURRENT_USER = getAuth().currentUser.uid;
+      const QUERY = query(COLLECTION, where('userId', '==', CURRENT_USER));
+      getDocs(QUERY).then(resolve).catch(reject);
     });
   }
 }

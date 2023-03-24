@@ -2,9 +2,16 @@
   <PlainNavbar />
 
   <!-- Add Validation here later -->
-  <!--  <NoFlashCards class="no-flash-cards" />-->
+
   <div class="container container--sm">
-    <TheSetSkeleton />
+    <TheSetSkeleton v-if="shouldDisplayLoader" />
+    <NoFlashCards class="no-flash-cards" v-if="shouldDisplayEmptyState" />
+    <BaseSleepingDeveloper
+      class="error-state"
+      title="Developer is sleeping!"
+      msg="Unfortunately, our system can't retrieved your saved sets from the database, don't worry, we are fixing it now."
+      v-if="shouldDisplayErrorState"
+    />
   </div>
 </template>
 
@@ -12,15 +19,74 @@
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import NoFlashCards from '@/components/globals/empty-states/NoFlashCards.vue';
 import TheSetSkeleton from '@/components/single-instance/TheSetSkeleton.vue';
+import BaseSleepingDeveloper from '@/components/globals/error-states/BaseSleepingDeveloper.vue';
+
+// Helpers
+import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
+import { useFlashCardStore } from '@/stores/flashcard';
 
 export default {
   components: {
     PlainNavbar,
-    TheSetSkeleton
+    NoFlashCards,
+    TheSetSkeleton,
+    BaseSleepingDeveloper
+  },
+  data() {
+    return {
+      isLoading: true,
+      isEmpty: false,
+      hasError: false,
+      sets: useFlashCardStore().sets
+    };
   },
   emits: ['onMounted'],
   mounted() {
     this.$emit('onMounted');
+
+    const getStoredSets = (res) => {
+      const DOCS = res.docs;
+
+      if (DOCS.length === 0) {
+        this.isLoading = false;
+        this.isEmpty = true;
+        return;
+      }
+
+      const SETS = DOCS.map((doc) => doc.data());
+      useFlashCardStore().fillSets(SETS);
+      this.isLoading = false;
+    };
+    const handleError = () => {
+      this.hasError = false;
+    };
+    FlashcardHelper.getStoredSets().then(getStoredSets).catch(handleError);
+  },
+  computed: {
+    shouldDisplayLoader() {
+      return (
+        this.isLoading &&
+        !this.isEmpty &&
+        !this.hasError &&
+        useFlashCardStore().isSetsEmpty
+      );
+    },
+    shouldDisplayEmptyState() {
+      return (
+        !this.isLoading &&
+        this.isEmpty &&
+        !this.hasError &&
+        useFlashCardStore().isSetsEmpty
+      );
+    },
+    shouldDisplayErrorState() {
+      return (
+        !this.isLoading &&
+        !this.isEmpty &&
+        this.hasError &&
+        useFlashCardStore().isSetsEmpty
+      );
+    }
   }
 };
 </script>
@@ -32,6 +98,8 @@ export default {
 // prettier-ignore
 .container {
   width: 90%;
+  height: 60vh;
+  min-height: 350px;
   @include margin.top((
       xsm: 35,
       md: 45,
@@ -41,8 +109,12 @@ export default {
   ));
 }
 
+.error-state {
+  height: 100%;
+}
+
 // prettier-ignore
-.no-flash-cards{
+.no-flash-cards {
   justify-content: center;
 }
 </style>

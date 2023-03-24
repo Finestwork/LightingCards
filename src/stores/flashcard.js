@@ -4,7 +4,10 @@ import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 const useFlashCardStore = defineStore('flashcard', {
   state: () => ({
     // An array of objects: {id: String, term: String, definition: String}
-    testItems: []
+    testItems: [],
+
+    // same with testItems prop but stored in database
+    sets: []
   }),
   actions: {
     // Overwrite all existing items in state.testItems
@@ -14,6 +17,10 @@ const useFlashCardStore = defineStore('flashcard', {
     // Clear all array items in testItems
     clearTestItems() {
       this.testItems = [];
+    },
+    // Assign a new whole value to sets, will overwrite existing items
+    fillSets(newSets) {
+      this.sets = newSets;
     }
   },
   getters: {
@@ -22,6 +29,9 @@ const useFlashCardStore = defineStore('flashcard', {
         state.testItems.length !== 0 &&
         FlashcardHelper.areAllItemsValid(state.testItems)
       );
+    },
+    isSetsEmpty(state) {
+      return state.sets.length === 0;
     }
   }
 });
