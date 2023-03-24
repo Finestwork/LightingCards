@@ -1,11 +1,8 @@
 <template>
   <article class="plain-set-flashcard">
-    <h2 class="flashcard__title">Introduction of yourself</h2>
+    <h2 class="flashcard__title">{{ title }}</h2>
     <p class="flashcard__description">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci
-      dignissimos facilis fugit ipsum itaque, labore necessitatibus neque odit
-      quis rem veritatis voluptas voluptates? Dicta iusto nesciunt porro veniam!
-      Iure, repellendus.
+      {{ description }}
     </p>
     <BaseGhostButton class="flashcard__learn-btn" type="button">
       <template #text>Learn</template>
@@ -15,9 +12,20 @@
 
 <script>
 import BaseGhostButton from '@/components/globals/forms/BaseGhostButton.vue';
+
 export default {
   components: {
     BaseGhostButton
+  },
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    }
   }
 };
 </script>
@@ -34,14 +42,17 @@ export default {
   background-color: white;
   border: 2px solid map.get(text.$main, 50);
   padding: pixels.toRem(14);
+
   &:hover {
     &::before {
       top: 13px;
     }
+
     &::after {
       top: 19px;
     }
   }
+
   &::after,
   &::before {
     content: '';
@@ -61,6 +72,7 @@ export default {
     top: 7px;
     z-index: -1;
   }
+
   &::after {
     width: 90%;
     top: 13px;
@@ -73,6 +85,7 @@ export default {
       color: map.get(text.$main, 500);
       font-size: pixels.toRem(map.get(major-second.$scale, 4));
     }
+
     &__description {
       display: -webkit-box;
       -webkit-box-orient: vertical;
@@ -83,6 +96,7 @@ export default {
       color: map.get(text.$main, 400);
       font-size: pixels.toRem(map.get(major-second.$scale, 3));
     }
+
     &__learn-btn {
       margin-top: pixels.toRem(15);
     }

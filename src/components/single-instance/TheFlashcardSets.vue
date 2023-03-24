@@ -11,8 +11,8 @@
     </div>
 
     <div class="sets__set-wrapper row">
-      <div class="col-xsm-12 col-sm-6 col-md-4" v-for="n in 6" :key="n">
-        <BasePlainCardSet />
+      <div class="col-xsm-12 col-sm-6 col-md-4" v-for="set in sets" :key="set">
+        <BasePlainCardSet :title="set.title" :description="set.description" />
       </div>
     </div>
   </div>
