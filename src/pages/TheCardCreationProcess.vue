@@ -5,7 +5,7 @@
     <div class="create-card__container container--sm">
       <BasePlainBreadcrumbs :links="breadcrumbs" />
       <TheFlashCardCreation
-        @create-card="redirectToLandingPage"
+        @create-card="setCreatedSuccessfully"
         :items="sets"
       />
     </div>
@@ -19,6 +19,9 @@ import TheFlashCardCreation from '@/components/single-instance/TheFlashCardCreat
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
+
+// NPM
+import { useToast } from 'vue-toastification';
 
 export default {
   components: {
@@ -42,6 +45,12 @@ export default {
     };
   },
   methods: {
+    setCreatedSuccessfully() {
+      useToast().success('Successfully created', {
+        timeout: 6000
+      });
+      this.$router.push({ name: 'Landing' });
+    },
     redirectToLandingPage() {
       this.$router.push({ name: 'Landing' });
     }

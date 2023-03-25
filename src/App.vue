@@ -10,6 +10,7 @@ import 'nprogress/nprogress.css';
 <style lang="scss">
 @use 'sass:map';
 @use 'src/assets/scss/1-settings/css-properties/colors/main';
+@use 'src/assets/scss/1-settings/css-properties/colors/safety';
 @use 'src/assets/scss/1-settings/css-properties/font-size/major-second';
 @use 'src/assets/scss/2-tools/functions/convertions/pixels';
 @use 'src/assets/scss/3-elements/wildcard.scss';
@@ -18,15 +19,16 @@ import 'nprogress/nprogress.css';
 
 // To increase specificity since some libraries are injected in head
 body {
+  /* NProgress */
   #nprogress .bar {
     background: map.get(main.$primary, 600);
     box-shadow: 0 0 10px map.get(main.$primary, 600);
   }
-
   #nprogress .peg {
     box-shadow: none;
   }
 
+  /* Floating Vue */
   .v-popper--theme-tooltip {
     .v-popper__inner {
       font-weight: 700;
@@ -56,6 +58,31 @@ body {
     &.v-popper__popper.v-popper__popper--show-to .v-popper__wrapper,
     &.v-popper__popper.v-popper__popper--hide-to .v-popper__wrapper {
       transition: transform 0.15s;
+    }
+  }
+
+  /* Vue Toastification */
+  .Vue-Toastification__toast {
+    min-width: unset;
+    font-family: inherit;
+    padding: pixels.toRem(20);
+    &--success {
+      background-color: map.get(safety.$success, 600);
+    }
+    .Vue-Toastification {
+      &__icon {
+        width: 16px;
+        margin-right: pixels.toRem(7);
+      }
+      &__toast-body {
+        font-weight: 700;
+        font-size: pixels.toRem(map.get(major-second.$scale, 3));
+      }
+      &__close-button {
+        line-height: unset;
+        font-size: unset;
+        margin-left: pixels.toRem(25);
+      }
     }
   }
 }
