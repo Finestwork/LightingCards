@@ -16,7 +16,7 @@ const ROUTES = [
     name: 'Login',
     component: () => import('@/pages/TheAuthentication.vue'),
     meta: {
-      authLock: true
+      public: true
     }
   },
   {
@@ -24,7 +24,7 @@ const ROUTES = [
     name: 'Signup',
     component: () => import('@/pages/TheAuthentication.vue'),
     meta: {
-      authLock: true
+      public: true
     }
   },
   {
@@ -32,7 +32,7 @@ const ROUTES = [
     name: 'CardCreationTest',
     component: () => import('@/pages/PageTest/TheCardCreationTest.vue'),
     meta: {
-      authLock: true
+      public: true
     }
   },
   {
@@ -49,13 +49,21 @@ const ROUTES = [
       next();
     },
     meta: {
-      authLock: true
+      public: true
     }
   },
   {
     path: '/create-card',
     name: 'CardCreationProcess',
     component: () => import('@/pages/TheCardCreationProcess.vue'),
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: '/review/:id',
+    name: 'ReviewFlashcard',
+    component: () => import('@/pages/TheReviewFlashcard.vue'),
     meta: {
       auth: true
     }
@@ -74,7 +82,7 @@ router.beforeEach((to, from, next) => {
   }
 
   // If user is already authenticated, do not visit the site
-  if (to.meta.authLock) {
+  if (to.meta.public) {
     FirebaseHelper.getCurrentUser()
       .then((user) => {
         if (user) next({ name: 'Landing' });

@@ -4,7 +4,10 @@
 
     <div class="create-card__container container--sm">
       <BasePlainBreadcrumbs :links="breadcrumbs" />
-      <TheFlashCardCreation @create-card="createSet" :items="sets" />
+      <TheFlashCardCreation
+        @create-card="redirectToLandingPage"
+        :items="sets"
+      />
     </div>
   </div>
 </template>
@@ -39,9 +42,6 @@ export default {
     };
   },
   methods: {
-    createSet(res) {
-      console.log('CREATE PINIA HERE');
-    },
     redirectToLandingPage() {
       this.$router.push({ name: 'Landing' });
     }
