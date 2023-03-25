@@ -42,8 +42,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:map';
+@use '../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../assets/scss/2-tools/mixins/css-properties/margin';
 @use '../assets/scss/2-tools/mixins/css-properties/width-and-height';
+@use '../assets/scss/2-tools/mixins/css-properties/font-size';
 @use '../assets/scss/2-tools/mixins/css-properties/all-properties';
 @use '../assets/scss/4-layouts/containers';
 
@@ -58,6 +61,16 @@ export default {
       @include margin.bottom((
         xsm:35
       ));
+      .breadcrumb__link{
+        @include font-size.responsive((
+          lg: map.get(major-second.$scale, 3)
+        ));
+      }
+      .breadcrumb__icon{
+        @include margin.horizontal((
+          lg: 7
+        ));
+      }
     }
     :deep(.card__set-controls){
       @include all-properties.init((
