@@ -8,20 +8,41 @@
 
     <!-- Set Controls -->
     <div class="card__set-controls">
-      <BaseTextInput
-        class="set-control__title-txt"
-        label="Title:"
-        type="text"
-        placeholder="What's the title?"
-        id="titleTxtInput"
-      />
+      <div class="set-control__form-fields">
+        <BaseTextInput
+          class="set-control__title-txt"
+          label="Title:"
+          type="text"
+          placeholder="What's the title?"
+          id="titleTxtInput"
+        />
+        <BaseTextArea
+          class="set-control__description-txt"
+          label="Description:"
+          placeholder="Give your future self why you created it this set"
+          id="descriptionTxtInput"
+        />
+      </div>
 
-      <BaseTextArea
-        class="set-control__description-txt"
-        label="Description:"
-        placeholder="Give your future self why you created it this set"
-        id="descriptionTxtInput"
-      />
+      <div class="set-control__form-switches">
+        <BaseSwitch
+          label="Open to public"
+          type="checkbox"
+          name="openToPublicRadBtn"
+          id="openToPublicRadBtn"
+          helper-text="This means that even if people have the link, they can't join because your flashcard has a password."
+          v-model="isOpenToPublic"
+        />
+        <BaseSwitch
+          label="Anyone can edit"
+          type="checkbox"
+          name="canAnyoneEditRadBtn"
+          id="canAnyoneEditRadBtn"
+          helper-text="When your set is publicly published, anyone who joined will have an access and able to edit the set."
+          :disabled="!isOpenToPublic"
+          v-model="canAnyoneEdit"
+        />
+      </div>
     </div>
 
     <!-- Flashcards -->
@@ -32,6 +53,7 @@
       >
         <template #text>{{ errorAlertText }}</template>
       </BaseSingleLineAlert>
+
       <SlickList axis="y" :useDragHandle="true" v-model:list="flashCardItems">
         <SlickItem
           v-for="(list, ind) in flashCardItems"
@@ -57,6 +79,7 @@
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import BaseSingleLineAlert from '@/components/globals/alerts/BaseSingleLine.vue';
 import BaseTextArea from '@/components/globals/forms/BaseTextArea.vue';
+import BaseSwitch from '@/components/globals/forms/BaseSwitch.vue';
 import ButtonCreateCard from '@/components/multi-instnace/buttons/ButtonCreateSet.vue';
 import ButtonAddFlashcard from '@/components/multi-instnace/buttons/ButtonAddFlashcard.vue';
 import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
@@ -69,14 +92,15 @@ import { SlickItem, SlickList } from 'vue-slicksort';
 
 export default {
   components: {
-    ButtonCreateCard,
-    ButtonAddFlashcard,
-    BaseCardItem,
-    SlickList,
-    SlickItem,
     BaseSingleLineAlert,
     BaseTextArea,
-    BaseTextInput
+    BaseTextInput,
+    BaseCardItem,
+    BaseSwitch,
+    ButtonCreateCard,
+    ButtonAddFlashcard,
+    SlickList,
+    SlickItem
   },
   props: {
     items: {
@@ -89,7 +113,10 @@ export default {
       isPublic: true,
       errorAlertText: '',
       isCreateCardLoading: false,
-      flashCardItems: this.items
+      flashCardItems: this.items,
+      isOpenToPublic: false,
+      canAnyoneEdit: false,
+      shouldGeneratePassword: false
     };
   },
   emits: ['update:items', 'createCard'],
@@ -148,6 +175,9 @@ export default {
         this.$emit('update:items', flashCardItems);
       },
       immediate: true
+    },
+    isOpenToPublic(isOpenToPublic) {
+      if (!isOpenToPublic) this.canAnyoneEdit = false;
     }
   }
 };
@@ -191,7 +221,7 @@ export default {
   }
   &__set-controls{
     margin-top: pixels.toRem(25);
-    margin-bottom: pixels.toRem(40);
+    margin-bottom: pixels.toRem(50);
 
     .set-control{
       &__title-txt{
@@ -200,6 +230,15 @@ export default {
       &__description-txt{
         :deep(textarea){
           height: 150px;
+        }
+      }
+      &__form-switches{
+        margin-top: pixels.toRem(35);
+        :deep(.switch){
+          margin-bottom: pixels.toRem(25);
+          &:last-of-type{
+            margin-bottom: 0;
+          }
         }
       }
     }

@@ -8,6 +8,7 @@
         :name="name"
         :value="value"
         :checked="checked"
+        :disabled="disabled"
         @input="onChange"
       />
       <button
@@ -43,16 +44,18 @@ export default {
       required: true
     },
     value: {
-      type: String,
-      required: true
+      default: ''
     },
     modelValue: {
-      type: Boolean,
-      required: true
+      type: Boolean
     },
     helperText: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -75,6 +78,14 @@ export default {
     shouldDisplayHelperText() {
       const TEXT = this.helperText.trim();
       return TEXT !== '' && TEXT.length !== 0;
+    }
+  },
+  watch: {
+    modelValue: {
+      handler(modelValue) {
+        this.checked = modelValue;
+      },
+      immediate: true
     }
   }
 };
@@ -102,7 +113,6 @@ export default {
         background-color: darken(map.get(main.$primary, 200), 5%);
       }
     }
-
     &:checked {
       ~ .switch__indicator {
         background-color: map.get(main.$primary, 600);
@@ -113,10 +123,17 @@ export default {
         }
       }
     }
-
     &:active {
       ~ .switch__indicator::before {
         width: 60%;
+      }
+    }
+    &:disabled {
+      ~ .switch__indicator {
+        background-color: map.get(text.$main, 100);
+        &::before {
+          background-color: darken(map.get(text.$main, 100), 15%);
+        }
       }
     }
   }
@@ -135,7 +152,7 @@ export default {
 
   &__indicator {
     display: flex;
-    width: 50px;
+    width: 45px;
     height: 25px;
     border-radius: 99rem;
     position: relative;
@@ -167,7 +184,7 @@ export default {
     font-weight: 600;
     margin-top: pixels.toRem(3);
     color: map.get(text.$main, 600);
-    font-size: pixels.toRem(map.get(major-second.$scale, 3));
+    font-size: pixels.toRem(map.get(major-second.$scale, 2));
   }
 }
 </style>
