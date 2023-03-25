@@ -38,7 +38,7 @@
           type="checkbox"
           name="canAnyoneEditRadBtn"
           id="canAnyoneEditRadBtn"
-          helper-text="When your set is publicly published, anyone who joined will have an access and able to edit the set."
+          :helper-text="switchAnyoneCanEditTxt"
           :disabled="!isOpenToPublic"
           v-model="canAnyoneEdit"
         />
@@ -116,7 +116,8 @@ export default {
       flashCardItems: this.items,
       isOpenToPublic: false,
       canAnyoneEdit: false,
-      shouldGeneratePassword: false
+      shouldGeneratePassword: false,
+      switchAnyoneCanEditTxt: 'Disabled because your set is not open to public.'
     };
   },
   emits: ['update:items', 'createCard'],
@@ -177,7 +178,14 @@ export default {
       immediate: true
     },
     isOpenToPublic(isOpenToPublic) {
-      if (!isOpenToPublic) this.canAnyoneEdit = false;
+      if (isOpenToPublic) {
+        this.switchAnyoneCanEditTxt =
+          'When your set is publicly published, anyone who joined will have an access and able to edit the set.';
+      } else {
+        this.canAnyoneEdit = false;
+        this.switchAnyoneCanEditTxt =
+          'Disabled because your set is not open to public.';
+      }
     }
   }
 };
