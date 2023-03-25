@@ -46,17 +46,26 @@ export default class FlashcardHelper {
   }
 
   // Stores in the database
-  static createTestSet(set) {
+  static createSet({
+    title,
+    description,
+    sets,
+    isOpenToPublic,
+    canAnyoneEdit
+  }) {
     return new Promise((resolve, reject) => {
       const COLLECTION = collection(getFirestore(), 'sets');
       const DATA = {
+        id: objectHash(Date.now() + title, {
+          algorithm: 'md5',
+          encoding: 'base64'
+        }),
         userId: getAuth().currentUser.uid,
-        title: 'Unsaved flashcard',
-        description: 'Unsaved description',
-        sets: set,
-        public: false,
-        canAnyoneEdit: false,
-        password: ''
+        title: title,
+        description: description,
+        sets: sets,
+        isOpenToPublic: isOpenToPublic,
+        canAnyoneEdit: canAnyoneEdit
       };
 
       addDoc(COLLECTION, DATA).then(resolve).catch(reject);

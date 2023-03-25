@@ -4,7 +4,7 @@
 
     <div class="create-card__container container--sm">
       <BasePlainBreadcrumbs :links="breadcrumbs" />
-      <TheFlashCardCreation v-model:items="sets" />
+      <TheFlashCardCreation @create-card="createSet" :items="sets" />
     </div>
   </div>
 </template>
@@ -35,8 +35,13 @@ export default {
           to: { name: 'CardCreationProcess' }
         }
       ],
-      sets: FlashcardHelper.createDefaultCards(4)
+      sets: FlashcardHelper.createDefaultCards(2)
     };
+  },
+  methods: {
+    createSet(res) {
+      console.log('CREATE PINIA HERE');
+    }
   }
 };
 </script>

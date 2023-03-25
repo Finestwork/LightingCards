@@ -6,8 +6,15 @@
       @on-click="createCard"
     />
 
+    <BaseSingleLineAlert
+      class="card__error-alert"
+      v-if="shouldDisplayErrorAlert"
+    >
+      <template #text>{{ errorAlertText }}</template>
+    </BaseSingleLineAlert>
+
     <!-- Set Controls -->
-    <div class="card__set-controls">
+    <div class="card__set-controls" v-if="areSettingsAllowed">
       <div class="set-control__form-fields">
         <BaseTextInput
           class="set-control__title-txt"
@@ -15,12 +22,14 @@
           type="text"
           placeholder="What's the title?"
           id="titleTxtInput"
+          v-model="titleText"
         />
         <BaseTextArea
           class="set-control__description-txt"
           label="Description:"
           placeholder="Give your future self why you created it this set"
           id="descriptionTxtInput"
+          v-model="descriptionText"
         />
       </div>
 
@@ -47,13 +56,6 @@
 
     <!-- Flashcards -->
     <div class="card__items">
-      <BaseSingleLineAlert
-        class="card__error-alert"
-        v-if="shouldDisplayErrorAlert"
-      >
-        <template #text>{{ errorAlertText }}</template>
-      </BaseSingleLineAlert>
-
       <SlickList axis="y" :useDragHandle="true" v-model:list="flashCardItems">
         <SlickItem
           v-for="(list, ind) in flashCardItems"
@@ -86,6 +88,8 @@ import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
+import FormValidationHelper from '@/assets/js/helpers/form-validation-helper';
+import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 
 // NPM
 import { SlickItem, SlickList } from 'vue-slicksort';
@@ -106,17 +110,22 @@ export default {
     items: {
       type: Array,
       required: true
+    },
+    areSettingsAllowed: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
       isPublic: true,
       errorAlertText: '',
-      isCreateCardLoading: false,
-      flashCardItems: this.items,
+      titleText: '',
+      descriptionText: '',
       isOpenToPublic: false,
       canAnyoneEdit: false,
-      shouldGeneratePassword: false,
+      isCreateCardLoading: false,
+      flashCardItems: this.items,
       switchAnyoneCanEditTxt: 'Disabled because your set is not open to public.'
     };
   },
@@ -125,23 +134,58 @@ export default {
     createCard(e) {
       this.isCreateCardLoading = true;
       this.errorAlertText = '';
-
-      if (!FlashcardHelper.isArrayLengthValid(this.flashCardItems)) {
+      const createErrorAlert = (alertTxt) => {
         this.isCreateCardLoading = false;
         e.currentTarget.blur();
-        this.errorAlertText = '• Flash cards should not be less than 2.';
+        this.errorAlertText = alertTxt;
+      };
+
+      if (!FlashcardHelper.isArrayLengthValid(this.flashCardItems)) {
+        createErrorAlert('• Flash cards should not be less than 2.');
         return;
       }
 
       if (!FlashcardHelper.areAllItemsValid(this.flashCardItems)) {
-        this.isCreateCardLoading = false;
-        e.currentTarget.blur();
-        this.errorAlertText =
-          '• There are items that are left blank, please check it.';
+        createErrorAlert(
+          '• There are items that are left blank, please check it.'
+        );
         return;
       }
 
-      this.$emit('createCard');
+      // If settings are not allowed then emit without validating the settings
+      if (!this.areSettingsAllowed) {
+        this.$emit('createCard');
+        return;
+      }
+
+      if (FormValidationHelper.isEmpty(this.titleText)) {
+        createErrorAlert('• Title field is empty.');
+        return;
+      }
+
+      if (FormValidationHelper.isEmpty(this.descriptionText)) {
+        createErrorAlert('• Description field is empty.');
+        return;
+      }
+
+      FlashcardHelper.createSet({
+        title: this.titleText,
+        description: this.descriptionText,
+        isOpenToPublic: this.isOpenToPublic,
+        canAnyoneEdit: this.canAnyoneEdit,
+        sets: this.flashCardItems
+      })
+        .then((res) => {
+          this.$emit('createCard', res);
+        })
+        .catch((err) => {
+          if (!err.code) {
+            createErrorAlert("• Uh-oh! Can't create set, please try again.");
+            return;
+          }
+          const ERR_CODE = FirebaseHelper.getErrors[err.code];
+          createErrorAlert(`• ${ERR_CODE}`);
+        });
     },
     addCard(e) {
       e.currentTarget.blur(); // For bouncy effect
@@ -158,8 +202,6 @@ export default {
       const IND = PARENT.dataset.index;
 
       this.flashCardItems.splice(parseInt(IND), 1);
-
-      this.$emit('update:items', this.flashCardItems);
     }
   },
   computed: {
@@ -171,12 +213,6 @@ export default {
     }
   },
   watch: {
-    flashCardItems: {
-      handler(flashCardItems) {
-        this.$emit('update:items', flashCardItems);
-      },
-      immediate: true
-    },
     isOpenToPublic(isOpenToPublic) {
       if (isOpenToPublic) {
         this.switchAnyoneCanEditTxt =
@@ -202,23 +238,26 @@ export default {
   &__create-btn {
     margin-left: auto;
   }
-  &__items{
+
+  &__items {
     margin-top: pixels.toRem(35);
     padding-bottom: pixels.toRem(50);
-    .item{
+
+    .item {
       margin-bottom: pixels.toRem(35);
-      &:last-of-type{
+
+      &:last-of-type {
         margin-bottom: 0;
       }
     }
   }
-  &__error-alert{
+
+  &__error-alert {
     max-width: 450px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: pixels.toRem(50);
+    margin: pixels.toRem(50) auto pixels.toRem(40) auto;
   }
-  &__add-flashcard-btn{
+
+  &__add-flashcard-btn {
     width: 100%;
     max-width: 250px;
     margin-left: auto;
@@ -227,24 +266,28 @@ export default {
     padding-bottom: pixels.toRem(20);
     margin-top: pixels.toRem(35);
   }
-  &__set-controls{
-    margin-top: pixels.toRem(25);
+
+  &__set-controls {
     margin-bottom: pixels.toRem(50);
 
-    .set-control{
-      &__title-txt{
+    .set-control {
+      &__title-txt {
         margin-bottom: pixels.toRem(15);
       }
-      &__description-txt{
-        :deep(textarea){
+
+      &__description-txt {
+        :deep(textarea) {
           height: 150px;
         }
       }
-      &__form-switches{
+
+      &__form-switches {
         margin-top: pixels.toRem(35);
-        :deep(.switch){
+
+        :deep(.switch) {
           margin-bottom: pixels.toRem(25);
-          &:last-of-type{
+
+          &:last-of-type {
             margin-bottom: 0;
           }
         }
