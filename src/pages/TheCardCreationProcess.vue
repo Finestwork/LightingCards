@@ -54,6 +54,11 @@ export default {
     @include margin.top((
         xsm: 50
     ));
+    :deep(.plain-breadcrumbs){
+      @include margin.bottom((
+        xsm:35
+      ));
+    }
     :deep(.card__set-controls){
       @include all-properties.init((
         md: (

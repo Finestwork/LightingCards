@@ -71,6 +71,7 @@ export default {
       font-weight: 700;
       outline: none;
       border-radius: 4px;
+      font-size: pixels.toRem(map.get(major-second.$scale, 2));
       transition: box-shadow-transition.$transition-easeInOutQuad;
       color: map.get(main.$secondary, 500);
       &:focus,
@@ -85,7 +86,7 @@ export default {
       &.router-link-active.router-link-exact-active {
         cursor: text;
         text-decoration: none;
-        color: map.get(text.$main, 700);
+        color: map.get(text.$main, 500);
         &:focus {
           box-shadow: none;
         }
@@ -93,15 +94,15 @@ export default {
     }
     &__icon {
       display: flex;
-      width: 10px;
-      margin-left: pixels.toRem(7);
-      margin-right: pixels.toRem(7);
+      width: 7px;
+      margin-left: pixels.toRem(4);
+      margin-right: pixels.toRem(4);
       :deep(svg) {
         display: block;
         width: 100%;
         height: 100%;
         path {
-          fill: map.get(text.$main, 700);
+          fill: map.get(text.$main, 500);
         }
       }
     }
