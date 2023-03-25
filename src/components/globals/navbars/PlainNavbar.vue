@@ -86,7 +86,7 @@ export default {
     logoutUser() {
       this.shouldShowPageBlocker = true;
       FirebaseHelper.signout()
-        .then(() => this.$emit('successfullyLoggedOut'))
+        .then(() => this.$router.push({ name: 'Landing' }))
         .catch(() => {
           this.shouldShowPageBlocker = false;
         });

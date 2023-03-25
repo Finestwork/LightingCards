@@ -4,6 +4,7 @@ import {
   collection,
   addDoc,
   getDocs,
+  limit,
   query,
   where
 } from 'firebase/firestore';
@@ -78,6 +79,15 @@ export default class FlashcardHelper {
       const COLLECTION = collection(getFirestore(), 'sets');
       const CURRENT_USER = getAuth().currentUser.uid;
       const QUERY = query(COLLECTION, where('userId', '==', CURRENT_USER));
+      getDocs(QUERY).then(resolve).catch(reject);
+    });
+  }
+
+  // Get set items from database
+  static getSetItems(setId) {
+    return new Promise((resolve, reject) => {
+      const COLLECTION = collection(getFirestore(), 'sets');
+      const QUERY = query(COLLECTION, where('id', '==', setId), limit(1));
       getDocs(QUERY).then(resolve).catch(reject);
     });
   }

@@ -38,6 +38,13 @@ export default class FirebaseHelper {
    * Methods
    * =========
    */
+
+  // Just get the current status of user (logged-in or logged-out)
+  static getUserStatus() {
+    return getAuth().currentUser;
+  }
+
+  // Get live status of current user
   static getCurrentUser() {
     return new Promise((resolve, reject) => {
       const subscribe = onAuthStateChanged(

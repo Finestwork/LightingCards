@@ -64,6 +64,7 @@ const ROUTES = [
     path: '/review/:id',
     name: 'ReviewFlashcard',
     component: () => import('@/pages/TheReviewFlashcard.vue'),
+    props: true,
     meta: {
       auth: true
     }
@@ -97,9 +98,9 @@ router.beforeEach((to, from, next) => {
     FirebaseHelper.getCurrentUser()
       .then((user) => {
         if (user) next();
-        else next({ name: 'Landing' });
+        else next({ name: 'Login' });
       })
-      .catch(() => next({ name: 'Landing' }));
+      .catch(() => next({ name: 'Login' }));
 
     return;
   }

@@ -6,7 +6,10 @@
     </p>
 
     <div class="flashcard__controls">
-      <FadedLink tooltip="Start reviewing" :to="{ name: 'Landing' }">
+      <FadedLink
+        tooltip="Start reviewing"
+        :to="{ name: 'ReviewFlashcard', params: { id: setId } }"
+      >
         <BrainIcon />
       </FadedLink>
       <FadedLink tooltip="Edit set" :to="{ name: 'Landing' }">
@@ -28,6 +31,10 @@ export default {
     PenIcon
   },
   props: {
+    setId: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true

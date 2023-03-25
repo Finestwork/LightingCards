@@ -1,6 +1,6 @@
 <template>
   <div class="create-card">
-    <PlainNavbar @successfully-logged-out="redirectToLandingPage" />
+    <PlainNavbar />
 
     <div class="create-card__container container--sm">
       <BasePlainBreadcrumbs :links="breadcrumbs" />
@@ -49,9 +49,6 @@ export default {
       useToast().success('Successfully created', {
         timeout: 6000
       });
-      this.$router.push({ name: 'Landing' });
-    },
-    redirectToLandingPage() {
       this.$router.push({ name: 'Landing' });
     }
   }
