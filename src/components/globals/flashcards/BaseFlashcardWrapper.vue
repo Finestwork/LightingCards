@@ -113,7 +113,6 @@ export default {
 @use '../../../assets/scss/2-tools/functions/convertions/pixels';
 
 .flashcard {
-  width: 90%;
   max-width: 350px;
   margin-right: auto;
   margin-left: auto;

@@ -1,12 +1,12 @@
 <template>
-  <router-link :class="$style['playful-link']" :to="to">
-    <span :class="$style['link__leading-icon']" v-if="shouldShowLeadingIcon">
+  <router-link class="playful-link" :to="to">
+    <span class="link__leading-icon" v-if="shouldShowLeadingIcon">
       <slot name="leadingIcon"></slot>
     </span>
 
     <slot name="text"></slot>
 
-    <span :class="$style['link__trailing-icon']" v-if="shouldShowTrailingIcon">
+    <span class="link__trailing-icon" v-if="shouldShowTrailingIcon">
       <slot name="trailingIcon"></slot>
     </span>
   </router-link>
@@ -35,7 +35,7 @@ export default {
 };
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @use 'sass:map';
 @use '../../../assets/scss/1-settings/css-properties/font-size/major-second';
 @use '../../../assets/scss/1-settings/css-properties/colors/main';

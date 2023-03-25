@@ -68,6 +68,15 @@ const ROUTES = [
     meta: {
       auth: true
     }
+  },
+  {
+    path: '/edit/:id',
+    name: 'EditFlashcard',
+    component: () => import('@/pages/TheFlashCardEditor.vue'),
+    props: true,
+    meta: {
+      auth: true
+    }
   }
 ];
 const router = createRouter({
