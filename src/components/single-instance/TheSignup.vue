@@ -152,12 +152,18 @@ export default {
         }
 
         // Also save previously created work, if it failed, no need to prompt it to user
-        FlashcardHelper.createTestSet(useFlashCardStore().testItems).then(
-          () => {
-            this.$router.push({ name: 'Landing' });
-            useFlashCardStore().clearTestItems();
-          }
-        );
+        const DATA = {
+          title: 'Unsaved work',
+          description: 'No description',
+          sets: useFlashCardStore().testItems,
+          isOpenToPublic: false,
+          canAnyoneEdit: false
+        };
+
+        FlashcardHelper.createSet(DATA).then(() => {
+          this.$router.push({ name: 'Landing' });
+          useFlashCardStore().clearTestItems();
+        });
       };
       const handleRegistrationError = (err) => {
         if (!err.code) {

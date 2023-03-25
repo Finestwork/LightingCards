@@ -95,13 +95,19 @@ export default {
           return;
         }
 
-        // Also save previously created work, if it failed, no need to prompt it to user
-        FlashcardHelper.createTestSet(useFlashCardStore().testItems).then(
-          () => {
-            this.$router.push({ name: 'Landing' });
-            useFlashCardStore().clearTestItems();
-          }
-        );
+        // Also save previously created work, if it failed then no need to prompt it to user
+        const DATA = {
+          title: 'Unsaved work',
+          description: 'No description',
+          sets: useFlashCardStore().testItems,
+          isOpenToPublic: false,
+          canAnyoneEdit: false
+        };
+        FlashcardHelper.createSet(DATA).then(() => {
+          this.$router.push({ name: 'Landing' });
+          useFlashCardStore().clearTestItems();
+        });
+
         this.$router.push({ name: 'Landing' });
       };
       const handleError = (err) => {
@@ -140,9 +146,9 @@ export default {
   margin-right: auto;
   margin-left: auto;
 
-  &__error-alert{
+  &__error-alert {
     @include margin.bottom((
-      xsm: 25
+        xsm: 25
     ));
   }
 

@@ -14,6 +14,7 @@
 
       <TheFlashCardCreation
         class="test__card-creation-wrapper"
+        :are-settings-allowed="false"
         @create-card="createCard"
         v-model:items="flashCardItems"
       />
