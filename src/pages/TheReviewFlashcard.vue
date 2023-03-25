@@ -2,11 +2,19 @@
   <PlainNavbar />
 
   <div class="container container--sm">
-    <div v-if="shouldDisplayFlashcards">
-      <BasePlayfulLink :to="{ name: 'EditFlashcard' }">
-        <template #text>Finish</template>
-      </BasePlayfulLink>
-      <BaseFlashcardWrapper :items="sets" />
+    <BaseShapeSwapping v-if="shouldDisplayLoader">
+      <template #msg
+        >Please wait while we fetch your flashcards - in just a moment, you'll
+        be on your way to mastering your chosen topic!</template
+      >
+    </BaseShapeSwapping>
+    <div class="flashcard-wrapper">
+      <div v-if="shouldDisplayFlashcards">
+        <BasePlayfulLink :to="{ name: 'EditFlashcard' }">
+          <template #text>Finish</template>
+        </BasePlayfulLink>
+        <BaseFlashcardWrapper :items="sets" />
+      </div>
     </div>
   </div>
 </template>
@@ -15,6 +23,7 @@
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BaseFlashcardWrapper from '@/components/globals/flashcards/BaseFlashcardWrapper.vue';
 import BasePlayfulLink from '@/components/globals/links/BasePlayfulLink.vue';
+import BaseShapeSwapping from '@/components/globals/lottie/BaseShapeSwapping.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
@@ -24,7 +33,8 @@ export default {
   components: {
     PlainNavbar,
     BaseFlashcardWrapper,
-    BasePlayfulLink
+    BasePlayfulLink,
+    BaseShapeSwapping
   },
   props: {
     // router parameter
@@ -35,6 +45,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       sets: []
     };
   },
@@ -54,10 +65,14 @@ export default {
         return;
       }
 
-      this.sets = DOC.sets;
-      console.table(DOC);
+      // Add delay to avoid content-jumping
+      setTimeout(() => {
+        this.isLoading = false;
+        this.sets = DOC.sets;
+      }, 1000);
     };
     const handleError = (err) => {
+      this.isLoading = false;
       // Show server error page
       console.dir(err);
     };
@@ -65,7 +80,10 @@ export default {
   },
   computed: {
     shouldDisplayFlashcards() {
-      return this.sets.length !== 0;
+      return this.sets.length !== 0 && !this.isLoading;
+    },
+    shouldDisplayLoader() {
+      return this.isLoading && this.sets.length === 0;
     }
   }
 };
@@ -78,9 +96,13 @@ export default {
 // prettier-ignore
 .container {
   width: 90%;
-  @include margin.top((
-    xsm: 50
-  ));
+  .loader{
+    height: 100vh;
+    justify-content: center;
+    &__anim{
+      width: 125px;
+    }
+  }
   .playful-link {
     margin-left: auto;
     max-width: 80px;
@@ -90,6 +112,11 @@ export default {
   }
   .flashcard{
     max-width: 600px;
+  }
+  .flashcard-wrapper{
+    @include margin.top((
+        xsm: 50
+    ));
   }
 }
 </style>
