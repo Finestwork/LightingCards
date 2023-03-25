@@ -3,6 +3,7 @@
     <PlainNavbar />
 
     <div class="create-card__container container--sm">
+      <BasePlainBreadcrumbs :links="breadcrumbs" />
       <TheFlashCardCreation v-model:items="sets" />
     </div>
   </div>
@@ -10,6 +11,7 @@
 
 <script>
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
+import BasePlainBreadcrumbs from '@/components/globals/breadcrumbs/BasePlainBreadcrumbs.vue';
 import TheFlashCardCreation from '@/components/single-instance/TheFlashCardCreation.vue';
 
 // Helpers
@@ -18,10 +20,21 @@ import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 export default {
   components: {
     PlainNavbar,
-    TheFlashCardCreation
+    TheFlashCardCreation,
+    BasePlainBreadcrumbs
   },
   data() {
     return {
+      breadcrumbs: [
+        {
+          text: 'Home',
+          to: { name: 'Landing' }
+        },
+        {
+          text: 'Create Card',
+          to: { name: 'CardCreationProcess' }
+        }
+      ],
       sets: FlashcardHelper.createDefaultCards(4)
     };
   }
