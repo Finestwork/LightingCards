@@ -79,6 +79,7 @@ import FormValidationHelper from '@/assets/js/helpers/form-validation-helper';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 import { useFlashCardStore } from '@/stores/flashcard';
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
+import { useToast } from 'vue-toastification';
 
 export default {
   components: {
@@ -160,10 +161,19 @@ export default {
           canAnyoneEdit: false
         };
 
-        FlashcardHelper.createSet(DATA).then(() => {
-          this.$router.push({ name: 'Landing' });
-          useFlashCardStore().clearTestItems();
-        });
+        FlashcardHelper.createSet(DATA)
+          .then(() => {
+            this.$router.push({ name: 'Landing' });
+            useFlashCardStore().clearTestItems();
+          })
+          .catch(() => {
+            useToast().error(
+              'Unable to store your sets, you may create new one.',
+              {
+                timeout: 6000
+              }
+            );
+          });
       };
       const handleRegistrationError = (err) => {
         if (!err.code) {

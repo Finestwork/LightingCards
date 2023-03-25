@@ -52,6 +52,7 @@ import { useFlashCardStore } from '@/stores/flashcard';
 
 // NPM
 import isEmail from 'validator/es/lib/isEmail';
+import { useToast } from 'vue-toastification';
 
 export default {
   components: {
@@ -103,10 +104,19 @@ export default {
           isOpenToPublic: false,
           canAnyoneEdit: false
         };
-        FlashcardHelper.createSet(DATA).then(() => {
-          this.$router.push({ name: 'Landing' });
-          useFlashCardStore().clearTestItems();
-        });
+        FlashcardHelper.createSet(DATA)
+          .then(() => {
+            this.$router.push({ name: 'Landing' });
+            useFlashCardStore().clearTestItems();
+          })
+          .catch(() => {
+            useToast().error(
+              'Unable to store your sets, you may create new one.',
+              {
+                timeout: 6000
+              }
+            );
+          });
 
         this.$router.push({ name: 'Landing' });
       };
