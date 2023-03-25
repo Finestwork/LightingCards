@@ -67,6 +67,7 @@ export default {
     isSidebarShown: false,
     shouldShowPageBlocker: false
   }),
+  emits: ['successfullyLoggedOut'],
   mounted() {
     window.addEventListener('resize', this.hideSidebarOnLargerViewport);
   },
@@ -84,9 +85,11 @@ export default {
     },
     logoutUser() {
       this.shouldShowPageBlocker = true;
-      FirebaseHelper.signout().catch(() => {
-        this.shouldShowPageBlocker = false;
-      });
+      FirebaseHelper.signout()
+        .then(() => this.$emit('successfullyLoggedOut'))
+        .catch(() => {
+          this.shouldShowPageBlocker = false;
+        });
     }
   }
 };
@@ -114,6 +117,7 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+
   &__dropdown-btn {
     align-items: center;
     border: none;
@@ -124,9 +128,10 @@ export default {
     outline: none;
     padding: pixels.toRem(10);
     @include display.set((
-      xsm: none,
-      400: flex
+        xsm: none,
+        400: flex
     ));
+
     &:focus,
     &:hover {
       background-color: map.get(main.$primary, 100);
@@ -136,12 +141,14 @@ export default {
       &__img {
         margin-right: pixels.toRem(15);
       }
+
       &__username {
         font-weight: 800;
         margin-right: pixels.toRem(7);
         color: map.get(text.$main, 700);
         font-size: pixels.toRem(map.get(major-second.$scale, 3));
       }
+
       &__icon {
         width: 13px;
         display: flex;
@@ -150,6 +157,7 @@ export default {
           display: block;
           width: 100%;
           height: 100%;
+
           path {
             fill: map.get(text.$main, 700);
           }
@@ -157,6 +165,7 @@ export default {
       }
     }
   }
+
   &__hamburger-btn {
     display: flex;
     flex-direction: column;
@@ -170,12 +179,14 @@ export default {
     background-color: white;
     padding: pixels.toRem(7);
     @include display.set((
-      xsm: flex,
+        xsm: flex,
         400: none
     ));
+
     &:focus,
     &:hover {
       background-color: map.get(main.$primary, 100);
+
       .hamburger-btn__line-1,
       .hamburger-btn__line-2,
       .hamburger-btn__line-3 {
@@ -201,6 +212,7 @@ export default {
       display: flex;
       flex-direction: column;
     }
+
     &__btn {
       background-color: white;
       cursor: pointer;

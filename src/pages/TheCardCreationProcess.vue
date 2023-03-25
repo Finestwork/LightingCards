@@ -1,6 +1,6 @@
 <template>
   <div class="create-card">
-    <PlainNavbar />
+    <PlainNavbar @successfully-logged-out="redirectToLandingPage" />
 
     <div class="create-card__container container--sm">
       <BasePlainBreadcrumbs :links="breadcrumbs" />
@@ -41,6 +41,9 @@ export default {
   methods: {
     createSet(res) {
       console.log('CREATE PINIA HERE');
+    },
+    redirectToLandingPage() {
+      this.$router.push({ name: 'Landing' });
     }
   }
 };
