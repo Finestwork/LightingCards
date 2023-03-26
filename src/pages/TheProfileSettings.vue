@@ -25,9 +25,7 @@
     </div>
 
     <Teleport to="body">
-      <BaseSimpleModal v-model:is-shown="isAvatarModalShown" has-close-btn>
-        <h2>Hello modal</h2>
-      </BaseSimpleModal>
+      <TheAvatarModal v-model:is-shown="isAvatarModalShown" />
     </Teleport>
   </div>
 </template>
@@ -35,13 +33,13 @@
 <script>
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
-import BaseSimpleModal from '@/components/globals/modals/BaseSimpleModal.vue';
+import TheAvatarModal from '@/components/single-instance/TheAvatarModal.vue';
 
 export default {
   components: {
     PlainNavbar,
     BasePlayfulButton,
-    BaseSimpleModal
+    TheAvatarModal
   },
   data() {
     return {
