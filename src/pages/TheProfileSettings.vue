@@ -10,7 +10,7 @@
     </p>
 
     <div class="btn-group">
-      <BasePlayfulButton type="button">
+      <BasePlayfulButton type="button" @click="showAvatarModal">
         <template #text>Change Avatar</template>
       </BasePlayfulButton>
       <BasePlayfulButton type="button">
@@ -23,17 +23,38 @@
         <template #text>Change Password</template>
       </BasePlayfulButton>
     </div>
+
+    <Teleport to="body">
+      <BaseSimpleModal v-model:is-shown="isAvatarModalShown" has-close-btn>
+        <h2>Hello modal</h2>
+      </BaseSimpleModal>
+    </Teleport>
   </div>
 </template>
 
 <script>
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
+import BaseSimpleModal from '@/components/globals/modals/BaseSimpleModal.vue';
 
 export default {
   components: {
     PlainNavbar,
-    BasePlayfulButton
+    BasePlayfulButton,
+    BaseSimpleModal
+  },
+  data() {
+    return {
+      isAvatarModalShown: false
+    };
+  },
+  mounted() {
+    document.body.style.overflowY = 'hidden';
+  },
+  methods: {
+    showAvatarModal() {
+      this.isAvatarModalShown = !this.isAvatarModalShown;
+    }
   }
 };
 </script>
@@ -63,7 +84,6 @@ export default {
     font-weight: 600;
     color: map.get(text.$main, 500);
   }
-
   .btn-group{
     display: flex;
     flex-wrap: wrap;
