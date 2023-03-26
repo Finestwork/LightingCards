@@ -24,7 +24,7 @@
 
 <script>
 import BaseGradientLogo from '@/components/globals/logos/BaseGradientLogo.vue';
-import TheFlashCardCreation from '@/components/single-instance/TheFlashCardCreation.vue';
+import TheFlashCardCreation from '@/components/single-instance/TheFlashcardCreation.vue';
 import TheRequiredLoginAlert from '@/components/single-instance/TheRequiredLoginAlert.vue';
 import { useFlashCardStore } from '@/stores/flashcard';
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';

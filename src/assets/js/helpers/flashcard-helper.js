@@ -2,8 +2,10 @@ import { getAuth } from 'firebase/auth';
 import {
   getFirestore,
   collection,
+  doc,
   addDoc,
   getDocs,
+  updateDoc,
   limit,
   query,
   where
@@ -63,6 +65,21 @@ export default class FlashcardHelper {
       };
 
       addDoc(COLLECTION, DATA).then(resolve).catch(reject);
+    });
+  }
+
+  // Update stored sets in the database
+  static updateStoredSet(setId, data) {
+    return new Promise((resolve, reject) => {
+      const COLLECTION = collection(getFirestore(), 'sets');
+      const QUERY = query(COLLECTION, where('id', '==', setId));
+      getDocs(QUERY)
+        .then((docs) => {
+          const DOC_ID = docs.docs[0].id;
+          const DOC_REF = doc(getFirestore(), 'sets', DOC_ID);
+          updateDoc(DOC_REF, data).then(resolve).catch(reject);
+        })
+        .catch(reject);
     });
   }
 

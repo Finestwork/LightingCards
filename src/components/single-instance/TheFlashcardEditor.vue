@@ -1,8 +1,8 @@
 <template>
   <div class="card">
-    <ButtonCreateCard
-      class="card__create-btn"
-      :is-create-card-loading="isCreateCardLoading"
+    <ButtonEditSet
+      class="card__edit-btn"
+      :is-create-card-loading="isEditSetBtnLoading"
       @on-click="createCard"
     />
 
@@ -14,7 +14,7 @@
     </BaseSingleLineAlert>
 
     <!-- Set Controls -->
-    <div class="card__set-controls" v-if="areSettingsAllowed">
+    <div class="card__set-controls">
       <div class="set-control__form-fields">
         <BaseTextInput
           class="set-control__title-txt"
@@ -69,62 +69,73 @@
 </template>
 
 <script>
+import ButtonEditSet from '@/components/multi-instnace/buttons/ButtonEditSet.vue';
 import BaseCardItem from '@/components/globals/draggables/BaseCardItem.vue';
 import BaseSingleLineAlert from '@/components/globals/alerts/BaseSingleLine.vue';
 import BaseTextArea from '@/components/globals/forms/BaseTextArea.vue';
 import BaseSwitch from '@/components/globals/forms/BaseSwitch.vue';
-import ButtonCreateCard from '@/components/multi-instnace/buttons/ButtonCreateSet.vue';
 import ButtonAddFlashcard from '@/components/multi-instnace/buttons/ButtonAddFlashcard.vue';
 import BaseTextInput from '@/components/globals/forms/BaseTextInput.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 import FormValidationHelper from '@/assets/js/helpers/form-validation-helper';
-import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 
 // NPM
 import { SlickItem, SlickList } from 'vue-slicksort';
+import { useToast } from 'vue-toastification';
 
 export default {
   components: {
+    ButtonEditSet,
     BaseSingleLineAlert,
     BaseTextArea,
     BaseTextInput,
     BaseCardItem,
     BaseSwitch,
-    ButtonCreateCard,
     ButtonAddFlashcard,
     SlickList,
     SlickItem
   },
   props: {
+    setId: {
+      type: String,
+      required: true
+    },
     items: {
       type: Array,
       required: true
     },
-    areSettingsAllowed: {
+    title: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    isPublic: {
       type: Boolean,
-      default: true
+      required: true
     }
   },
   data() {
     return {
-      isPublic: true,
+      flashCardItems: this.items,
+      titleText: this.title,
+      descriptionText: this.description,
+      isOpenToPublic: this.isPublic,
       errorAlertText: '',
-      titleText: '',
-      descriptionText: '',
-      isOpenToPublic: false,
-      isCreateCardLoading: false,
-      flashCardItems: this.items
+      isEditSetBtnLoading: false
     };
   },
   emits: ['update:items', 'createCard'],
   methods: {
     createCard(e) {
-      this.isCreateCardLoading = true;
+      this.isEditSetBtnLoading = true;
       this.errorAlertText = '';
       const createErrorAlert = (alertTxt) => {
-        this.isCreateCardLoading = false;
+        this.isEditSetBtnLoading = false;
         e.currentTarget.blur();
         this.errorAlertText = alertTxt;
       };
@@ -141,12 +152,6 @@ export default {
         return;
       }
 
-      // If settings are not allowed then emit without validating the settings
-      if (!this.areSettingsAllowed) {
-        this.$emit('createCard');
-        return;
-      }
-
       if (FormValidationHelper.isEmpty(this.titleText)) {
         createErrorAlert('• Title field is empty.');
         return;
@@ -157,22 +162,22 @@ export default {
         return;
       }
 
-      FlashcardHelper.createSet({
+      const DATA = {
         title: this.titleText,
         description: this.descriptionText,
         isOpenToPublic: this.isOpenToPublic,
         sets: this.flashCardItems
-      })
-        .then((res) => {
-          this.$emit('createCard', res);
+      };
+      FlashcardHelper.updateStoredSet(this.setId, DATA)
+        .then(() => {
+          this.isEditSetBtnLoading = false;
+          useToast().success('You have successfully updated your set!');
         })
-        .catch((err) => {
-          if (!err.code) {
-            createErrorAlert("• Uh-oh! Can't create set, please try again.");
-            return;
-          }
-          const ERR_CODE = FirebaseHelper.getErrors[err.code];
-          createErrorAlert(`• ${ERR_CODE}`);
+        .catch(() => {
+          this.isEditSetBtnLoading = false;
+          useToast().error(
+            'unfortunately, something went wrong, please try again later.'
+          );
         });
     },
     addCard(e) {
@@ -211,7 +216,7 @@ export default {
 
 // prettier-ignore
 .card {
-  &__create-btn {
+  &__edit-btn {
     margin-left: auto;
   }
 

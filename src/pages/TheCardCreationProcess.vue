@@ -15,7 +15,7 @@
 <script>
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BasePlainBreadcrumbs from '@/components/globals/breadcrumbs/BasePlainBreadcrumbs.vue';
-import TheFlashCardCreation from '@/components/single-instance/TheFlashCardCreation.vue';
+import TheFlashCardCreation from '@/components/single-instance/TheFlashcardCreation.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
