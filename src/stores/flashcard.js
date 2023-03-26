@@ -21,6 +21,18 @@ const useFlashCardStore = defineStore('flashcard', {
     // Assign a new whole value to sets, will overwrite existing items
     fillSets(newSets) {
       this.sets = newSets;
+    },
+
+    // Checks if a set exists in the store
+    isSetExists(setId) {
+      const SET = this.sets.filter((set) => set.id === setId);
+      return SET.length !== 0;
+    },
+
+    // Checks if a set exists in the store
+    getSetById(setId) {
+      const SET = this.sets.filter((set) => set.id === setId);
+      return SET.length === 0 ? null : SET[0];
     }
   },
   getters: {

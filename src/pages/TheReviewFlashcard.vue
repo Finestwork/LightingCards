@@ -39,6 +39,7 @@ import BaseServerError from '@/components/globals/error-states/BaseServerError.v
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
+import { useFlashCardStore } from '@/stores/flashcard';
 
 // NPM
 import toast from 'vue-toastification';
@@ -66,40 +67,56 @@ export default {
     };
   },
   mounted() {
-    const handleResult = (res) => {
-      // If set does not exist
-      if (res.empty) {
-        this.$router.push({ name: 'NotFound' });
-        return;
-      }
+    const STORED_SET = useFlashCardStore().getSetById(this.id);
 
-      const DOC = res.docs[0].data();
-      const CURRENT_USER = FirebaseHelper.getUserStatus();
+    // If the item doesn't exist in the store, it needs to be fetched
+    if (STORED_SET === null) {
+      this.fetchSets();
+      return;
+    }
 
-      // If it's not a public set and another user is trying to access it, then redirect to the error page
-      if (!DOC.isOpenToPublic && CURRENT_USER !== DOC.userId) {
-        return;
-      }
+    this.isLoading = false;
+    this.sets = STORED_SET.sets;
+  },
+  methods: {
+    async fetchSets() {
+      try {
+        const RESULT = await FlashcardHelper.getSetItems(this.id);
 
-      // Add delay to avoid content-jumping
-      setTimeout(() => {
-        // If no flashcards, redirect to router page
-        if (DOC.sets.length === 0) {
-          this.$router.push({ name: 'EditFlashcard' });
-          toast().error('No flashcards, please create at least two.', {
-            timeout: 6000
-          });
+        // If set does not exist
+        if (RESULT.empty) {
+          this.$router.push({ name: 'NotFound' });
           return;
         }
+
+        const DOC = RESULT.docs[0].data();
+        const USER = await FirebaseHelper.getCurrentUser();
+
+        if (USER) {
+          // If it's not a public set and another user is trying to access it, then redirect to the error page
+          if (!DOC.isOpenToPublic && USER.auth.currentUser.uid !== DOC.userId) {
+            return;
+          }
+
+          // Add delay to avoid content-jumping
+          setTimeout(() => {
+            // If no flashcards, redirect to router page
+            if (DOC.sets.length === 0) {
+              this.$router.push({ name: 'EditFlashcard' });
+              toast().error('No flashcards, please create at least two.', {
+                timeout: 6000
+              });
+              return;
+            }
+            this.isLoading = false;
+            this.sets = DOC.sets;
+          }, 1000);
+        }
+      } catch (err) {
         this.isLoading = false;
-        this.sets = DOC.sets;
-      }, 1000);
-    };
-    const handleError = () => {
-      this.isLoading = false;
-      this.hasServerError = true;
-    };
-    FlashcardHelper.getSetItems(this.id).then(handleResult).catch(handleError);
+        this.hasServerError = true;
+      }
+    }
   },
   computed: {
     shouldDisplayFlashcards() {

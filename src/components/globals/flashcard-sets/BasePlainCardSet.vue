@@ -12,7 +12,10 @@
       >
         <BrainIcon />
       </FadedLink>
-      <FadedLink tooltip="Edit set" :to="{ name: 'Landing' }">
+      <FadedLink
+        tooltip="Edit set"
+        :to="{ name: 'EditFlashcard', params: { id: setId } }"
+      >
         <PenIcon />
       </FadedLink>
     </div>
