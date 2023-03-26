@@ -66,7 +66,7 @@ export default {
     passwordTxt: '',
     isSubmitBtnLoading: false
   }),
-  emits: ['mounted'],
+  emits: ['mounted', 'loginFailed'],
   mounted() {
     // Since this is an async component, parent needs to know if component is mounted
     this.$emit('mounted');
@@ -79,6 +79,7 @@ export default {
         this.errorAlertTxt = text;
         this.isSubmitBtnLoading = false;
         this.$refs.submitBtn.$el.blur();
+        this.$emit('loginFailed');
       };
 
       if (!isEmail(this.emailTxt)) {

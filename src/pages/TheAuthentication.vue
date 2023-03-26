@@ -15,12 +15,13 @@
           <TheLogin
             ref="login"
             @mounted="onLoginMounted"
+            @login-failed="recalculateHeight"
             v-if="shouldShowLogin"
           />
           <TheSignup
             ref="signup"
             @mounted="onSignupMounted"
-            @register-failed="onFailedRegister"
+            @register-failed="recalculateHeight"
             v-else-if="shouldShowSignup"
           />
         </Transition>
@@ -78,12 +79,11 @@ export default {
       this.onPageFirstLoad();
     },
     // Alerts will be display so height needs to be recalculated
-    onFailedRegister() {
-      const PARENT = this.$refs.signup.$el.parentElement;
+    recalculateHeight() {
+      const EL = this.$refs.signup || this.$refs.login;
+      const PARENT = EL.$el.parentElement;
       setTimeout(() => {
-        const SCROLL_HEIGHT =
-          this.$refs.signup.$el.getBoundingClientRect().height;
-
+        const SCROLL_HEIGHT = EL.$el.getBoundingClientRect().height;
         Object.assign(PARENT.style, {
           height: `${SCROLL_HEIGHT}px`
         });
