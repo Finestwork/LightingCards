@@ -4,8 +4,8 @@
       <BaseGradientLogo class="logo" />
       <VDropdown popper-class="nav-dropdown">
         <button class="nav__dropdown-btn">
-          <BaseOutlined class="dropdown__img" :src="testSrc" />
-          <span class="dropdown__username">Kapitan</span>
+          <BaseOutlined class="dropdown__img" :src="userProfile" />
+          <span class="dropdown__username">{{ username }}</span>
           <span class="dropdown__icon"><AngleDown /></span>
         </button>
 
@@ -40,8 +40,8 @@
 
   <Teleport to="body">
     <TheUserSidebar
-      :img-src="testSrc"
-      username="Kapitan"
+      :img-src="userProfile"
+      :username="username"
       v-model:shown="isSidebarShown"
     />
     <PageBlocker v-if="shouldShowPageBlocker" />
@@ -56,7 +56,6 @@ import BaseOutlined from '@/components/globals/user-profile-pictures/BaseOutline
 import PageBlocker from '@/components/globals/page-loaders/PageBlocker.vue';
 
 // Helpers
-import AvatarHelper from '@/assets/js/helpers/avatar-helper';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 
 export default {
@@ -68,18 +67,34 @@ export default {
     PageBlocker
   },
   data: () => ({
-    testSrc: AvatarHelper.getDefaultAvatars['default-1'],
+    username: '',
+    userProfile: '',
     isSidebarShown: false,
     shouldShowPageBlocker: false
   }),
   emits: ['successfullyLoggedOut'],
   mounted() {
+    this.getUserProfile();
     window.addEventListener('resize', this.hideSidebarOnLargerViewport);
   },
   unmounted() {
     window.removeEventListener('resize', this.hideSidebarOnLargerViewport);
   },
   methods: {
+    getUserProfile() {
+      this.$nextTick(async () => {
+        const USER = await FirebaseHelper.getCurrentUser();
+
+        if (USER.displayName !== null) {
+          this.username = USER.displayName;
+          this.userProfile = USER.photoURL;
+          return;
+        }
+
+        this.username = FirebaseHelper.getUserDetails().displayName;
+        this.userProfile = FirebaseHelper.getUserDetails().photoURL;
+      });
+    },
     hideSidebarOnLargerViewport() {
       if (window.innerWidth >= 400) {
         this.isSidebarShown = false;
@@ -124,6 +139,7 @@ export default {
   }
 
   &__dropdown-btn {
+    max-width: 200px;
     align-items: center;
     border: none;
     font-family: inherit;
@@ -146,14 +162,15 @@ export default {
       &__img {
         margin-right: pixels.toRem(15);
       }
-
       &__username {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
         font-weight: 800;
         margin-right: pixels.toRem(7);
         color: map.get(text.$main, 700);
         font-size: pixels.toRem(map.get(major-second.$scale, 3));
       }
-
       &__icon {
         width: 13px;
         display: flex;
@@ -167,6 +184,11 @@ export default {
             fill: map.get(text.$main, 700);
           }
         }
+      }
+
+      &__img,
+      &__icon{
+        flex-shrink: 0;
       }
     }
   }

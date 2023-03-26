@@ -77,8 +77,11 @@ import BaseList from '@/components/globals/alerts/BaseList.vue';
 // Helpers
 import FormValidationHelper from '@/assets/js/helpers/form-validation-helper';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
-import { useFlashCardStore } from '@/stores/flashcard';
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
+import { useFlashCardStore } from '@/stores/flashcard';
+import AvatarHelper from '@/assets/js/helpers/avatar-helper';
+
+// NPM
 import { useToast } from 'vue-toastification';
 
 export default {
@@ -144,8 +147,12 @@ export default {
       }
 
       const handleRegistration = () => {
+        const PHOTO_URL = AvatarHelper.getRandom();
         // Doesn't matter if displayName is successfully updated or not
-        FirebaseHelper.updateDisplayName({ displayName: this.username });
+        FirebaseHelper.updateDisplayName({
+          displayName: this.username,
+          photoURL: PHOTO_URL
+        });
 
         if (!useFlashCardStore().hasTestItems) {
           this.$router.push({ name: 'Landing' });

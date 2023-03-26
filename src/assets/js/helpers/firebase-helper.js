@@ -39,6 +39,15 @@ export default class FirebaseHelper {
    * =========
    */
 
+  // Get user details
+  static getUserDetails() {
+    const USER = getAuth().currentUser;
+    return {
+      displayName: USER.displayName,
+      photoURL: USER.photoURL
+    };
+  }
+
   // Get live status of current user
   static getCurrentUser() {
     return new Promise((resolve, reject) => {

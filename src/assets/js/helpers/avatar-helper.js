@@ -8,6 +8,16 @@ export default class AvatarHelper {
       'https://firebasestorage.googleapis.com/v0/b/lightningcards-dev.appspot.com/o/avatars%2Favatar-3.svg?alt=media&token=146001d5-4c8f-45a4-a429-aad6de57f318'
   };
 
+  // Get random avatar
+  static getRandom() {
+    const DEFAULT_AVATARS = AvatarHelper.#DEFAULT_AVATARS;
+    const AVATARS = Object.keys(DEFAULT_AVATARS).map(
+      (props) => DEFAULT_AVATARS[props]
+    );
+    const RANDOM_IND = Math.floor(Math.random() * AVATARS.length); // 0 - 2
+    return AVATARS[RANDOM_IND];
+  }
+
   /*
    * =========================
    * Getters & Setters
