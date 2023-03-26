@@ -2,16 +2,35 @@
   <div class="create-card">
     <PlainNavbar />
 
-    <div class="create-card__container container--sm" v-if="shouldDisplaySet">
-      <BasePlainBreadcrumbs :links="breadcrumbs" />
-      <TheFlashcardEditor
-        @create-card="setCreatedSuccessfully"
-        :set-id="id"
-        :title="setObj.title"
-        :description="setObj.description"
-        :is-public="setObj.isOpenToPublic"
-        :items="setObj.sets"
-      />
+    <div class="create-card__container container--sm">
+      <BaseServerError v-if="shouldDisplayServerError">
+        <template #title>Server Error</template>
+        <template #msg
+          >Oops, Something Went Wrong! Let's Get You Back on Track
+        </template>
+        <template #addons>
+          <BasePlayfulLink class="error-link" :to="{ name: 'Landing' }">
+            <template #text>I understand</template>
+          </BasePlayfulLink>
+        </template>
+      </BaseServerError>
+      <BaseShapeSwapping v-if="shouldDisplayLoader">
+        <template #msg
+          >Fetching Your Flashcards - Your Custom Study Materials are Just a
+          Moment Away!
+        </template>
+      </BaseShapeSwapping>
+      <div v-if="shouldDisplaySet">
+        <BasePlainBreadcrumbs :links="breadcrumbs" />
+        <TheFlashcardEditor
+          @create-card="setCreatedSuccessfully"
+          :set-id="id"
+          :title="setObj.title"
+          :description="setObj.description"
+          :is-public="setObj.isOpenToPublic"
+          :items="setObj.sets"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +39,9 @@
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BasePlainBreadcrumbs from '@/components/globals/breadcrumbs/BasePlainBreadcrumbs.vue';
 import TheFlashcardEditor from '@/components/single-instance/TheFlashcardEditor.vue';
+import BaseShapeSwapping from '@/components/globals/lottie/BaseShapeSwapping.vue';
+import BaseServerError from '@/components/globals/error-states/BaseServerError.vue';
+import BasePlayfulLink from '@/components/globals/links/BasePlayfulLink.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
@@ -33,7 +55,10 @@ export default {
   components: {
     TheFlashcardEditor,
     PlainNavbar,
-    BasePlainBreadcrumbs
+    BasePlainBreadcrumbs,
+    BaseShapeSwapping,
+    BaseServerError,
+    BasePlayfulLink
   },
   props: {
     id: {
@@ -156,22 +181,26 @@ export default {
     @include margin.top((
         xsm: 50
     ));
-    :deep(.plain-breadcrumbs){
+
+    :deep(.plain-breadcrumbs) {
       @include margin.bottom((
           xsm:35
       ));
-      .breadcrumb__link{
+
+      .breadcrumb__link {
         @include font-size.responsive((
             lg: map.get(major-second.$scale, 3)
         ));
       }
-      .breadcrumb__icon{
+
+      .breadcrumb__icon {
         @include margin.horizontal((
             lg: 7
         ));
       }
     }
-    :deep(.card__set-controls){
+
+    :deep(.card__set-controls) {
       @include all-properties.init((
           md: (
               display: flex
@@ -181,9 +210,9 @@ export default {
           md: 45
       ));
 
-      .set-control__form-fields{
+      .set-control__form-fields {
         @include width-and-height.set((
-            md: (width: 45% ),
+            md: (width: 45%),
             lg: (width: 40%),
         ));
         @include margin.right((
@@ -191,10 +220,25 @@ export default {
         ));
       }
 
-      .set-control__form-switches{
+      .set-control__form-switches {
         @include width-and-height.set((
-            md: (width: 45% ),
+            md: (width: 45%),
             lg: (width: 60%),
+        ));
+      }
+    }
+
+    :deep(.error--server) {
+      @include margin.top((
+          xsm: 100
+      ));
+      @include margin.bottom((
+          xsm: 50
+      ));
+
+      .error-link {
+        @include margin.top((
+            xsm: 25
         ));
       }
     }
