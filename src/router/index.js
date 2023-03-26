@@ -7,8 +7,13 @@ import NProgress from 'nprogress';
 
 const ERROR_ROUTES = [
   {
-    path: '/:pathMatch(.*)*',
+    path: '/page-not-found',
     name: 'NotFound',
+    component: () => import('@/pages/ThePageNotFound.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'PathNotFound',
     component: () => import('@/pages/ThePageNotFound.vue')
   }
 ];
