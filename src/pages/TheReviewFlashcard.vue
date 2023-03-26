@@ -27,6 +27,9 @@ import BaseShapeSwapping from '@/components/globals/lottie/BaseShapeSwapping.vue
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 
+// NPM
+import toast from 'vue-toastification';
+
 export default {
   components: {
     PlainNavbar,
@@ -67,6 +70,10 @@ export default {
       setTimeout(() => {
         // If no flashcards, redirect to router page
         if (DOC.sets.length === 0) {
+          this.$router.push({ name: 'EditFlashcard' });
+          toast().error('No flashcards, please create at least two.', {
+            timeout: 6000
+          });
           return;
         }
         this.isLoading = false;
