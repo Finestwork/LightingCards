@@ -101,10 +101,9 @@ export default {
     &__description {
       display: -webkit-box;
       -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
       overflow: hidden;
-      -webkit-line-clamp: 2;
       font-weight: 600;
-      text-align: justify;
       color: map.get(text.$main, 400);
       font-size: pixels.toRem(map.get(major-second.$scale, 3));
     }
