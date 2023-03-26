@@ -2,6 +2,18 @@
   <PlainNavbar />
 
   <div class="container container--sm">
+    <BaseServerError v-if="shouldDisplayServerError">
+      <template #title>Server Error</template>
+      <template #msg
+        >Oops, something went wrong on our end — please try again later or
+        contact support for assistance.</template
+      >
+      <template #addons>
+        <BasePlayfulLink class="error-link" :to="{ name: 'Landing' }">
+          <template #text>I understand</template>
+        </BasePlayfulLink>
+      </template>
+    </BaseServerError>
     <BaseShapeSwapping v-if="shouldDisplayLoader">
       <template #msg
         >Please wait while we fetch your flashcards - in just a moment, you'll
@@ -9,7 +21,7 @@
       >
     </BaseShapeSwapping>
     <div class="flashcard-wrapper" v-if="shouldDisplayFlashcards">
-      <BasePlayfulLink :to="{ name: 'EditFlashcard' }">
+      <BasePlayfulLink class="edit-link" :to="{ name: 'EditFlashcard' }">
         <template #text>Finish</template>
       </BasePlayfulLink>
       <BaseFlashcardWrapper :items="sets" />
@@ -22,6 +34,7 @@ import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BaseFlashcardWrapper from '@/components/globals/flashcards/BaseFlashcardWrapper.vue';
 import BasePlayfulLink from '@/components/globals/links/BasePlayfulLink.vue';
 import BaseShapeSwapping from '@/components/globals/lottie/BaseShapeSwapping.vue';
+import BaseServerError from '@/components/globals/error-states/BaseServerError.vue';
 
 // Helpers
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
@@ -35,7 +48,8 @@ export default {
     PlainNavbar,
     BaseFlashcardWrapper,
     BasePlayfulLink,
-    BaseShapeSwapping
+    BaseShapeSwapping,
+    BaseServerError
   },
   props: {
     // router parameter
@@ -47,6 +61,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      hasServerError: false,
       sets: []
     };
   },
@@ -80,19 +95,21 @@ export default {
         this.sets = DOC.sets;
       }, 1000);
     };
-    const handleError = (err) => {
+    const handleError = () => {
       this.isLoading = false;
-      // Show server error page
-      console.dir(err);
+      this.hasServerError = true;
     };
     FlashcardHelper.getSetItems(this.id).then(handleResult).catch(handleError);
   },
   computed: {
     shouldDisplayFlashcards() {
-      return this.sets.length !== 0 && !this.isLoading;
+      return this.sets.length !== 0 && !this.isLoading && !this.hasServerError;
     },
     shouldDisplayLoader() {
-      return this.isLoading && this.sets.length === 0;
+      return this.isLoading && this.sets.length === 0 && !this.hasServerError;
+    },
+    shouldDisplayServerError() {
+      return this.hasServerError && !this.isLoading && this.sets.length === 0;
     }
   }
 };
@@ -112,11 +129,16 @@ export default {
       width: 125px;
     }
   }
-  .playful-link {
+  .edit-link {
     margin-left: auto;
     max-width: 80px;
     @include margin.bottom((
       xsm: 100
+    ));
+  }
+  .error-link{
+    @include margin.top((
+      xsm: 25
     ));
   }
   .flashcard{
@@ -128,6 +150,14 @@ export default {
     ));
     @include margin.bottom((
       xsm: 100
+    ));
+  }
+  .error--server{
+    @include margin.top((
+      xsm: 100
+    ));
+    @include margin.bottom((
+      xsm: 50
     ));
   }
 }
