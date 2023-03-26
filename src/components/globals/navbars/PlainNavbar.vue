@@ -11,9 +11,14 @@
 
         <template #popper>
           <div class="dropdown__btn-wrapper">
-            <button type="button" class="dropdown__btn" v-close-popper>
+            <router-link
+              :to="{ name: 'ProfileSettings' }"
+              type="button"
+              class="dropdown__link"
+              v-close-popper
+            >
               Profile Settings
-            </button>
+            </router-link>
             <button
               type="button"
               class="dropdown__btn"
@@ -213,6 +218,11 @@ export default {
       flex-direction: column;
     }
 
+    &__link {
+      text-decoration: none;
+    }
+
+    &__link,
     &__btn {
       background-color: white;
       cursor: pointer;

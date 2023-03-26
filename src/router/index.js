@@ -86,6 +86,14 @@ const MAIN_ROUTES = [
     meta: {
       auth: true
     }
+  },
+  {
+    path: '/profile-settings',
+    name: 'ProfileSettings',
+    component: () => import('@/pages/TheProfileSettings.vue'),
+    meta: {
+      auth: true
+    }
   }
 ];
 
