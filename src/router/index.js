@@ -5,7 +5,14 @@ import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 import { createRouter, createWebHistory } from 'vue-router';
 import NProgress from 'nprogress';
 
-const ROUTES = [
+const ERROR_ROUTES = [
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/pages/ThePageNotFound.vue')
+  }
+];
+const PUBLIC_ROUTES = [
   {
     path: '/',
     name: 'Landing',
@@ -30,7 +37,7 @@ const ROUTES = [
   {
     path: '/test/create-card',
     name: 'CardCreationTest',
-    component: () => import('@/pages/PageTest/TheCardCreationTest.vue'),
+    component: () => import('@/pages/TheCardCreationTest.vue'),
     meta: {
       public: true
     }
@@ -38,7 +45,7 @@ const ROUTES = [
   {
     path: '/test/play',
     name: 'CardPlayTest',
-    component: () => import('@/pages/PageTest/TheFlashcardTest.vue'),
+    component: () => import('@/pages/TheFlashcardTest.vue'),
     beforeEnter(to, from, next) {
       const STORE = useFlashCardStore();
 
@@ -51,7 +58,9 @@ const ROUTES = [
     meta: {
       public: true
     }
-  },
+  }
+];
+const MAIN_ROUTES = [
   {
     path: '/create-card',
     name: 'CardCreationProcess',
@@ -79,9 +88,10 @@ const ROUTES = [
     }
   }
 ];
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: ROUTES
+  routes: [...PUBLIC_ROUTES, ...MAIN_ROUTES, ...ERROR_ROUTES]
 });
 
 router.beforeEach((to, from, next) => {

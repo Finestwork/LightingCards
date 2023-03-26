@@ -79,7 +79,7 @@ export default {
     &__trailing-icon {
       width: 13px;
       height: 13px;
-      svg {
+      :deep(svg) {
         display: block;
         width: 100%;
         height: 100%;

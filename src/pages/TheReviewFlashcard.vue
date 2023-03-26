@@ -53,7 +53,7 @@ export default {
     const handleResult = (res) => {
       // If set does not exist
       if (res.empty) {
-        // Redirect to page 404
+        this.$router.push({ name: 'NotFound' });
         return;
       }
 
@@ -67,6 +67,10 @@ export default {
 
       // Add delay to avoid content-jumping
       setTimeout(() => {
+        // If no flashcards, redirect to router page
+        if (DOC.sets.length === 0) {
+          return;
+        }
         this.isLoading = false;
         this.sets = DOC.sets;
       }, 1000);
