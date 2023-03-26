@@ -8,13 +8,11 @@
         be on your way to mastering your chosen topic!</template
       >
     </BaseShapeSwapping>
-    <div class="flashcard-wrapper">
-      <div v-if="shouldDisplayFlashcards">
-        <BasePlayfulLink :to="{ name: 'EditFlashcard' }">
-          <template #text>Finish</template>
-        </BasePlayfulLink>
-        <BaseFlashcardWrapper :items="sets" />
-      </div>
+    <div class="flashcard-wrapper" v-if="shouldDisplayFlashcards">
+      <BasePlayfulLink :to="{ name: 'EditFlashcard' }">
+        <template #text>Finish</template>
+      </BasePlayfulLink>
+      <BaseFlashcardWrapper :items="sets" />
     </div>
   </div>
 </template>
@@ -120,6 +118,9 @@ export default {
   .flashcard-wrapper{
     @include margin.top((
         xsm: 50
+    ));
+    @include margin.bottom((
+      xsm: 100
     ));
   }
 }
