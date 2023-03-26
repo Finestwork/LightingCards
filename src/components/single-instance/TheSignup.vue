@@ -157,8 +157,7 @@ export default {
           title: 'Unsaved work',
           description: 'No description',
           sets: useFlashCardStore().testItems,
-          isOpenToPublic: false,
-          canAnyoneEdit: false
+          isOpenToPublic: false
         };
 
         FlashcardHelper.createSet(DATA)
@@ -167,8 +166,9 @@ export default {
             useFlashCardStore().clearTestItems();
           })
           .catch(() => {
+            this.$router.push({ name: 'Landing' });
             useToast().error(
-              'Unable to store your sets, you may create new one.',
+              'Unable to store your sets, you may create a new one.',
               {
                 timeout: 6000
               }

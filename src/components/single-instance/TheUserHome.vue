@@ -124,5 +124,8 @@ export default {
 // prettier-ignore
 .no-flash-cards {
   justify-content: center;
+  @include margin.top((
+    xsm: 100
+  ));
 }
 </style>

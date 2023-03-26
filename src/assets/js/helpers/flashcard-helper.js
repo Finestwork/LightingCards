@@ -47,13 +47,7 @@ export default class FlashcardHelper {
   }
 
   // Stores in the database
-  static createSet({
-    title,
-    description,
-    sets,
-    isOpenToPublic,
-    canAnyoneEdit
-  }) {
+  static createSet({ title, description, sets, isOpenToPublic }) {
     return new Promise((resolve, reject) => {
       const COLLECTION = collection(getFirestore(), 'sets');
       const DATA = {
@@ -65,8 +59,7 @@ export default class FlashcardHelper {
         title: title,
         description: description,
         sets: sets,
-        isOpenToPublic: isOpenToPublic,
-        canAnyoneEdit: canAnyoneEdit
+        isOpenToPublic: isOpenToPublic
       };
 
       addDoc(COLLECTION, DATA).then(resolve).catch(reject);

@@ -42,15 +42,6 @@
           helper-text="This means that even if people have the link, they can't join because your flashcard has a password."
           v-model="isOpenToPublic"
         />
-        <BaseSwitch
-          label="Anyone can edit"
-          type="checkbox"
-          name="canAnyoneEditRadBtn"
-          id="canAnyoneEditRadBtn"
-          :helper-text="switchAnyoneCanEditTxt"
-          :disabled="!isOpenToPublic"
-          v-model="canAnyoneEdit"
-        />
       </div>
     </div>
 
@@ -123,10 +114,8 @@ export default {
       titleText: '',
       descriptionText: '',
       isOpenToPublic: false,
-      canAnyoneEdit: false,
       isCreateCardLoading: false,
-      flashCardItems: this.items,
-      switchAnyoneCanEditTxt: 'Disabled because your set is not open to public.'
+      flashCardItems: this.items
     };
   },
   emits: ['update:items', 'createCard'],
@@ -172,7 +161,6 @@ export default {
         title: this.titleText,
         description: this.descriptionText,
         isOpenToPublic: this.isOpenToPublic,
-        canAnyoneEdit: this.canAnyoneEdit,
         sets: this.flashCardItems
       })
         .then((res) => {
@@ -210,18 +198,6 @@ export default {
     },
     shouldHideDeleteBtn() {
       return this.flashCardItems.length === 2;
-    }
-  },
-  watch: {
-    isOpenToPublic(isOpenToPublic) {
-      if (isOpenToPublic) {
-        this.switchAnyoneCanEditTxt =
-          'When your set is publicly published, anyone who joined will have an access and able to edit the set.';
-      } else {
-        this.canAnyoneEdit = false;
-        this.switchAnyoneCanEditTxt =
-          'Disabled because your set is not open to public.';
-      }
     }
   }
 };
