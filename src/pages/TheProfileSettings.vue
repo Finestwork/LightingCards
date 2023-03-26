@@ -1,6 +1,7 @@
 <template>
   <PlainNavbar />
   <div class="container container--sm">
+    <BasePlainBreadcrumbs :links="breadcrumbs" />
     <h1 class="title">Hello, Romeus!</h1>
     <p class="message">
       Welcome to your profile settings! Here, you can edit your email and
@@ -33,16 +34,28 @@
 <script>
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
+import BasePlainBreadcrumbs from '@/components/globals/breadcrumbs/BasePlainBreadcrumbs.vue';
 import TheAvatarModal from '@/components/single-instance/TheAvatarModal.vue';
 
 export default {
   components: {
     PlainNavbar,
     BasePlayfulButton,
+    BasePlainBreadcrumbs,
     TheAvatarModal
   },
   data() {
     return {
+      breadcrumbs: [
+        {
+          to: { name: 'Landing' },
+          text: 'Home'
+        },
+        {
+          to: { name: 'ProfileSettings' },
+          text: 'Profile Settings'
+        }
+      ],
       isAvatarModalShown: false
     };
   },
@@ -71,6 +84,11 @@ export default {
   @include margin.top((
     xsm: 50
   ));
+  .plain-breadcrumbs{
+    @include margin.bottom((
+      xsm: 25
+    ));
+  }
   .title{
     font-weight: 900;
     color: map.get(text.$main, 900);
