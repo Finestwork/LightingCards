@@ -10,10 +10,7 @@ export default class AvatarHelper {
 
   // Get random avatar
   static getRandom() {
-    const DEFAULT_AVATARS = AvatarHelper.#DEFAULT_AVATARS;
-    const AVATARS = Object.keys(DEFAULT_AVATARS).map(
-      (props) => DEFAULT_AVATARS[props]
-    );
+    const AVATARS = AvatarHelper.getDefaultAvatars;
     const RANDOM_IND = Math.floor(Math.random() * AVATARS.length); // 0 - 2
     return AVATARS[RANDOM_IND];
   }
@@ -25,6 +22,7 @@ export default class AvatarHelper {
    */
 
   static get getDefaultAvatars() {
-    return AvatarHelper.#DEFAULT_AVATARS;
+    const DEFAULT_AVATARS = AvatarHelper.#DEFAULT_AVATARS;
+    return Object.keys(DEFAULT_AVATARS).map((props) => DEFAULT_AVATARS[props]);
   }
 }

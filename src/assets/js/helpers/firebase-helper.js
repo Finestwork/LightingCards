@@ -44,7 +44,8 @@ export default class FirebaseHelper {
     const USER = getAuth().currentUser;
     return {
       displayName: USER.displayName,
-      photoURL: USER.photoURL
+      photoURL: USER.photoURL,
+      email: USER.email
     };
   }
 

@@ -377,6 +377,7 @@ $default-padding: 10;
     font-weight: 700;
     color: map.get(text.$main, 900);
     margin-bottom: pixels.toRem(5);
+    font-size: pixels.toRem(map.get(major-second.$scale, 3));
   }
 
   &__toggle-btn,
