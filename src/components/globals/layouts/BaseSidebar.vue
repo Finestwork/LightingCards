@@ -72,7 +72,7 @@ export default {
         easing: 'easeOutCubic',
         duration: 350,
         complete: () => {
-          this.$refs.root.style.display = null;
+          if (this.$refs.root) this.$refs.root.style.display = null;
           this.contentAnimId = null;
           this.$emit('update:shown', false);
         }

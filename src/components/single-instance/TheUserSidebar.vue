@@ -5,7 +5,14 @@
       <span class="user__username">{{ username }}</span>
 
       <div class="user__btn-wrapper">
-        <button class="user__action-btn" type="button">Profile Settings</button>
+        <button
+          class="user__action-btn"
+          :class="{ 'is-active': isBtnActive }"
+          type="button"
+          @click="redirectToProfileSettings"
+        >
+          Profile Settings
+        </button>
         <button class="user__action-btn" type="button" @click="logoutUser">
           Logout
         </button>
@@ -46,8 +53,20 @@ export default {
     };
   },
   methods: {
+    redirectToProfileSettings() {
+      this.$router.push({ name: 'ProfileSettings' });
+    },
     logoutUser() {
-      FirebaseHelper.signout();
+      FirebaseHelper.signout()
+        .then(() => this.$router.push({ name: 'Landing' }))
+        .catch(() => {
+          this.shouldShowPageBlocker = false;
+        });
+    }
+  },
+  computed: {
+    isBtnActive() {
+      return this.$route.name === 'ProfileSettings';
     }
   },
   watch: {
@@ -119,6 +138,11 @@ export default {
       }
       &:last-of-type {
         margin-bottom: 0;
+      }
+
+      &.is-active {
+        color: white;
+        background-color: map.get(main.$primary, 500);
       }
     }
   }
