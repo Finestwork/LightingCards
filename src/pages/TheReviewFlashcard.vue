@@ -95,6 +95,7 @@ export default {
         if (USER) {
           // If it's not a public set and another user is trying to access it, then redirect to the error page
           if (!DOC.isOpenToPublic && USER.auth.currentUser.uid !== DOC.userId) {
+            this.$router.push({ name: 'Landing' });
             return;
           }
 
