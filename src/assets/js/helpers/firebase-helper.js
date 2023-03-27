@@ -93,7 +93,7 @@ export default class FirebaseHelper {
     });
   }
 
-  static updateDisplayName({ displayName, photoURL }) {
+  static updateUserDetails({ displayName, photoURL }) {
     return new Promise((resolve, reject) => {
       updateProfile(getAuth().currentUser, { displayName, photoURL })
         .then((res) => resolve(res))

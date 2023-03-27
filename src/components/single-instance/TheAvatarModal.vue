@@ -1,11 +1,12 @@
 <template>
   <BaseSimpleModal
     class="avatar-modal"
-    v-model:is-shown="isAvatarModalShown"
     has-close-btn
+    v-model:is-shown="isAvatarModalShown"
+    @on-close="onModalClose"
   >
     <h3 class="avatar__modal-title">Please choose an avatar</h3>
-    <div class="avatar__wrapper">
+    <div class="avatar__wrapper" ref="avatarWrapper">
       <button
         class="avatar__btn"
         v-for="(src, ind) in avatars"
@@ -23,6 +24,7 @@
 <script>
 import BaseSimpleModal from '@/components/globals/modals/BaseSimpleModal.vue';
 import AvatarHelper from '@/assets/js/helpers/avatar-helper';
+import { useUserDetails } from '@/stores/user-details';
 
 export default {
   components: {
@@ -40,7 +42,19 @@ export default {
       activeAvatar: null
     };
   },
-  emits: ['update:isShown'],
+  emits: ['update:isShown', 'onModalClose'],
+  mounted() {
+    const IMGS = this.$refs.avatarWrapper.querySelectorAll('img');
+
+    IMGS.forEach((img) => {
+      const SRC = img.src;
+      if (SRC === useUserDetails().getPhotoURL) {
+        const BTN = img.parentElement.parentElement;
+        BTN.classList.add('avatar--active');
+        this.activeAvatar = BTN;
+      }
+    });
+  },
   methods: {
     selectAvatar(e) {
       if (this.activeAvatar !== null) {
@@ -48,8 +62,13 @@ export default {
       }
 
       const BTN = e.currentTarget;
+      const IMG_SRC = BTN.querySelector('img').src;
+      useUserDetails().setPhotoURL(IMG_SRC);
       BTN.classList.add('avatar--active');
       this.activeAvatar = BTN;
+    },
+    onModalClose() {
+      this.$emit('onModalClose');
     }
   },
   computed: {

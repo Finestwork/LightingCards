@@ -154,7 +154,7 @@ export default {
         const PHOTO_URL = AvatarHelper.getRandom();
 
         // Doesn't matter if displayName is successfully updated or not
-        await FirebaseHelper.updateDisplayName({
+        await FirebaseHelper.updateUserDetails({
           displayName: this.username,
           photoURL: PHOTO_URL
         });

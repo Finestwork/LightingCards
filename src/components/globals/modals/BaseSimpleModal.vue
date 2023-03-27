@@ -37,9 +37,11 @@ export default {
       required: true
     }
   },
+  emits: ['update:isShown', 'onClose'],
   methods: {
     closeModal() {
       this.$emit('update:isShown', false);
+      this.$emit('onClose');
     }
   },
   watch: {
