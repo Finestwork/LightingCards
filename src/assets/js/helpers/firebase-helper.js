@@ -4,7 +4,11 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  updateEmail,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential
 } from 'firebase/auth';
 
 export default class FirebaseHelper {
@@ -38,6 +42,11 @@ export default class FirebaseHelper {
    * Methods
    * =========
    */
+
+  // Checks if input email is the same with the current email
+  static isEmailTheSame(email) {
+    return getAuth().currentUser.email === email;
+  }
 
   // Get user details
   static getUserDetails() {
@@ -99,6 +108,40 @@ export default class FirebaseHelper {
       updateProfile(getAuth().currentUser, { displayName, photoURL })
         .then((res) => resolve(res))
         .catch((err) => reject(err));
+    });
+  }
+
+  static updateEmail(email) {
+    return new Promise((resolve, reject) => {
+      updateEmail(getAuth().currentUser, email).then(resolve).catch(reject);
+    });
+  }
+
+  static updatePassword(password) {
+    return new Promise((resolve, reject) => {
+      updatePassword(getAuth().currentUser, password)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  static updateAccount(email, password) {
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        updateEmail(getAuth().currentUser, email),
+        updatePassword(getAuth().currentUser, password)
+      ])
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  static reAuthenticateUser(email, password) {
+    const credential = EmailAuthProvider.credential(email, password);
+    return new Promise((resolve, reject) => {
+      reauthenticateWithCredential(getAuth().currentUser, credential)
+        .then(resolve)
+        .catch(reject);
     });
   }
 

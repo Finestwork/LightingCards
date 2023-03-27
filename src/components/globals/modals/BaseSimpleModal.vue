@@ -48,6 +48,7 @@ export default {
     isShown(isShown) {
       // If modal is shown
       if (isShown) {
+        document.body.style.overflowY = 'hidden';
         Object.assign(this.$refs.root.style, {
           display: 'block'
         });
@@ -86,6 +87,7 @@ export default {
         opacity: 0,
         translateY: '30px'
       });
+      document.body.style.overflowY = null;
     }
   }
 };
