@@ -4,8 +4,8 @@
       <BaseGradientLogo class="logo" />
       <VDropdown popper-class="nav-dropdown">
         <button class="nav__dropdown-btn">
-          <BaseOutlined class="dropdown__img" :src="userProfile" />
-          <span class="dropdown__username">{{ username }}</span>
+          <BaseOutlined class="dropdown__img" :src="getPhotoURL" />
+          <span class="dropdown__username">{{ getUsername }}</span>
           <span class="dropdown__icon"><AngleDown /></span>
         </button>
 
@@ -40,8 +40,8 @@
 
   <Teleport to="body">
     <TheUserSidebar
-      :img-src="userProfile"
-      :username="username"
+      :img-src="getPhotoURL"
+      :username="getUsername"
       v-model:shown="isSidebarShown"
     />
     <PageBlocker v-if="shouldShowPageBlocker" />
@@ -57,6 +57,7 @@ import PageBlocker from '@/components/globals/page-loaders/PageBlocker.vue';
 
 // Helpers
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
+import { useUserDetails } from '@/stores/user-details';
 
 export default {
   components: {
@@ -67,34 +68,24 @@ export default {
     PageBlocker
   },
   data: () => ({
-    username: '',
-    userProfile: '',
     isSidebarShown: false,
     shouldShowPageBlocker: false
   }),
   emits: ['successfullyLoggedOut'],
   mounted() {
-    this.getUserProfile();
     window.addEventListener('resize', this.hideSidebarOnLargerViewport);
+
+    // If no user details found in store, get it
+    if (useUserDetails().isUserDetailEmpty) {
+      const { displayName, photoURL } = FirebaseHelper.getUserDetails();
+      useUserDetails().setUsername(displayName);
+      useUserDetails().setPhotoURL(photoURL);
+    }
   },
   unmounted() {
     window.removeEventListener('resize', this.hideSidebarOnLargerViewport);
   },
   methods: {
-    getUserProfile() {
-      this.$nextTick(async () => {
-        const USER = await FirebaseHelper.getCurrentUser();
-
-        if (USER.displayName !== null) {
-          this.username = USER.displayName;
-          this.userProfile = USER.photoURL;
-          return;
-        }
-
-        this.username = FirebaseHelper.getUserDetails().displayName;
-        this.userProfile = FirebaseHelper.getUserDetails().photoURL;
-      });
-    },
     hideSidebarOnLargerViewport() {
       if (window.innerWidth >= 400) {
         this.isSidebarShown = false;
@@ -110,6 +101,14 @@ export default {
         .catch(() => {
           this.shouldShowPageBlocker = false;
         });
+    }
+  },
+  computed: {
+    getUsername() {
+      return useUserDetails().getUsername;
+    },
+    getPhotoURL() {
+      return useUserDetails().getPhotoURL;
     }
   }
 };

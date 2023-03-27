@@ -2,7 +2,7 @@
   <PlainNavbar />
   <div class="container container--sm">
     <BasePlainBreadcrumbs :links="breadcrumbs" />
-    <h1 class="title">Hello, Romeus!</h1>
+    <h1 class="title">Hello, Learner!</h1>
     <p class="message">
       Welcome to your profile settings! Here, you can edit your email and
       password to keep your account up-to-date. Please note that this page is

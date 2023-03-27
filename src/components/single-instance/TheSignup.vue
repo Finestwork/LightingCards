@@ -78,8 +78,11 @@ import BaseList from '@/components/globals/alerts/BaseList.vue';
 import FormValidationHelper from '@/assets/js/helpers/form-validation-helper';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
-import { useFlashCardStore } from '@/stores/flashcard';
 import AvatarHelper from '@/assets/js/helpers/avatar-helper';
+
+// Stores
+import { useFlashCardStore } from '@/stores/flashcard';
+import { useUserDetails } from '@/stores/user-details';
 
 // NPM
 import { useToast } from 'vue-toastification';
@@ -104,7 +107,7 @@ export default {
     this.$emit('mounted');
   },
   methods: {
-    registerUser() {
+    async registerUser() {
       this.isSubmitBtnLoading = true;
       this.errorList = [];
 
@@ -146,14 +149,20 @@ export default {
         return;
       }
 
-      const handleRegistration = () => {
+      try {
+        await FirebaseHelper.registerUser(this.email, this.password);
         const PHOTO_URL = AvatarHelper.getRandom();
+
         // Doesn't matter if displayName is successfully updated or not
-        FirebaseHelper.updateDisplayName({
+        await FirebaseHelper.updateDisplayName({
           displayName: this.username,
           photoURL: PHOTO_URL
         });
 
+        useUserDetails().setPhotoURL(PHOTO_URL);
+        useUserDetails().setUsername(this.username);
+
+        // If user did not create any sets from test page
         if (!useFlashCardStore().hasTestItems) {
           this.$router.push({ name: 'Landing' });
           return;
@@ -181,8 +190,7 @@ export default {
               }
             );
           });
-      };
-      const handleRegistrationError = (err) => {
+      } catch (err) {
         if (!err.code) {
           this.errorList.push(
             "• Can't create an account, please try again later."
@@ -192,11 +200,7 @@ export default {
         const GOOGLE_ERROR = FirebaseHelper.getErrors[err.code];
         this.errorList.push(`• ${GOOGLE_ERROR}`);
         this.isSubmitBtnLoading = false;
-      };
-
-      FirebaseHelper.registerUser(this.email, this.password)
-        .then(handleRegistration)
-        .catch(handleRegistrationError);
+      }
     }
   },
   computed: {

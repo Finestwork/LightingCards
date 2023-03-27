@@ -72,7 +72,7 @@ export default {
     this.$emit('mounted');
   },
   methods: {
-    loginUser() {
+    async loginUser() {
       this.isSubmitBtnLoading = true;
       this.errorAlertTxt = '';
       const validationFn = (text) => {
@@ -91,7 +91,10 @@ export default {
         return;
       }
 
-      const handleResult = () => {
+      try {
+        await FirebaseHelper.loginUser(this.emailTxt, this.passwordTxt);
+
+        // If user has created a test set
         if (!useFlashCardStore().hasTestItems) {
           this.$router.push({ name: 'Landing' });
           return;
@@ -120,15 +123,11 @@ export default {
           });
 
         this.$router.push({ name: 'Landing' });
-      };
-      const handleError = (err) => {
+      } catch (err) {
         if (!err.code) return;
         this.isSubmitBtnLoading = false;
         this.errorAlertTxt = FirebaseHelper.getErrors[err.code];
-      };
-      FirebaseHelper.loginUser(this.emailTxt, this.passwordTxt)
-        .then(handleResult)
-        .catch(handleError);
+      }
     }
   },
   computed: {
