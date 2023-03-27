@@ -37,11 +37,51 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      focusableElements:
+        'button, input, a, textarea, select, iframe, object, embed, area',
+      focusableContents: null,
+      firstFocusableElement: null,
+      lastFocusableElement: null
+    };
+  },
   emits: ['update:isShown', 'onClose'],
+  mounted() {
+    this.focusableContents = Array.from(
+      this.$refs.root.querySelectorAll(this.focusableElements)
+    ).filter((el) => {
+      return el.getAttribute('tabindex') !== '-1';
+    });
+    this.firstFocusableElement = this.focusableContents[0];
+    this.lastFocusableElement =
+      this.focusableContents[this.focusableContents.length - 1];
+    window.addEventListener('keydown', this.tabTrapping);
+  },
+  unmounted() {
+    window.removeEventListener('keydown', this.tabTrapping);
+  },
   methods: {
     closeModal() {
       this.$emit('update:isShown', false);
       this.$emit('onClose');
+    },
+    tabTrapping(e) {
+      if (!this.isShown) return;
+      if (e.code.toLowerCase() !== 'tab') return;
+      const ACTIVE_EL = document.activeElement;
+      // If user presses shift key + tab
+      if (e.shiftKey) {
+        if (ACTIVE_EL === this.firstFocusableElement) {
+          this.lastFocusableElement.focus();
+          e.preventDefault(); // prevent browser default focus behavior
+        }
+      } else {
+        if (ACTIVE_EL === this.lastFocusableElement) {
+          this.firstFocusableElement.focus();
+          e.preventDefault();
+        }
+      }
     }
   },
   watch: {
@@ -66,7 +106,10 @@ export default {
           easing: 'easeOutCirc',
           duration: 350,
           opacity: 1,
-          translateY: 0
+          translateY: 0,
+          complete: () => {
+            this.firstFocusableElement.focus();
+          }
         });
         return;
       }
