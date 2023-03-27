@@ -50,6 +50,7 @@ import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 import toast, { useToast } from 'vue-toastification';
 import { useFlashCardStore } from '@/stores/flashcard';
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -84,6 +85,7 @@ export default {
     };
   },
   mounted() {
+    DocumentTitleHelper.retrievingSets();
     const SET = useFlashCardStore().getSetById(this.id);
 
     // If set is not yet found in store, fetch it to the database
@@ -92,6 +94,7 @@ export default {
       return;
     }
     this.setObj = SET;
+    DocumentTitleHelper.editSet(SET.title);
   },
   methods: {
     async fetchSetFromDatabase() {
@@ -110,6 +113,7 @@ export default {
         if (USER) {
           // If it's not a public set and another user is trying to access it, then redirect to the error page
           if (!DOC.isOpenToPublic && USER.auth.currentUser.uid !== DOC.userId) {
+            this.$router.push({ name: 'LandingPage' });
             return;
           }
 
@@ -123,8 +127,10 @@ export default {
               });
               return;
             }
+
             this.isLoading = false;
             this.setObj = DOC;
+            DocumentTitleHelper.editSet(DOC.title);
           }, 1000);
         }
       } catch (err) {

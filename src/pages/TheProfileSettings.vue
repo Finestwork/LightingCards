@@ -108,6 +108,7 @@ import { useUserDetails } from '@/stores/user-details';
 // NPM
 import { useToast } from 'vue-toastification';
 import isEmail from 'validator/es/lib/isEmail';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -142,6 +143,7 @@ export default {
     };
   },
   mounted() {
+    DocumentTitleHelper.profileSettings();
     this.currentActiveAvatarBtn = this.userUploadedAvatarBtn;
     this.currentActiveAvatarBtn.classList.add('avatar--active');
     this.usernameTxt = useUserDetails().getUsername;

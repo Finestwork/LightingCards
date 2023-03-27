@@ -28,6 +28,7 @@ import TheFlashCardCreation from '@/components/single-instance/TheFlashcardCreat
 import TheRequiredLoginAlert from '@/components/single-instance/TheRequiredLoginAlert.vue';
 import { useFlashCardStore } from '@/stores/flashcard';
 import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -43,6 +44,9 @@ export default {
     return {
       flashCardItems: FLASHCARD_ITEMS
     };
+  },
+  mounted() {
+    DocumentTitleHelper.testFeature();
   },
   methods: {
     createCard() {

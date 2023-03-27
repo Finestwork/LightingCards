@@ -20,12 +20,16 @@
 import BasePageNotFound from '@/components/globals/error-states/BasePageNotFound.vue';
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
 import BasePlayfulLink from '@/components/globals/links/BasePlayfulLink.vue';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
     PlainNavbar,
     BasePageNotFound,
     BasePlayfulLink
+  },
+  mounted() {
+    DocumentTitleHelper.pageNotFound();
   }
 };
 </script>

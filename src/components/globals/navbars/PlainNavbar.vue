@@ -77,9 +77,18 @@ export default {
 
     // If no user details found in store, get it
     if (useUserDetails().isUserDetailEmpty) {
-      const { displayName, photoURL } = FirebaseHelper.getUserDetails();
-      useUserDetails().setUsername(displayName);
-      useUserDetails().setPhotoURL(photoURL);
+      const USER = FirebaseHelper.getUserDetails();
+
+      if (USER === null) {
+        FirebaseHelper.getCurrentUser().then((user) => {
+          useUserDetails().setUsername(user.displayName);
+          useUserDetails().setPhotoURL(user.photoURL);
+        });
+        return;
+      }
+
+      useUserDetails().setUsername(USER.displayName);
+      useUserDetails().setPhotoURL(USER.photoURL);
     }
   },
   unmounted() {

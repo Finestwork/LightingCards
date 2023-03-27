@@ -22,6 +22,7 @@ import FlashcardHelper from '@/assets/js/helpers/flashcard-helper';
 
 // NPM
 import { useToast } from 'vue-toastification';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -43,6 +44,9 @@ export default {
       ],
       sets: FlashcardHelper.createDefaultCards(2)
     };
+  },
+  mounted() {
+    DocumentTitleHelper.createSet();
   },
   methods: {
     setCreatedSuccessfully() {

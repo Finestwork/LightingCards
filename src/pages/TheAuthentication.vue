@@ -43,6 +43,7 @@ import BaseGradientLogo from '@/components/globals/logos/BaseGradientLogo.vue';
 import { defineAsyncComponent } from 'vue';
 import NProgress from 'nprogress';
 import anime from 'animejs/lib/anime.es.js';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -62,6 +63,7 @@ export default {
     formLoaderAnimId: null
   }),
   mounted() {
+    DocumentTitleHelper.auth(this.$route.name);
     // If one of the components are not yet downloaded, start the loading state
     if (this.$refs.signup === undefined && this.$refs.login === undefined) {
       NProgress.configure({ showSpinner: false });
@@ -183,6 +185,7 @@ export default {
           complete: () => {
             done();
             this.canShowFormLoader = false;
+            DocumentTitleHelper.auth(this.$route.name);
           }
         });
       });

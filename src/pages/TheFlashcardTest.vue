@@ -20,6 +20,7 @@
 import TheRequiredLoginAlert from '@/components/single-instance/TheRequiredLoginAlert.vue';
 import BasePlainFlashCard from '@/components/globals/flashcards/BaseFlashcardWrapper.vue';
 import { useFlashCardStore } from '@/stores/flashcard';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -28,7 +29,10 @@ export default {
   },
   data: () => ({
     useFlashCardStore: useFlashCardStore()
-  })
+  }),
+  mounted() {
+    DocumentTitleHelper.playingTestFeature();
+  }
 };
 </script>
 

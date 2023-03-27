@@ -51,6 +51,12 @@ export default class FirebaseHelper {
   // Get user details
   static getUserDetails() {
     const USER = getAuth().currentUser;
+
+    // If user is null (probably when user visits the site using the address bar)
+    if (USER === null) {
+      return null;
+    }
+
     return {
       displayName: USER.displayName,
       photoURL: USER.photoURL,

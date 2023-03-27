@@ -43,6 +43,7 @@ import { useFlashCardStore } from '@/stores/flashcard';
 
 // NPM
 import toast from 'vue-toastification';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -67,6 +68,7 @@ export default {
     };
   },
   mounted() {
+    DocumentTitleHelper.retrievingSets();
     const STORED_SET = useFlashCardStore().getSetById(this.id);
 
     // If the item doesn't exist in the store, it needs to be fetched
@@ -77,6 +79,7 @@ export default {
 
     this.isLoading = false;
     this.sets = STORED_SET.sets;
+    DocumentTitleHelper.setRetrieved(STORED_SET.title);
   },
   methods: {
     async fetchSets() {
@@ -111,6 +114,7 @@ export default {
             }
             this.isLoading = false;
             this.sets = DOC.sets;
+            DocumentTitleHelper.setRetrieved(DOC.title);
           }, 1000);
         }
       } catch (err) {

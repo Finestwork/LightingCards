@@ -9,6 +9,7 @@ import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 // NPM
 import { defineAsyncComponent } from 'vue';
 import NProgress from 'nprogress';
+import DocumentTitleHelper from '@/assets/js/helpers/document-title-helper';
 
 export default {
   components: {
@@ -25,6 +26,7 @@ export default {
     authSubscribe: null
   }),
   mounted() {
+    DocumentTitleHelper.intro();
     NProgress.configure({ showSpinner: false });
     const callbackFn = {
       signedInFn: () => {
