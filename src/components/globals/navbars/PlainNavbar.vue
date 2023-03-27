@@ -2,7 +2,7 @@
   <nav class="nav">
     <div class="container--sm nav__container">
       <BaseGradientLogo class="logo" />
-      <VDropdown popper-class="nav-dropdown">
+      <VDropdown popper-class="nav-dropdown" v-if="shouldDisplayNavDropdown">
         <button class="nav__dropdown-btn">
           <BaseOutlined class="dropdown__img" :src="getPhotoURL" />
           <span class="dropdown__username">{{ getUsername }}</span>
@@ -30,6 +30,18 @@
           </div>
         </template>
       </VDropdown>
+
+      <ContentLoader
+        class="nav__dropdown-loader"
+        viewBox="0 0 150 40"
+        :speed="2"
+        primaryColor="#f3f3f3"
+        secondaryColor="#ecebeb"
+        v-if="!shouldDisplayNavDropdown"
+      >
+        <rect x="0" y="0" rx="8" ry="8" width="150" height="40" />
+      </ContentLoader>
+
       <button type="button" class="nav__hamburger-btn" @click="toggleSidebar">
         <span class="hamburger-btn__line-1"></span>
         <span class="hamburger-btn__line-2"></span>
@@ -55,6 +67,8 @@ import TheUserSidebar from '@/components/single-instance/TheUserSidebar.vue';
 import BaseOutlined from '@/components/globals/user-profile-pictures/BaseOutlined.vue';
 import PageBlocker from '@/components/globals/page-loaders/PageBlocker.vue';
 
+import { ContentLoader } from 'vue-content-loader';
+
 // Helpers
 import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
 import { useUserDetails } from '@/stores/user-details';
@@ -65,7 +79,8 @@ export default {
     AngleDown,
     TheUserSidebar,
     BaseOutlined,
-    PageBlocker
+    PageBlocker,
+    ContentLoader
   },
   data: () => ({
     isSidebarShown: false,
@@ -113,6 +128,9 @@ export default {
     }
   },
   computed: {
+    shouldDisplayNavDropdown() {
+      return this.getUsername.trim() !== '' && this.getPhotoURL.trim() !== '';
+    },
     getUsername() {
       return useUserDetails().getUsername;
     },
@@ -147,7 +165,6 @@ export default {
   }
 
   &__dropdown-btn {
-    max-width: 200px;
     align-items: center;
     border: none;
     font-family: inherit;
@@ -158,7 +175,7 @@ export default {
     padding: pixels.toRem(10);
     @include display.set((
         xsm: none,
-        400: flex
+        400: none
     ));
 
     &:focus,
@@ -199,6 +216,15 @@ export default {
         flex-shrink: 0;
       }
     }
+  }
+
+  &__dropdown-btn,
+  &__dropdown-loader{
+    max-width: 200px;
+    @include display.set((
+        xsm: none,
+        400: flex
+    ));
   }
 
   &__hamburger-btn {
