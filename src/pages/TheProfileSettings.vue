@@ -9,51 +9,16 @@
       currently under construction and we appreciate your patience as we
       continue to improve and enhance our platform
     </p>
-
-    <div class="btn-group">
-      <BasePlayfulButton
-        type="button"
-        :is-loading="isChangeAvatarLoading"
-        @click="showAvatarModal"
-      >
-        <template #text>Change Avatar</template>
-      </BasePlayfulButton>
-      <BasePlayfulButton type="button">
-        <template #text>Username</template>
-      </BasePlayfulButton>
-      <BasePlayfulButton type="button">
-        <template #text>Change Email</template>
-      </BasePlayfulButton>
-      <BasePlayfulButton type="button">
-        <template #text>Change Password</template>
-      </BasePlayfulButton>
-    </div>
-
-    <Teleport to="body">
-      <TheAvatarModal
-        v-model:is-shown="isAvatarModalShown"
-        @on-modal-close="onModalCloseUpdateAvatar"
-      />
-    </Teleport>
   </div>
 </template>
 
 <script>
 import PlainNavbar from '@/components/globals/navbars/PlainNavbar.vue';
-import BasePlayfulButton from '@/components/globals/forms/BasePlayfulButton.vue';
 import BasePlainBreadcrumbs from '@/components/globals/breadcrumbs/BasePlainBreadcrumbs.vue';
-import TheAvatarModal from '@/components/single-instance/TheAvatarModal.vue';
-import FirebaseHelper from '@/assets/js/helpers/firebase-helper';
-import { useUserDetails } from '@/stores/user-details';
-import NProgress from 'nprogress';
-import { useToast } from 'vue-toastification';
-
 export default {
   components: {
     PlainNavbar,
-    BasePlayfulButton,
-    BasePlainBreadcrumbs,
-    TheAvatarModal
+    BasePlainBreadcrumbs
   },
   data() {
     return {
@@ -66,35 +31,8 @@ export default {
           to: { name: 'ProfileSettings' },
           text: 'Profile Settings'
         }
-      ],
-      isAvatarModalShown: false,
-      isChangeAvatarLoading: false
+      ]
     };
-  },
-  mounted() {
-    document.body.style.overflowY = 'hidden';
-  },
-  methods: {
-    showAvatarModal() {
-      this.isAvatarModalShown = !this.isAvatarModalShown;
-    },
-    async onModalCloseUpdateAvatar() {
-      this.isChangeAvatarLoading = true;
-      NProgress.configure({ showSpinner: false });
-      NProgress.start();
-      const displayName = useUserDetails().getUsername;
-      const photoURL = useUserDetails().getPhotoURL;
-
-      try {
-        await FirebaseHelper.updateUserDetails({ displayName, photoURL });
-        NProgress.done();
-        useToast().success('Successfully updated your avatar!');
-        this.isChangeAvatarLoading = false;
-      } catch (e) {
-        this.isChangeAvatarLoading = false;
-        useToast().error('Uh-oh! Unable to change avatar');
-      }
-    }
   }
 };
 </script>
