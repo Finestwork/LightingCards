@@ -4,8 +4,9 @@
       <BaseTextInput
         class="sets__search-input-wrapper"
         type="text"
-        placeholder="Search flashcard's title here"
+        placeholder="Search set's title here"
         id="searchSetTxtInput"
+        v-model="searchInput"
         v-if="shouldDisplaySearchInput"
       />
       <LinkCreateSet class="sets__create-set-link" />
@@ -37,10 +38,15 @@ export default {
   },
   data() {
     return {
-      sets: useFlashCardStore().sets
+      searchInput: ''
     };
   },
   computed: {
+    sets() {
+      return useFlashCardStore().sets.filter((set) => {
+        return set.title.toLowerCase().includes(this.searchInput.toLowerCase());
+      });
+    },
     shouldDisplaySearchInput() {
       return useFlashCardStore().sets.length > 6;
     }
